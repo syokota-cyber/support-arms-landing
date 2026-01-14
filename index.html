@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="サポートアーム - 作業効率を劇的に向上させる多関節アーム。岩代工業の精密加工技術が生み出す、自由自在な姿勢保持システム。">
+  <meta name="keywords" content="サポートアーム, 多関節アーム, 作業支援, 岩代工業, 精密加工">
+
+  <!-- OGP -->
+  <meta property="og:title" content="サポートアーム | 岩代工業株式会社">
+  <meta property="og:description" content="作業効率を劇的に向上させる多関節サポートアーム">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.iwashiro-kogyo.co.jp/support-arm">
+
+  <title>サポートアーム | 岩代工業株式会社</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./styles/main.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- 3D Model Viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="header" id="header">
+    <div class="container">
+      <div class="header__content">
+        <div class="header__logo">
+          <a href="#hero">
+            <span class="logo-text">岩代工業</span>
+          </a>
+        </div>
+
+        <nav class="header__nav" id="nav">
+          <ul class="nav-list">
+            <li><a href="#features">特徴</a></li>
+            <li><a href="#viewer360">360°ビュー</a></li>
+            <li><a href="#specs">仕様</a></li>
+            <li><a href="#applications">活用例</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact" class="nav-cta">お問い合わせ</a></li>
+          </ul>
+        </nav>
+
+        <button class="header__toggle" id="navToggle" aria-label="メニュー">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero__content">
+        <!-- Background Video -->
+        <div class="hero__video-bg">
+          <video autoplay muted loop playsinline class="hero__video">
+            <source src="./assets/videos/hero/intro_suportarms.mp4" type="video/mp4">
+          </video>
+          <div class="hero__overlay"></div>
+        </div>
+
+        <!-- Hero Text -->
+        <div class="hero__text">
+          <h1 class="hero__title">
+            <span class="hero__title-small">自由自在な姿勢保持</span>
+            <span class="hero__title-main">サポートアーム</span>
+          </h1>
+          <p class="hero__subtitle">
+            作業効率を劇的に向上させる多関節アームシステム<br>
+            思い通りの位置で、思い通りの角度で、確実にホールド
+          </p>
+        </div>
+
+        <!-- 3D Model Viewer -->
+        <div class="hero__model">
+          <div class="model-viewer-container">
+            <model-viewer
+              src="./assets/images/hero/supprt_arm.glb"
+              alt="サポートアームの3Dモデル"
+              auto-rotate
+              camera-controls
+              shadow-intensity="1"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+              class="model-viewer">
+
+              <div class="model-viewer__loading" slot="poster">
+                <div class="spinner"></div>
+                <p>3Dモデル読み込み中...</p>
+              </div>
+
+              <button class="model-viewer__ar-button" slot="ar-button">
+                AR で見る
+              </button>
+            </model-viewer>
+
+            <div class="model-viewer__controls">
+              <p class="model-viewer__hint">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                ドラッグで回転・ピンチでズーム
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="hero__cta">
+          <a href="#contact" class="btn btn--primary btn--large">
+            お問い合わせ
+            <svg class="btn__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#features" class="btn btn--secondary btn--large">
+            詳しく見る
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="hero__scroll">
+      <span>Scroll</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- 360 Viewer Section -->
+  <section class="viewer360" id="viewer360">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">360°で見る</h2>
+        <p class="section-subtitle">ドラッグして回転、ボタンで表示を切り替えできます</p>
+      </div>
+
+      <div class="viewer360__content" data-animate>
+        <div class="viewer360__controls" role="group" aria-label="表示切り替え">
+          <button
+            type="button"
+            class="btn btn--primary btn--small viewer360__btn is-active"
+            id="viewer360BtnArm"
+            aria-pressed="true"
+            data-model-src="./assets/images/hero/supprt_arm.glb">
+            サポートアーム（3D）
+          </button>
+        </div>
+
+        <div class="viewer360__model">
+          <model-viewer
+            id="viewer360Model"
+            src="./assets/images/hero/supprt_arm.glb"
+            alt="サポートアーム 360度ビュー"
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="3000"
+            rotation-per-second="30deg"
+            disable-zoom="false"
+            interaction-prompt="auto"
+            interaction-prompt-style="basic"
+            shadow-intensity="1"
+            exposure="1.2"
+            environment-image="neutral"
+            class="viewer360__model-viewer">
+          </model-viewer>
+          <p class="viewer360__hint">ドラッグで回転・ピンチでズーム（3秒後に自動回転）</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">サポートアームの特徴</h2>
+        <p class="section-subtitle">現場の声から生まれた、使いやすさへのこだわり</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card" data-animate>
+          <div class="feature-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">多関節構造</h3>
+          <p class="feature-card__text">
+            7つの関節により、360度自由な角度調整が可能。作業に最適な位置へスムーズに移動できます。
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card" data-animate>
+          <div class="feature-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" stroke-width="2"/>
+              <path d="M12 6V12L16 14" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">確実なホールド</h3>
+          <p class="feature-card__text">
+            高精度な摩擦機構により、どんな位置でもしっかり固定。重量物も安定して保持します。
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card" data-animate>
+          <div class="feature-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">軽量設計</h3>
+          <p class="feature-card__text">
+            アルミニウム合金を使用した軽量ボディ。長時間の作業でも疲れにくい設計です。
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card" data-animate>
+          <div class="feature-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+              <polyline points="3.27,6.96 12,12.01 20.73,6.96" stroke-width="2"/>
+              <line x1="12" y1="22.08" x2="12" y2="12" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">高耐久性</h3>
+          <p class="feature-card__text">
+            工業現場での使用を想定した堅牢設計。長期間の使用に耐える高品質を実現。
+          </p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card" data-animate>
+          <div class="feature-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke-width="2"/>
+              <line x1="7" y1="7" x2="7.01" y2="7" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">多彩な取付オプション</h3>
+          <p class="feature-card__text">
+            クランプ式、ボルト固定式など、様々な設置環境に対応。既存設備への後付けも可能です。
+          </p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card" data-animate>
+          <div class="feature-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="feature-card__title">安全設計</h3>
+          <p class="feature-card__text">
+            過負荷防止機構を搭載。万が一の事故を防ぐ、安心の安全設計です。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specifications Section -->
+  <section class="specs" id="specs">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">製品仕様</h2>
+        <p class="section-subtitle">高精度加工による確かな品質</p>
+      </div>
+
+      <div class="specs-content">
+        <div class="specs-table" data-animate>
+          <table>
+            <tbody>
+              <tr>
+                <th>製品名</th>
+                <td>サポートアーム　SAK（壁取り付け型）/ SAT（天井取り付け型）</td>
+              </tr>
+              <tr>
+                <th>全長</th>
+                <td>最大700mm（折りたたみ時: 350mm）</td>
+              </tr>
+              <tr>
+                <th>可動範囲</th>
+                <td>水平360°、垂直±90°</td>
+              </tr>
+              <tr>
+                <th>保持荷重</th>
+                <td>3kg（最大4kg）</td>
+              </tr>
+              <tr>
+                <th>本体重量</th>
+                <td>約1.2kg</td>
+              </tr>
+              <tr>
+                <th>材質</th>
+                <td>アルミニウム合金（A6061）、ステンレス鋼</td>
+              </tr>
+              <tr>
+                <th>表面処理</th>
+                <td>アルマイト処理（シルバー）</td>
+              </tr>
+              <tr>
+                <th>取付方式</th>
+                <td>クランプ式（対応厚: 10-50mm）</td>
+              </tr>
+              <tr>
+                <th>関節数</th>
+                <td>7関節</td>
+              </tr>
+              <tr>
+                <th>使用環境</th>
+                <td>温度: -10°C～60°C、湿度: 85%以下（結露なきこと）</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="specs-image" data-animate>
+          <img 
+            src="./assets/images/company/zumen_suport:arm.jpg" 
+            alt="サポートアーム製品寸法図" 
+            class="specs-image__img"
+            loading="lazy">
+        </div>
+      </div>
+
+      <!-- Manual Download Button -->
+      <div class="specs-manual" data-animate>
+        <div class="specs-manual__content">
+          <div class="specs-manual__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
+              <line x1="12" y1="18" x2="12" y2="12" stroke-width="2"/>
+              <line x1="9" y1="15" x2="12" y2="18" stroke-width="2"/>
+              <line x1="15" y1="15" x2="12" y2="18" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="specs-manual__text">
+            <h3 class="specs-manual__title">取扱説明書</h3>
+            <p class="specs-manual__description">製品の詳細な使用方法や注意事項をご確認いただけます</p>
+          </div>
+          <a href="./assets/サポートアーム取扱説明書(2024_03_27).pdf" target="_blank" class="btn btn--primary">
+            <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
+            </svg>
+            PDFを開く
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Applications Section -->
+  <section class="applications" id="applications">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">活用例</h2>
+        <p class="section-subtitle">様々な現場で活躍するサポートアーム<br><small>※クリックで詳細を表示</small></p>
+      </div>
+
+      <div class="applications-grid">
+        <button class="application-card application-card--clickable" data-animate data-app-modal="app-food">
+          <div class="application-card__image">
+            <img 
+              src="./assets/images/products/supprtarm/wimg_dust.jpg" 
+              alt="食品工場での粉体・蒸気の局所吸引" 
+              loading="lazy">
+          </div>
+          <h3 class="application-card__title">食品工場での粉体・蒸気吸引</h3>
+          <p class="application-card__text">
+            小麦粉・砂糖などの粉塵や加熱工程の蒸気・油煙を局所吸引。衛生管理を徹底し、作業環境を大幅に改善します。
+          </p>
+          <span class="application-card__more">詳しく見る →</span>
+        </button>
+
+        <button class="application-card application-card--clickable" data-animate data-app-modal="app-paint">
+          <div class="application-card__image">
+            <img 
+              src="./assets/images/products/supprtarm/img_duct.jpg" 
+              alt="塗装・印刷工場での溶剤・臭気の局所排気" 
+              loading="lazy">
+          </div>
+          <h3 class="application-card__title">塗装・印刷工場での溶剤排気</h3>
+          <p class="application-card__text">
+            溶剤・インク臭・樹脂臭を効率的に排気。VOC対策と臭気対策で、近隣への配慮と作業環境を両立します。
+          </p>
+          <span class="application-card__more">詳しく見る →</span>
+        </button>
+
+        <button class="application-card application-card--clickable" data-animate data-app-modal="app-camera">
+          <div class="application-card__image">
+            <img 
+              src="./assets/images/products/supprtarm/wimg_precision.jpg" 
+              alt="検査カメラ・ライトでの現場改善" 
+              loading="lazy">
+          </div>
+          <h3 class="application-card__title">検査カメラ・ライト支持</h3>
+          <p class="application-card__text">
+            先端にカメラやライトを取り付けて、不良検知や照度改善。作業エリアの最適位置に自由に配置できます。
+          </p>
+          <span class="application-card__more">詳しく見る →</span>
+        </button>
+
+        <button class="application-card application-card--clickable" data-animate data-app-modal="app-logistics">
+          <div class="application-card__image">
+            <img 
+              src="./assets/images/products/supprtarm/wimg_touchpanel.jpg" 
+              alt="物流倉庫でのタッチパネル支持" 
+              loading="lazy">
+          </div>
+          <h3 class="application-card__title">物流倉庫でのタッチパネル支持</h3>
+          <p class="application-card__text">
+            タッチパネルやモニターを最適位置に配置。作業動線を妨げず、効率的なピッキング作業を実現します。
+          </p>
+          <span class="application-card__more">詳しく見る →</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application Detail Modals -->
+  <!-- Modal 1: 食品工場 -->
+  <div class="app-modal" id="app-food" aria-hidden="true">
+    <div class="app-modal__overlay" data-close-modal></div>
+    <div class="app-modal__content">
+      <button class="app-modal__close" data-close-modal aria-label="閉じる">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="app-modal__header">
+        <span class="app-modal__scene">シーン1</span>
+        <h2 class="app-modal__title">食品工場での粉塵・蒸気吸引</h2>
+      </div>
+      <div class="app-modal__image">
+        <img src="./assets/images/works/bankin/scean1.png" alt="食品工場での粉塵・蒸気吸引シーン" loading="lazy">
+      </div>
+      <div class="app-modal__body">
+        <p class="app-modal__lead">小麦粉や蒸気などの局所吸引で、衛生管理を強化。現場環境がぐっと改善します。</p>
+        
+        <div class="app-modal__benefits">
+          <h3>導入メリット</h3>
+          <ul>
+            <li>
+              <strong>衛生管理の強化</strong>
+              <span>製造ラインで発生する粉塵や蒸気を発生源で直接吸引。HACCP対応や食品安全基準の維持に貢献します。</span>
+            </li>
+            <li>
+              <strong>作業環境の改善</strong>
+              <span>作業者の視界確保と呼吸環境を改善。長時間作業でも快適な環境を維持できます。</span>
+            </li>
+            <li>
+              <strong>設備汚染の防止</strong>
+              <span>粉塵が機器に付着するのを防ぎ、清掃頻度の削減とメンテナンスコストを低減します。</span>
+            </li>
+            <li>
+              <strong>柔軟な位置調整</strong>
+              <span>多関節構造により、作業内容や製品に応じて吸引位置を自在に変更。段取り替え時間も短縮できます。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="app-modal__specs">
+          <h3>推奨構成</h3>
+          <table>
+            <tr><th>取付方式</th><td>壁取付型（SAK）/ 天井取付型（SAT）</td></tr>
+            <tr><th>先端機器</th><td>フレキシブルダクト + 吸引フード</td></tr>
+            <tr><th>対象物</th><td>小麦粉、砂糖、調味料粉末、蒸気、油煙など</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="app-modal__footer">
+        <a href="#contact" class="btn btn--primary" data-close-modal>お問い合わせ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: 塗装・印刷工場 -->
+  <div class="app-modal" id="app-paint" aria-hidden="true">
+    <div class="app-modal__overlay" data-close-modal></div>
+    <div class="app-modal__content">
+      <button class="app-modal__close" data-close-modal aria-label="閉じる">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="app-modal__header">
+        <span class="app-modal__scene">シーン2</span>
+        <h2 class="app-modal__title">塗装・印刷工場での排気対策</h2>
+      </div>
+      <div class="app-modal__image">
+        <img src="./assets/images/works/bankin/scean2.png" alt="塗装・印刷工場での排気対策シーン" loading="lazy">
+      </div>
+      <div class="app-modal__body">
+        <p class="app-modal__lead">溶剤の臭気や樹脂臭を効率的に排気し、作業者の安全と周囲環境への配慮を両立します。</p>
+        
+        <div class="app-modal__benefits">
+          <h3>導入メリット</h3>
+          <ul>
+            <li>
+              <strong>VOC対策の徹底</strong>
+              <span>揮発性有機化合物（VOC）を発生源で効率的に捕集。労働安全衛生法や環境規制への対応を支援します。</span>
+            </li>
+            <li>
+              <strong>作業者の健康保護</strong>
+              <span>有害物質への曝露を最小限に抑制。防護具の着用時間短縮にも貢献します。</span>
+            </li>
+            <li>
+              <strong>近隣への配慮</strong>
+              <span>臭気の拡散を防ぎ、近隣住民や周辺環境へのストレス軽減を実現します。</span>
+            </li>
+            <li>
+              <strong>作業効率の向上</strong>
+              <span>吸引口を作業者の手元に配置できるため、塗装品質の安定化と作業スピードの向上に寄与します。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="app-modal__specs">
+          <h3>推奨構成</h3>
+          <table>
+            <tr><th>取付方式</th><td>壁取付型（SAK）</td></tr>
+            <tr><th>先端機器</th><td>フレキシブルダクト + 排気フード</td></tr>
+            <tr><th>対象物</th><td>塗料溶剤、インク臭、樹脂臭、シンナーなど</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="app-modal__footer">
+        <a href="#contact" class="btn btn--primary" data-close-modal>お問い合わせ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: 検査カメラ・ライト -->
+  <div class="app-modal" id="app-camera" aria-hidden="true">
+    <div class="app-modal__overlay" data-close-modal></div>
+    <div class="app-modal__content">
+      <button class="app-modal__close" data-close-modal aria-label="閉じる">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="app-modal__header">
+        <span class="app-modal__scene">シーン3</span>
+        <h2 class="app-modal__title">検査カメラ・ライトの支持</h2>
+      </div>
+      <div class="app-modal__image">
+        <img src="./assets/images/works/bankin/scean3.png" alt="検査カメラ・ライト支持シーン" loading="lazy">
+      </div>
+      <div class="app-modal__body">
+        <p class="app-modal__lead">検査カメラや照明を最適ポジションで固定。チェック作業がぐっとやりやすくなります。</p>
+        
+        <div class="app-modal__benefits">
+          <h3>導入メリット</h3>
+          <ul>
+            <li>
+              <strong>検査精度の向上</strong>
+              <span>カメラやライトを最適な角度・距離で固定。安定した検査環境で不良検出率が向上します。</span>
+            </li>
+            <li>
+              <strong>作業者の負担軽減</strong>
+              <span>手持ちでの作業から解放され、両手を使った効率的な検査作業が可能になります。</span>
+            </li>
+            <li>
+              <strong>照明環境の最適化</strong>
+              <span>製品形状や検査項目に合わせて照明位置を微調整。影や反射を最小限に抑えられます。</span>
+            </li>
+            <li>
+              <strong>省スペース設置</strong>
+              <span>床や作業台のスペースを取らず、既存のラインレイアウトを維持したまま導入可能です。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="app-modal__specs">
+          <h3>推奨構成</h3>
+          <table>
+            <tr><th>取付方式</th><td>天井取付型（SAT）</td></tr>
+            <tr><th>先端機器</th><td>検査カメラ、リングライト、スポットライトなど</td></tr>
+            <tr><th>対象作業</th><td>外観検査、寸法測定、異物検査、印字確認など</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="app-modal__footer">
+        <a href="#contact" class="btn btn--primary" data-close-modal>お問い合わせ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: 物流倉庫 -->
+  <div class="app-modal" id="app-logistics" aria-hidden="true">
+    <div class="app-modal__overlay" data-close-modal></div>
+    <div class="app-modal__content">
+      <button class="app-modal__close" data-close-modal aria-label="閉じる">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="app-modal__header">
+        <span class="app-modal__scene">シーン4</span>
+        <h2 class="app-modal__title">物流倉庫のタッチパネル支持</h2>
+      </div>
+      <div class="app-modal__image">
+        <img src="./assets/images/works/bankin/scean4a.jpg" alt="物流倉庫でのタッチパネル支持シーン" loading="lazy">
+      </div>
+      <div class="app-modal__body">
+        <p class="app-modal__lead">タッチパネルやモニターを最適位置に配置。作業動線を妨げず、効率ピッキング作業を実現します。</p>
+        
+        <div class="app-modal__benefits">
+          <h3>導入メリット</h3>
+          <ul>
+            <li>
+              <strong>作業効率の向上</strong>
+              <span>作業者の目線や姿勢に合わせてモニター位置を調整。ピッキング指示の確認がスムーズになります。</span>
+            </li>
+            <li>
+              <strong>動線の確保</strong>
+              <span>床置きスタンドが不要になり、カートやフォークリフトの通行を妨げません。</span>
+            </li>
+            <li>
+              <strong>人間工学的配慮</strong>
+              <span>首や腰への負担を軽減する角度でモニターを配置。長時間作業でも疲労を抑制します。</span>
+            </li>
+            <li>
+              <strong>レイアウト変更への柔軟性</strong>
+              <span>倉庫内のレイアウト変更時も、モニター位置を簡単に再調整できます。</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="app-modal__specs">
+          <h3>推奨構成</h3>
+          <table>
+            <tr><th>取付方式</th><td>壁取付型（SAK）/ 天井取付型（SAT）</td></tr>
+            <tr><th>先端機器</th><td>タッチパネル、モニター、バーコードリーダーなど</td></tr>
+            <tr><th>対象作業</th><td>ピッキング、検品、在庫管理、出荷指示確認など</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="app-modal__footer">
+        <a href="#contact" class="btn btn--primary" data-close-modal>お問い合わせ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- YouTube Section -->
+  <section class="videos" id="videos">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">動画で見る</h2>
+        <p class="section-subtitle">サポートアームの動きや使用方法をご覧ください</p>
+      </div>
+
+      <div class="videos-grid" data-animate>
+        <div class="video-card">
+          <div class="video-card__wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/pnYGnJruxn4" 
+              title="サポートアーム紹介動画1"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/ZcwpZggcE_c" 
+              title="サポートアーム紹介動画2"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="videos-cta" data-animate>
+        <a href="https://www.youtube.com/@iwashirokougyo" target="_blank" class="btn btn--secondary">
+          <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" stroke-width="2"/>
+            <polygon points="9.75,15.02 15.5,11.75 9.75,8.48" stroke-width="2"/>
+          </svg>
+          YouTubeチャンネルで他の動画を見る
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Intro Section -->
+  <section class="faq-intro" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">よくある質問</h2>
+        <p class="section-subtitle">サポートアームに関するご質問にお答えします</p>
+      </div>
+
+      <div class="faq-intro__content" data-animate>
+        <div class="faq-intro__main">
+          <div class="faq-intro__icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" stroke-width="2"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke-width="2" stroke-linecap="round"/>
+              <path d="M12 17h.01" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="faq-intro__text">
+            <h3 class="faq-intro__title">導入前のご不安を解消します</h3>
+            <p class="faq-intro__description">
+              サポートアームの導入をご検討中のお客様から多くいただく質問を、カテゴリ別にまとめました。<br>
+              製品仕様から価格、カスタマイズ、設置方法まで、疑問点をすべて解消いただけます。
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-intro__categories">
+          <button class="faq-intro__category-item" data-faq-category="faq-specs">
+            <div class="faq-intro__category-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+                <polyline points="14,2 14,8 20,8" stroke-width="2"/>
+                <line x1="16" y1="13" x2="8" y2="13" stroke-width="2"/>
+                <line x1="16" y1="17" x2="8" y2="17" stroke-width="2"/>
+              </svg>
+            </div>
+            <span>製品仕様・機能</span>
+          </button>
+          <button class="faq-intro__category-item" data-faq-category="faq-price">
+            <div class="faq-intro__category-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <line x1="12" y1="1" x2="12" y2="23" stroke-width="2"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-width="2"/>
+              </svg>
+            </div>
+            <span>価格・購入</span>
+          </button>
+          <button class="faq-intro__category-item" data-faq-category="faq-delivery">
+            <div class="faq-intro__category-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <polyline points="12,6 12,12 16,14" stroke-width="2"/>
+              </svg>
+            </div>
+            <span>納期・カスタマイズ</span>
+          </button>
+          <button class="faq-intro__category-item" data-faq-category="faq-material">
+            <div class="faq-intro__category-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke-width="2"/>
+              </svg>
+            </div>
+            <span>材質・取付</span>
+          </button>
+          <button class="faq-intro__category-item" data-faq-category="faq-accessories">
+            <div class="faq-intro__category-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+              </svg>
+            </div>
+            <span>付属品・保持能力</span>
+          </button>
+          <button class="faq-intro__category-item" data-faq-category="faq-demo">
+            <div class="faq-intro__category-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke-width="2"/>
+                <circle cx="12" cy="12" r="3" stroke-width="2"/>
+              </svg>
+            </div>
+            <span>デモ・現物確認</span>
+          </button>
+        </div>
+
+        <div class="faq-intro__cta">
+          <button class="btn btn--primary btn--large" id="openFaqModalBtn">
+            質問を見る
+            <svg class="btn__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 3L10 17M10 17L16 11M10 17L4 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Modal -->
+  <div class="modal" id="faqModal">
+    <div class="modal__overlay" id="faqModalOverlay"></div>
+    <div class="modal__content modal__content--large">
+      <button class="modal__close" id="closeFaqModalBtn" aria-label="閉じる">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-width="2"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-width="2"/>
+        </svg>
+      </button>
+
+      <div class="faq-modal__header">
+        <h3 class="faq-modal__title">よくある質問</h3>
+        <p class="faq-modal__subtitle">サポートアームに関するご質問にお答えします</p>
+      </div>
+
+      <div class="faq-modal__content">
+        <div class="faq-categories">
+        <!-- カテゴリ1: 製品仕様・機能について -->
+        <div class="faq-category" id="faq-specs" data-animate>
+          <h3 class="faq-category__title">製品仕様・機能について</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary class="faq-question">製品の種類は何種類ありますか？</summary>
+              <div class="faq-answer">
+                <p>基本的に2種類のタイプをご用意しております。</p>
+                <ul>
+                  <li><strong>壁取付タイプ（SAK）</strong>：壁面に設置するタイプ</li>
+                  <li><strong>天井取付タイプ（SAT）</strong>：天井から吊り下げるタイプ</li>
+                </ul>
+                <p>各タイプでダクトサイズにより、Φ100、Φ150、Φ200の3種類からお選びいただけます。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">可動範囲について教えてください</summary>
+              <div class="faq-answer">
+                <p>詳細な可動範囲については「サポートアーム仕様一覧」に記載しております。お問い合わせいただければメールにて送付いたします。水平360°、垂直方向にも柔軟に対応できる設計となっています。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">アームが垂れてしまうことはありませんか？</summary>
+              <div class="faq-answer">
+                <p>適切な使用範囲内であれば、アームが垂れることはありません。高精度な摩擦機構により、設定した位置でしっかりと保持します。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">ボールジョイントの動きについて教えてください</summary>
+              <div class="faq-answer">
+                <p>ボールジョイントは上下30°の傾きで、360°回転が可能です。ただし、ダクトホースの取り回しにはご注意ください。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- カテゴリ2: 価格・購入について -->
+        <div class="faq-category" id="faq-price" data-animate>
+          <h3 class="faq-category__title">価格・購入について</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary class="faq-question">価格を教えてください</summary>
+              <div class="faq-answer">
+                <p>製品タイプやオプション仕様により価格が異なります。お見積りをご希望の場合は、使用環境、ダクトサイズ、設置方法（壁/天井/支柱）をお知らせください。詳細なお見積りをご提示いたします。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">複数台購入する場合の割引はありますか？</summary>
+              <div class="faq-answer">
+                <p>台数や納入場所により送料が変動する場合があります。詳しくは見積時にご相談ください。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">購入方法を教えてください</summary>
+              <div class="faq-answer">
+                <p>当社との直接取引となります。代理店を通す必要はありません。基本的にはお振込み後の発送となりますが、詳細な取引条件については個別にご相談ください。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- カテゴリ3: 納期・カスタマイズについて -->
+        <div class="faq-category" id="faq-delivery" data-animate>
+          <h3 class="faq-category__title">納期・カスタマイズについて</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary class="faq-question">納期はどのくらいかかりますか？</summary>
+              <div class="faq-answer">
+                <p>通常、約1～1.5ヶ月です。ただし、特殊仕様の場合はこれより長くなることがあります。お急ぎの場合は在庫状況を確認いたしますので、お問い合わせください。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">標準サイズ以外のカスタマイズは可能ですか？</summary>
+              <div class="faq-answer">
+                <p>多少のサイズ変更であれば可能です。具体的な要求仕様をお知らせいただければ、仕様を決定後にお見積りいたします。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">Φ300以上の大口径は可能ですか？</summary>
+              <div class="faq-answer">
+                <p>申し訳ございませんが、大口径（Φ300以上）は保持が難しいため対応できません。標準サイズはΦ100、Φ150、Φ200となります。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">特殊フードの製作は可能ですか？</summary>
+              <div class="faq-answer">
+                <p>可能です。具体的な要求仕様（形状、サイズ、材質など）をお知らせください。設計からご提案いたします。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">支柱を追加する場合の費用は？</summary>
+              <div class="faq-answer">
+                <p>支柱は別途費用となります。仕様決定後にお見積りいたします。なお、支柱設置の場合はアンカー固定が必要となります。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- カテゴリ4: 材質・取付について -->
+        <div class="faq-category" id="faq-material" data-animate>
+          <h3 class="faq-category__title">材質・取付について</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary class="faq-question">サポートアームの材質を教えてください</summary>
+              <div class="faq-answer">
+                <p>SUS304（ステンレス）、A5052（アルミニウム合金）、導電性樹脂を使用しています。オプションフードはSUS304（ステンレス）製です。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">壁から離れた場所で壁掛けタイプを使用したいのですが</summary>
+              <div class="faq-answer">
+                <p>支柱を設置することで対応可能です。ただし、アンカー固定が必要となります。設置場所の図面をいただければ、最適なレイアウトをご提案いたします。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">設置場所のレイアウト提案は可能ですか？</summary>
+              <div class="faq-answer">
+                <p>可能です。集塵場所の図面をいただければ、最適なレイアウトをご提案いたします。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- カテゴリ5: 付属品・保持能力について -->
+        <div class="faq-category" id="faq-accessories" data-animate>
+          <h3 class="faq-category__title">付属品・保持能力について</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary class="faq-question">ダクトホースは付属していますか？</summary>
+              <div class="faq-answer">
+                <p>ダクトホースは別売りです。お客様にてご準備ください。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">推奨するダクトホースはありますか？</summary>
+              <div class="faq-answer">
+                <p>カナフレックス製のダクトホースを推奨しています。滑りの良さと耐久性に優れており、サポートアームとの相性が良好です。導電性ホースをご希望の場合は、メールにて情報をご案内いたします。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">吸引口（フード）の重さはどのくらいまで保持できますか？</summary>
+              <div class="faq-answer">
+                <p>標準仕様では約3～4kgまで保持可能です。それ以上の重量のフードについては、保持が困難な場合があります。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- カテゴリ6: デモ・現物確認について -->
+        <div class="faq-category" id="faq-demo" data-animate>
+          <h3 class="faq-category__title">デモ・現物確認について</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary class="faq-question">現物を見ることは可能ですか？</summary>
+              <div class="faq-answer">
+                <p>日程を調整していただければ、現物をお見せすることができます。弊社にお越しいただくか、設置後の展示品をご案内することも可能です。お気軽にお問い合わせください。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">デモ機の貸し出しは可能ですか？</summary>
+              <div class="faq-answer">
+                <p>申し訳ございませんが、デモ機の貸し出しはしておりません。現物確認をご希望の場合は、弊社または展示先にてご覧いただけます。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- カテゴリ7: その他 -->
+        <div class="faq-category" data-animate>
+          <h3 class="faq-category__title">その他</h3>
+          <div class="faq-items">
+            <details class="faq-item">
+              <summary class="faq-question">購入後に長さを変更することは可能ですか？</summary>
+              <div class="faq-answer">
+                <p>購入後に加工していただくことは可能ですが、保証の対象外となります。カスタマイズをご希望の場合は、ご購入前にご相談いただくことをお勧めします。</p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">安全性について教えてください</summary>
+              <div class="faq-answer">
+                <p>先端部分のフレームがスライドする箇所には指が入る隙間がないため、安全です。過負荷防止機構も搭載しており、万が一の事故を防ぐ設計となっています。</p>
+              </div>
+            </details>
+          </div>
+        </div>
+        </div>
+
+        <!-- FAQ下部のCTA -->
+        <div class="faq-cta">
+          <p class="faq-cta__text">その他のご質問やお見積りのご依頼は、お気軽にお問い合わせください</p>
+          <button class="btn btn--primary" id="faqModalContactBtn">お問い合わせ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <section class="cta" id="contact">
+    <div class="container">
+      <div class="cta__content" data-animate>
+        <h2 class="cta__title">お問い合わせ</h2>
+        <p class="cta__text">
+          サポートアームに関するご質問、お見積もり、導入のご相談など<br>
+          お気軽にお問い合わせください
+        </p>
+
+        <div class="cta__buttons">
+          <a href="tel:0337561511" class="btn btn--secondary btn--large">
+            <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke-width="2"/>
+            </svg>
+            電話で問い合わせ
+          </a>
+          <a href="https://forms.gle/RpNWkLg2wVazYFdP7" target="_blank" class="btn btn--primary btn--large">
+            <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-width="2"/>
+              <polyline points="22,6 12,13 2,6" stroke-width="2"/>
+            </svg>
+            お問い合わせフォーム
+          </a>
+        </div>
+
+        <div class="cta__info">
+          <p><strong>受付時間:</strong> 土日祝除く、8:30〜17:00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Form Modal -->
+  <div class="modal" id="contactModal">
+    <div class="modal__overlay" id="modalOverlay"></div>
+    <div class="modal__content">
+      <button class="modal__close" id="closeModalBtn" aria-label="閉じる">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6" x2="6" y2="18" stroke-width="2"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke-width="2"/>
+        </svg>
+      </button>
+
+      <h3 class="modal__title">お問い合わせフォーム</h3>
+
+      <form class="contact-form" id="contactForm">
+        <div class="form-group">
+          <label for="name" class="form-label">お名前 <span class="required">*</span></label>
+          <input type="text" id="name" name="name" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label for="company" class="form-label">会社名</label>
+          <input type="text" id="company" name="company" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">メールアドレス <span class="required">*</span></label>
+          <input type="email" id="email" name="email" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone" class="form-label">電話番号</label>
+          <input type="tel" id="phone" name="phone" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label for="message" class="form-label">お問い合わせ内容 <span class="required">*</span></label>
+          <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--large btn--full">
+          送信する
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__about">
+          <h3>岩代工業株式会社</h3>
+          <p>精密金属加工・機械設計のプロフェッショナル</p>
+          <div class="footer__info">
+            <p>〒146-0093 東京都大田区矢口2丁目6番7号</p>
+            <p>TEL: 03-3756-1511 / FAX: 03-3750-2865</p>
+          </div>
+        </div>
+
+        <div class="footer__links">
+          <h4>サポートアーム</h4>
+          <ul>
+            <li><a href="#features">特徴</a></li>
+            <li><a href="#specs">仕様</a></li>
+            <li><a href="#applications">活用例</a></li>
+            <li><a href="#faq">よくある質問</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__links">
+          <h4>お問い合わせ</h4>
+          <ul>
+            <li><a href="tel:0337561511">TEL: 03-3756-1511</a></li>
+            <li><a href="https://forms.gle/RpNWkLg2wVazYFdP7" target="_blank">お問い合わせフォーム</a></li>
+            <li><a href="https://www.youtube.com/@iwashirokougyo" target="_blank">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p>&copy; 2024 岩代工業株式会社 All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="./scripts/main.js"></script>
+</body>
+</html>
