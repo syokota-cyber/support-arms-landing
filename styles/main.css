@@ -2046,6 +2046,7 @@ section {
 .application-card__more {
   display: block;
   margin-top: var(--space-3);
+  padding-left: var(--space-6);
   color: var(--color-primary);
   font-weight: 600;
   font-size: var(--text-sm);
@@ -2138,15 +2139,17 @@ section {
 
 .app-modal__header {
   padding: var(--space-6);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: var(--color-white);
+  background: linear-gradient(135deg, var(--color-gray-50), var(--color-white));
+  color: var(--color-gray-900);
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-bottom: 1px solid var(--color-gray-200);
 }
 
 .app-modal__scene {
   display: inline-block;
   padding: var(--space-1) var(--space-3);
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-primary);
+  color: var(--color-white);
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
   font-weight: 600;
