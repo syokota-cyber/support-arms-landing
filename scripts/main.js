@@ -287,7 +287,7 @@ if (contactForm) {
 
     try {
       // Google Formsへリダイレクト
-      const googleFormsUrl = 'https://forms.gle/FKhkwjipd4AQtBZ87';
+      const googleFormsUrl = 'https://forms.gle/mbuk9fu35Hn8gRtMA';
       
       // モーダルを閉じてGoogle Formsを開く
       closeModal();
@@ -615,10 +615,26 @@ const initAppModals = () => {
     const closeElements = modal.querySelectorAll('[data-close-modal]');
     closeElements.forEach(el => {
       el.addEventListener('click', (e) => {
-        // If it's a link (like お問い合わせ button), let it navigate then close
-        if (el.tagName === 'A' && el.getAttribute('href').startsWith('#')) {
-          setTimeout(() => closeAppModal(modal), 100);
+        // If it's a link, handle differently based on href
+        if (el.tagName === 'A') {
+          const href = el.getAttribute('href');
+          // External links (http/https) - let them navigate, then close modal
+          if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+            // Open link in new tab (if target="_blank") or same tab
+            // Don't prevent default, let the link work normally
+            setTimeout(() => closeAppModal(modal), 100);
+          } 
+          // Internal links (#) - navigate then close
+          else if (href && href.startsWith('#')) {
+            setTimeout(() => closeAppModal(modal), 100);
+          } 
+          // Other cases - prevent default and close
+          else {
+            e.preventDefault();
+            closeAppModal(modal);
+          }
         } else {
+          // Not a link - prevent default and close
           e.preventDefault();
           closeAppModal(modal);
         }

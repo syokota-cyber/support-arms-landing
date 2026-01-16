@@ -33,18 +33,18 @@
       <div class="header__content">
         <div class="header__logo">
           <a href="#hero">
-            <span class="logo-text">岩代工業</span>
+            <span class="logo-text">岩代工業株式会社</span>
           </a>
         </div>
 
         <nav class="header__nav" id="nav">
           <ul class="nav-list">
             <li><a href="#features">特徴</a></li>
-            <li><a href="#viewer360">360°ビュー</a></li>
+            <li><a href="#viewer360-header">360°ビュー</a></li>
             <li><a href="#specs">仕様</a></li>
             <li><a href="#applications">活用例</a></li>
             <li><a href="#faq">FAQ</a></li>
-            <li><a href="https://forms.gle/FKhkwjipd4AQtBZ87" class="nav-cta" target="_blank">お問い合わせ</a></li>
+            <li><a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="nav-cta" target="_blank">お問い合わせ</a></li>
           </ul>
         </nav>
 
@@ -61,14 +61,6 @@
   <section class="hero" id="hero">
     <div class="container">
       <div class="hero__content">
-        <!-- Background Video -->
-        <div class="hero__video-bg">
-          <video autoplay muted loop playsinline class="hero__video">
-            <source src="./assets/intro_sparm2.mp4" type="video/mp4">
-          </video>
-          <div class="hero__overlay"></div>
-        </div>
-
         <!-- Hero Text -->
         <div class="hero__text">
           <h1 class="hero__title">
@@ -79,6 +71,20 @@
             作業効率を劇的に向上させる多関節アームシステム<br>
             思い通りの位置で、思い通りの角度で、確実にホールド
           </p>
+        </div>
+
+        <!-- Background Video -->
+        <div class="hero__video-bg">
+          <video autoplay muted loop playsinline class="hero__video">
+            <source src="./assets/intro_sparm2.mp4" type="video/mp4">
+          </video>
+          <div class="hero__overlay"></div>
+        </div>
+
+        <!-- 360 Viewer Header -->
+        <div class="section-header" id="viewer360-header">
+          <h2 class="section-title">360°で見る</h2>
+          <p class="section-subtitle">ドラッグして回転、ボタンで表示を切り替えできます</p>
         </div>
 
         <!-- 3D Model Viewer -->
@@ -115,18 +121,6 @@
           </div>
         </div>
 
-        <!-- CTA Buttons -->
-        <div class="hero__cta">
-          <a href="https://forms.gle/FKhkwjipd4AQtBZ87" class="btn btn--primary btn--large" target="_blank">
-            お問い合わせ
-            <svg class="btn__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-          <a href="#features" class="btn btn--secondary btn--large">
-            詳しく見る
-          </a>
-        </div>
       </div>
     </div>
 
@@ -134,49 +128,6 @@
     <div class="hero__scroll">
       <span>Scroll</span>
       <div class="hero__scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- 360 Viewer Section -->
-  <section class="viewer360" id="viewer360">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">360°で見る</h2>
-        <p class="section-subtitle">ドラッグして回転、ボタンで表示を切り替えできます</p>
-      </div>
-
-      <div class="viewer360__content" data-animate>
-        <div class="viewer360__controls" role="group" aria-label="表示切り替え">
-          <button
-            type="button"
-            class="btn btn--primary btn--small viewer360__btn is-active"
-            id="viewer360BtnArm"
-            aria-pressed="true"
-            data-model-src="./assets/images/hero/supprt_arm.glb">
-            サポートアーム（3D）
-          </button>
-        </div>
-
-        <div class="viewer360__model">
-          <model-viewer
-            id="viewer360Model"
-            src="./assets/images/hero/supprt_arm.glb"
-            alt="サポートアーム 360度ビュー"
-            camera-controls
-            auto-rotate
-            auto-rotate-delay="3000"
-            rotation-per-second="30deg"
-            disable-zoom="false"
-            interaction-prompt="auto"
-            interaction-prompt-style="basic"
-            shadow-intensity="1"
-            exposure="1.2"
-            environment-image="neutral"
-            class="viewer360__model-viewer">
-          </model-viewer>
-          <p class="viewer360__hint">ドラッグで回転・ピンチでズーム（3秒後に自動回転）</p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -490,7 +441,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/FKhkwjipd4AQtBZ87" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
       </div>
     </div>
   </div>
@@ -543,7 +494,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/FKhkwjipd4AQtBZ87" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
       </div>
     </div>
   </div>
@@ -600,7 +551,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/FKhkwjipd4AQtBZ87" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
       </div>
     </div>
   </div>
@@ -657,7 +608,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/FKhkwjipd4AQtBZ87" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
       </div>
     </div>
   </div>
@@ -1026,7 +977,7 @@
         <!-- FAQ下部のCTA -->
         <div class="faq-cta">
           <p class="faq-cta__text">その他のご質問やお見積りのご依頼は、お気軽にお問い合わせください</p>
-          <a href="https://forms.gle/FKhkwjipd4AQtBZ87" class="btn btn--primary" target="_blank">お問い合わせ</a>
+          <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" target="_blank">お問い合わせ</a>
         </div>
       </div>
     </div>
@@ -1049,7 +1000,7 @@
             </svg>
             電話で問い合わせ
           </a>
-          <a href="https://forms.gle/FKhkwjipd4AQtBZ87" target="_blank" class="btn btn--primary btn--large">
+          <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" target="_blank" class="btn btn--primary btn--large">
             <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-width="2"/>
               <polyline points="22,6 12,13 2,6" stroke-width="2"/>
@@ -1138,7 +1089,7 @@
           <h4>お問い合わせ</h4>
           <ul>
             <li><a href="tel:0337561511">TEL: 03-3756-1511</a></li>
-            <li><a href="https://forms.gle/FKhkwjipd4AQtBZ87" target="_blank">お問い合わせフォーム</a></li>
+            <li><a href="https://forms.gle/mbuk9fu35Hn8gRtMA" target="_blank">お問い合わせフォーム</a></li>
             <li><a href="https://www.youtube.com/@iwashirokougyo" target="_blank">YouTube</a></li>
           </ul>
         </div>
