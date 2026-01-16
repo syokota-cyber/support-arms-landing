@@ -287,7 +287,7 @@ if (contactForm) {
 
     try {
       // Google Formsへリダイレクト
-      const googleFormsUrl = 'https://forms.gle/RpNWkLg2wVazYFdP7';
+      const googleFormsUrl = 'https://forms.gle/FKhkwjipd4AQtBZ87';
       
       // モーダルを閉じてGoogle Formsを開く
       closeModal();
