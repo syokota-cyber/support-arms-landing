@@ -314,7 +314,7 @@ if (contactForm) {
 // ====================================
 // 3D Model Viewer Enhancement
 // ====================================
-const modelViewer = document.querySelector('model-viewer');
+const modelViewer = document.getElementById('product-viewer');
 
 if (modelViewer) {
   // Model loading progress
@@ -336,6 +336,25 @@ if (modelViewer) {
   // Camera change (user interaction)
   modelViewer.addEventListener('camera-change', () => {
     // Optional: Track user interaction with model
+  });
+
+  // Model toggle buttons (ダクトあり/なし切り替え)
+  const toggleButtons = document.querySelectorAll('.model-toggle-btn');
+
+  toggleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modelSrc = btn.getAttribute('data-model');
+      if (!modelSrc) return;
+
+      // Update active state
+      toggleButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Change model source
+      modelViewer.setAttribute('src', modelSrc);
+
+      console.log('Model switched to:', modelSrc);
+    });
   });
 }
 

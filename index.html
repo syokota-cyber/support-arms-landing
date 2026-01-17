@@ -90,15 +90,28 @@
         <!-- 3D Model Viewer -->
         <div class="hero__model">
           <div class="model-viewer-container">
+            <!-- モデル切り替えボタン -->
+            <div class="model-viewer__toggle">
+              <button class="model-toggle-btn active" data-model="./assets/images/hero/supportarm.glb">
+                ダクトなし
+              </button>
+              <button class="model-toggle-btn" data-model="./assets/images/hero/with_duct.glb">
+                ダクトあり
+              </button>
+            </div>
+
             <model-viewer
-              src="./assets/images/hero/supprt_arm.glb"
+              id="product-viewer"
+              src="./assets/images/hero/supportarm.glb"
               alt="サポートアームの3Dモデル"
-              auto-rotate
               camera-controls
+              touch-action="pan-y"
               shadow-intensity="1"
+              exposure="1"
               ar
               ar-modes="webxr scene-viewer quick-look"
-              class="model-viewer">
+              class="model-viewer"
+              interaction-prompt="auto">
 
               <div class="model-viewer__loading" slot="poster">
                 <div class="spinner"></div>
