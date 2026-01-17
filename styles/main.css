@@ -918,6 +918,40 @@ section {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.specs-image--grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.specs-image__link {
+  display: block;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.specs-image__link:hover .specs-image__img {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+.specs-image__label {
+  display: block;
+  text-align: center;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-gray-700);
+}
+
+@media (min-width: 768px) {
+  .specs-image--grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (min-width: 1024px) {
