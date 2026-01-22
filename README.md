@@ -4,7 +4,8 @@
 
 ## 公開URL
 
-- **本番サイト**: https://support-arms-landing.pages.dev
+- **本番サイト**: https://support-arm.com
+- **Cloudflare Pages**: https://support-arms-landing.pages.dev
 - **GitHub**: https://github.com/syokota-cyber/support-arms-landing
 
 ## ホスティング構成
@@ -16,7 +17,7 @@ GitHub Repository (syokota-cyber/support-arms-landing)
          ↓
    Cloudflare Pages（自動デプロイ）
          ↓
-https://support-arms-landing.pages.dev
+   https://support-arm.com
 ```
 
 ## デプロイ方法
@@ -103,4 +104,4 @@ LP制作に使用した素材ファイルは以下に保存：
 
 ---
 
-最終更新: 2026-01-14
+最終更新: 2026-01-22
