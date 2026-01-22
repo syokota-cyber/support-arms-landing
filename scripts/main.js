@@ -543,8 +543,14 @@ const initFaqAccordion = () => {
         index: index
       });
 
-      // You can send this to analytics service
-      // Example: gtag('event', 'faq_click', { category, question });
+      // Send to Google Analytics
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'faq_click', {
+          'event_category': 'FAQ',
+          'event_label': questionText,
+          'category': categoryTitle || 'Unknown'
+        });
+      }
     });
   });
 };
@@ -670,3 +676,107 @@ const initAppModals = () => {
 };
 
 initAppModals();
+
+// ====================================
+// Google Analytics Event Tracking
+// ====================================
+if (typeof gtag !== 'undefined') {
+  // Track contact form button clicks
+  document.querySelectorAll('a[href*="forms.gle"], a[href*="contact"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      const linkText = link.textContent.trim();
+      
+      gtag('event', 'contact_click', {
+        'event_category': 'Contact',
+        'event_label': linkText,
+        'link_url': href
+      });
+    });
+  });
+
+  // Track external link clicks (YouTube, etc.)
+  document.querySelectorAll('a[target="_blank"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+        gtag('event', 'external_link_click', {
+          'event_category': 'Outbound',
+          'event_label': link.textContent.trim(),
+          'link_url': href
+        });
+      }
+    });
+  });
+
+  // Track application modal opens
+  document.querySelectorAll('[data-app-modal]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modalId = btn.getAttribute('data-app-modal');
+      const appName = btn.closest('.application-card')?.querySelector('.application-card__title')?.textContent || 'Unknown';
+      
+      gtag('event', 'application_modal_open', {
+        'event_category': 'Application',
+        'event_label': appName,
+        'modal_id': modalId
+      });
+    });
+  });
+
+  // Track scroll depth (25%, 50%, 75%, 100%)
+  let scrollDepthTracked = {
+    25: false,
+    50: false,
+    75: false,
+    100: false
+  };
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = Math.round((scrollTop / docHeight) * 100);
+
+    Object.keys(scrollDepthTracked).forEach(depth => {
+      if (scrollPercent >= parseInt(depth) && !scrollDepthTracked[depth]) {
+        scrollDepthTracked[depth] = true;
+        gtag('event', 'scroll_depth', {
+          'event_category': 'Engagement',
+          'event_label': `${depth}%`,
+          'value': parseInt(depth)
+        });
+      }
+    });
+  });
+
+  // Track video interactions
+  document.querySelectorAll('.video-card iframe').forEach(iframe => {
+    iframe.addEventListener('load', () => {
+      gtag('event', 'video_load', {
+        'event_category': 'Video',
+        'event_label': 'YouTube Video'
+      });
+    });
+  });
+
+  // Track 3D model interactions
+  const modelViewer = document.getElementById('product-viewer');
+  if (modelViewer) {
+    modelViewer.addEventListener('load', () => {
+      gtag('event', '3d_model_load', {
+        'event_category': '3D Model',
+        'event_label': 'Product Viewer'
+      });
+    });
+
+    // Track model toggle button clicks
+    document.querySelectorAll('.model-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modelType = btn.textContent.trim();
+        gtag('event', '3d_model_toggle', {
+          'event_category': '3D Model',
+          'event_label': modelType
+        });
+      });
+    });
+  }
+}
