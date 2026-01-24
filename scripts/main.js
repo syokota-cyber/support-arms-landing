@@ -296,12 +296,9 @@ if (contactForm) {
       // フォームをリセット
       contactForm.reset();
       
-      console.log('Redirecting to Google Forms:', googleFormsUrl);
-
     } catch (error) {
       // Error
       alert('送信に失敗しました。\nもう一度お試しください。');
-      console.error('Form submission error:', error);
 
     } finally {
       // Re-enable submit button
@@ -317,27 +314,6 @@ if (contactForm) {
 const modelViewer = document.getElementById('product-viewer');
 
 if (modelViewer) {
-  // Model loading progress
-  modelViewer.addEventListener('progress', (event) => {
-    const progress = event.detail.totalProgress;
-    console.log(`3D Model loading: ${Math.round(progress * 100)}%`);
-  });
-
-  // Model loaded
-  modelViewer.addEventListener('load', () => {
-    console.log('3D Model loaded successfully');
-  });
-
-  // Model error
-  modelViewer.addEventListener('error', (event) => {
-    console.error('Error loading 3D model:', event);
-  });
-
-  // Camera change (user interaction)
-  modelViewer.addEventListener('camera-change', () => {
-    // Optional: Track user interaction with model
-  });
-
   // Model toggle buttons (ダクトあり/なし切り替え)
   const toggleButtons = document.querySelectorAll('.model-toggle-btn');
 
@@ -352,8 +328,6 @@ if (modelViewer) {
 
       // Change model source
       modelViewer.setAttribute('src', modelSrc);
-
-      console.log('Model switched to:', modelSrc);
     });
   });
 }
@@ -451,32 +425,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ====================================
-// Console Welcome Message
-// ====================================
-console.log('%c岩代工業株式会社', 'font-size: 24px; font-weight: bold; color: #1e40af;');
-console.log('%cサポートアーム - Landing Page', 'font-size: 14px; color: #666;');
-console.log('Version: 1.0.0');
-
-// ====================================
-// Performance Monitoring (Optional)
-// ====================================
-window.addEventListener('load', () => {
-  // Log page load time
-  if (window.performance) {
-    const perfData = window.performance.timing;
-    const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-    console.log(`Page Load Time: ${pageLoadTime}ms`);
-  }
-});
-
-// ====================================
 // Initialize Everything on DOM Ready
 // ====================================
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM Ready - All scripts initialized');
-
-  // Add any additional initialization here
-
   // Announce to screen readers that page is loaded
   const announcement = document.createElement('div');
   announcement.setAttribute('role', 'status');
@@ -536,12 +487,6 @@ const initFaqAccordion = () => {
     question.addEventListener('click', () => {
       const categoryTitle = question.closest('.faq-category')?.querySelector('.faq-category__title')?.textContent;
       const questionText = question.textContent;
-
-      console.log('FAQ Interaction:', {
-        category: categoryTitle,
-        question: questionText,
-        index: index
-      });
 
       // Send to Google Analytics
       if (typeof gtag !== 'undefined') {

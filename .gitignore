@@ -16,5 +16,9 @@ Thumbs.db
 *~
 *.bak
 
+# Environment variables
+.env
+.env.*
+
 # Dependencies
 node_modules/
