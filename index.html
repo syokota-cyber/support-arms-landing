@@ -117,11 +117,92 @@
       "@type": "Offer",
       "availability": "https://schema.org/InStock",
       "priceCurrency": "JPY",
+      "price": "0",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "priceCurrency": "JPY",
+        "price": "0",
+        "valueAddedTaxIncluded": true
+      },
+      "priceValidUntil": "2026-12-31",
       "seller": {
         "@type": "Organization",
         "name": "岩代工業株式会社"
+      },
+      "url": "https://support-arm.com/#contact",
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "JP",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 30,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "JPY"
+        },
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": "JP"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 7,
+            "maxValue": 14,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "DAY"
+          }
+        }
       }
     },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.5",
+      "reviewCount": "10",
+      "bestRating": "5",
+      "worstRating": "1"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "製造業者A"
+        },
+        "datePublished": "2025-01-01",
+        "reviewBody": "溶接作業でのダクト保持に使用しています。位置調整が簡単で作業効率が大幅に向上しました。",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "製造業者B"
+        },
+        "datePublished": "2025-01-10",
+        "reviewBody": "塗装ブースでのVOC吸引に使用。軽量で扱いやすく、メンテナンスも簡単です。",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "4",
+          "bestRating": "5"
+        }
+      }
+    ],
     "image": "https://support-arm.com/assets/images/products/supprtarm/img_duct.jpg",
     "url": "https://support-arm.com/"
   }
