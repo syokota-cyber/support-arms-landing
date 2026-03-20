@@ -1048,7 +1048,7 @@ section {
    Applications Section
    ==================================== */
 .applications {
-  background: var(--color-gray-50);
+  background: var(--color-white);
 }
 
 .applications-grid {
@@ -1140,11 +1140,221 @@ section {
    CTA Section
    ==================================== */
 /* ====================================
+   Trust Badges
+   ==================================== */
+.trust-badges {
+  background: var(--color-gray-50);
+  border-bottom: 1px solid var(--color-gray-200);
+  padding: var(--space-4) 0;
+}
+
+.trust-badges__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.trust-badge {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  letter-spacing: 0.05em;
+}
+
+.trust-badge__divider {
+  color: var(--color-gray-300);
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .trust-badges__content {
+    gap: var(--space-3);
+  }
+
+  .trust-badge {
+    font-size: var(--text-xs);
+  }
+}
+
+/* ====================================
+   Challenges Section
+   ==================================== */
+.challenges {
+  padding: var(--space-20) 0;
+  background: var(--color-gray-900);
+  color: var(--color-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.challenges::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(139, 35, 53, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(139, 35, 53, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.challenges .section-header {
+  position: relative;
+  z-index: 1;
+}
+
+.challenges__title {
+  color: var(--color-white);
+}
+
+.challenges-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+  max-width: 900px;
+  margin: 0 auto var(--space-12);
+}
+
+.challenge-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  transition: all var(--transition-base);
+}
+
+.challenge-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(139, 35, 53, 0.5);
+  transform: translateY(-2px);
+}
+
+.challenge-card__number {
+  flex-shrink: 0;
+  font-size: var(--text-3xl);
+  font-weight: 900;
+  font-family: var(--font-heading);
+  color: var(--color-primary-light);
+  opacity: 0.5;
+  line-height: 1;
+}
+
+.challenge-card__body {
+  flex: 1;
+}
+
+.challenge-card__heading {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: var(--space-2);
+}
+
+.challenge-card__text {
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+}
+
+.challenge-card__text strong {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.challenges__lead {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.challenges__lead-arrow {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-white);
+  animation: bounceDown 2s ease-in-out infinite;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.challenges__lead-text {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .challenges {
+    padding: var(--space-16) 0;
+  }
+
+  .challenges-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .challenge-card {
+    padding: var(--space-5);
+  }
+
+  .challenge-card__number {
+    font-size: var(--text-2xl);
+  }
+
+  .challenge-card__heading {
+    font-size: var(--text-base);
+  }
+
+  .challenge-card__text {
+    font-size: var(--text-xs);
+  }
+
+  .challenges__lead-text {
+    font-size: var(--text-base);
+  }
+}
+
+/* ====================================
+   360° Viewer Section (standalone)
+   ==================================== */
+.viewer360-section {
+  padding: var(--space-20) 0;
+  background: var(--color-gray-50);
+}
+
+@media (max-width: 768px) {
+  .viewer360-section {
+    padding: var(--space-12) 0;
+  }
+}
+
+/* ====================================
    Mid-Section CTA
    ==================================== */
 .mid-cta {
   padding: var(--space-12) 0;
-  background: var(--color-gray-50);
+  background: var(--color-white);
+  border-top: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-200);
 }
 
 .mid-cta__content {
@@ -1778,7 +1988,7 @@ section {
    ==================================== */
 .faq-intro {
   padding: 6rem 0 4rem;
-  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+  background: var(--color-gray-50);
 }
 
 .faq-intro__content {
@@ -2628,7 +2838,7 @@ section {
    ==================================== */
 .parts-gallery {
   padding: var(--space-20) 0;
-  background: var(--color-gray-50);
+  background: var(--color-white);
 }
 
 .gallery-filters {
@@ -2860,7 +3070,7 @@ section {
    After-Support Section
    ==================================== */
 .after-support {
-  background: var(--color-white);
+  background: var(--color-gray-50);
 }
 
 .after-support__lead {

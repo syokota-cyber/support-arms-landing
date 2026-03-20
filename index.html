@@ -308,10 +308,9 @@
         <nav class="header__nav" id="nav">
           <ul class="nav-list">
             <li><a href="#features">特徴</a></li>
+            <li><a href="#applications">活用例</a></li>
             <li><a href="#viewer360-header">360°ビュー</a></li>
             <li><a href="#specs">仕様</a></li>
-            <li><a href="#applications">活用例</a></li>
-            <li><a href="#parts-gallery">ギャラリー</a></li>
             <li><a href="#after-support">サポート</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li class="nav-tel"><a href="tel:0337561511">TEL: 03-3756-1511</a></li>
@@ -342,12 +341,12 @@
         <!-- Hero Text -->
         <div class="hero__text">
           <h1 class="hero__title">
-            <span class="hero__title-small">自由自在な姿勢保持</span>
+            <span class="hero__title-small">ダクトもカメラも、両手を使わず確実に固定。</span>
             <span class="hero__title-main">サポートアーム</span>
           </h1>
           <p class="hero__subtitle">
-            作業効率を劇的に向上させる多関節アームシステム<br>
-            思い通りの位置で、思い通りの角度で、確実にホールド
+            溶接・塗装・検査ライン向け多関節アーム。<br>
+            姿勢保持の手間をなくし、作業に集中できる現場をつくります。
           </p>
         </div>
 
@@ -359,59 +358,6 @@
           <div class="hero__overlay"></div>
         </div>
 
-        <!-- 360 Viewer Header -->
-        <div class="section-header" id="viewer360-header">
-          <h2 class="section-title">360°で見る</h2>
-          <p class="section-subtitle">ドラッグして回転、ボタンで表示を切り替えできます</p>
-        </div>
-
-        <!-- 3D Model Viewer -->
-        <div class="hero__model">
-          <div class="model-viewer-container">
-            <!-- モデル切り替えボタン -->
-            <div class="model-viewer__toggle">
-              <button class="model-toggle-btn active" data-model="./assets/images/hero/supportarm.glb">
-                ダクトなし
-              </button>
-              <button class="model-toggle-btn" data-model="./assets/images/hero/with_duct.glb">
-                ダクトあり
-              </button>
-            </div>
-
-            <model-viewer
-              id="product-viewer"
-              src="./assets/images/hero/supportarm.glb"
-              alt="サポートアームの3Dモデル"
-              camera-controls
-              touch-action="pan-y"
-              shadow-intensity="1"
-              exposure="1"
-              ar
-              ar-modes="webxr scene-viewer quick-look"
-              class="model-viewer"
-              interaction-prompt="auto">
-
-              <div class="model-viewer__loading" slot="poster">
-                <div class="spinner"></div>
-                <p>3Dモデル読み込み中...</p>
-              </div>
-
-              <button class="model-viewer__ar-button" slot="ar-button">
-                AR で見る
-              </button>
-            </model-viewer>
-
-            <div class="model-viewer__controls">
-              <p class="model-viewer__hint">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                ドラッグで回転・ピンチでズーム
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
 
@@ -419,6 +365,66 @@
     <div class="hero__scroll">
       <span>Scroll</span>
       <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Trust Badges -->
+  <div class="trust-badges">
+    <div class="container">
+      <div class="trust-badges__content">
+        <span class="trust-badge">国内自社工場製造</span>
+        <span class="trust-badge__divider">|</span>
+        <span class="trust-badge">創業1966年</span>
+        <span class="trust-badge__divider">|</span>
+        <span class="trust-badge">東京都大田区</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenges Section -->
+  <section class="challenges" id="challenges">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title challenges__title">こんな現場の課題、ありませんか？</h2>
+      </div>
+      <div class="challenges-grid">
+        <div class="challenge-card" data-animate>
+          <div class="challenge-card__number">01</div>
+          <div class="challenge-card__body">
+            <h3 class="challenge-card__heading">作業効率が上がらない</h3>
+            <p class="challenge-card__text">ダクトや吸引ホースを<strong>手で持ちながらの作業</strong>で、本来の作業に集中できない</p>
+          </div>
+        </div>
+        <div class="challenge-card" data-animate>
+          <div class="challenge-card__number">02</div>
+          <div class="challenge-card__body">
+            <h3 class="challenge-card__heading">段取り替えに時間がかかる</h3>
+            <p class="challenge-card__text">検査カメラやライトの<strong>位置決めを毎回やり直す</strong>手間が発生している</p>
+          </div>
+        </div>
+        <div class="challenge-card" data-animate>
+          <div class="challenge-card__number">03</div>
+          <div class="challenge-card__body">
+            <h3 class="challenge-card__heading">設置スペースがない</h3>
+            <p class="challenge-card__text">作業台の<strong>スペースが限られ</strong>、機器の設置場所に困っている</p>
+          </div>
+        </div>
+        <div class="challenge-card" data-animate>
+          <div class="challenge-card__number">04</div>
+          <div class="challenge-card__body">
+            <h3 class="challenge-card__heading">海外製品のサポート不安</h3>
+            <p class="challenge-card__text">海外製アームの<strong>部品交換や故障時の対応</strong>に不安を感じている</p>
+          </div>
+        </div>
+      </div>
+      <div class="challenges__lead" data-animate>
+        <div class="challenges__lead-arrow">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14M19 12l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p class="challenges__lead-text">サポートアームは、これらの課題を解決するために生まれました。</p>
+      </div>
     </div>
   </section>
 
@@ -440,7 +446,7 @@
               <path d="M2 12L12 17L22 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <h3 class="feature-card__title">多関節構造</h3>
+          <h3 class="feature-card__title">狙った位置にピタッと固定</h3>
           <p class="feature-card__text">
             4つの関節により、360度自由な角度調整が可能。作業に最適な位置へスムーズに移動できます。
           </p>
@@ -454,9 +460,9 @@
               <path d="M12 6V12L16 14" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </div>
-          <h3 class="feature-card__title">確実なホールド</h3>
+          <h3 class="feature-card__title">最大4kg、振動にも揺るがない</h3>
           <p class="feature-card__text">
-            高精度な摩擦機構により、どんな位置でもしっかり固定。3Kgまでの物を安定して保持します。
+            高精度な摩擦機構により、どんな位置でもしっかり固定。3kgまでの物を安定して保持します。
           </p>
         </div>
 
@@ -468,7 +474,7 @@
               <polyline points="14,2 14,8 20,8" stroke-width="2"/>
             </svg>
           </div>
-          <h3 class="feature-card__title">軽量設計</h3>
+          <h3 class="feature-card__title">片手で楽に動かせる1.2kg</h3>
           <p class="feature-card__text">
             ステンレス製角パイプやアルミニウム合金、樹脂部品などで構成し軽量化をしています。
           </p>
@@ -483,7 +489,7 @@
               <line x1="12" y1="22.08" x2="12" y2="12" stroke-width="2"/>
             </svg>
           </div>
-          <h3 class="feature-card__title">高耐久性</h3>
+          <h3 class="feature-card__title">過酷な現場でも長く使える</h3>
           <p class="feature-card__text">
             工業現場での使用を想定した堅牢設計。長期間の使用に耐える高品質を実現。
           </p>
@@ -497,7 +503,7 @@
               <line x1="7" y1="7" x2="7.01" y2="7" stroke-width="2"/>
             </svg>
           </div>
-          <h3 class="feature-card__title">多彩な取付オプション</h3>
+          <h3 class="feature-card__title">壁にも天井にも、現場に合わせて設置</h3>
           <p class="feature-card__text">
             ボルト固定式など、様々な設置環境に対応。既存設備への後付けも可能です。
           </p>
@@ -510,7 +516,7 @@
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
             </svg>
           </div>
-          <h3 class="feature-card__title">安全設計</h3>
+          <h3 class="feature-card__title">指挟み防止で安心して操作</h3>
           <p class="feature-card__text">
             関節部分に指などが入り込まない構造。万が一の事故を防ぐ安全設計です。
           </p>
@@ -523,117 +529,10 @@
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <h3 class="feature-card__title">導電性素材設計</h3>
+          <h3 class="feature-card__title">静電気による発火リスクを抑制</h3>
           <p class="feature-card__text">
             アーム本体に導電性に優れた素材を採用。静電気の蓄積を抑制し、可燃性の噴霧や粉塵が存在する環境にも配慮した設計です。
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Specifications Section -->
-  <section class="specs" id="specs">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">製品仕様</h2>
-      </div>
-
-      <div class="specs-content">
-        <div class="specs-table" data-animate>
-          <table>
-            <tbody>
-              <tr>
-                <th>製品名</th>
-                <td>サポートアーム　SAK（壁取り付け型）/ SAT（天井取り付け型）</td>
-              </tr>
-              <tr>
-                <th>全長</th>
-                <td>最大700mm（折りたたみ時: 350mm）</td>
-              </tr>
-              <tr>
-                <th>可動範囲</th>
-                <td>水平360°、垂直±90°</td>
-              </tr>
-              <tr>
-                <th>保持荷重</th>
-                <td>3kg（最大4kg）</td>
-              </tr>
-              <tr>
-                <th>本体重量</th>
-                <td>約1.2kg</td>
-              </tr>
-              <tr>
-                <th>材質</th>
-                <td>アルミニウム合金、ステンレス鋼、導電性樹脂</td>
-              </tr>
-              <tr>
-                <th>静電気対策</th>
-                <td>導電性に配慮した素材構成（金属部＋導電性樹脂）により、静電気の蓄積を抑制</td>
-              </tr>
-              <tr>
-                <th>対応ダクト径</th>
-                <td>φ200、φ150、φ100</td>
-              </tr>
-              <tr>
-                <th>取付方式</th>
-                <td>ボルト固定式など</td>
-              </tr>
-              <tr>
-                <th>関節数</th>
-                <td>4関節</td>
-              </tr>
-              <tr>
-                <th>使用環境</th>
-                <td>温度: -10°C～60°C、湿度: 85%以下（結露なきこと）</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="specs-image specs-image--grid" data-animate>
-          <a href="./assets/images/company/21064_z00-1_200a_ceiling.pdf" target="_blank" class="specs-image__link">
-            <img
-              src="./assets/images/company/img_zumen_ceiling.png"
-              alt="天井取付型 寸法図"
-              class="specs-image__img"
-              loading="lazy">
-            <span class="specs-image__label">天井取付型</span>
-          </a>
-          <a href="./assets/images/company/21064_z00-1_200a_wall.pdf" target="_blank" class="specs-image__link">
-            <img
-              src="./assets/images/company/img_zumen_wall.png"
-              alt="壁掛け型 寸法図"
-              class="specs-image__img"
-              loading="lazy">
-            <span class="specs-image__label">壁掛け型</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Manual Download Button -->
-      <div class="specs-manual" data-animate>
-        <div class="specs-manual__content">
-          <div class="specs-manual__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
-              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
-              <line x1="12" y1="18" x2="12" y2="12" stroke-width="2"/>
-              <line x1="9" y1="15" x2="12" y2="18" stroke-width="2"/>
-              <line x1="15" y1="15" x2="12" y2="18" stroke-width="2"/>
-            </svg>
-          </div>
-          <div class="specs-manual__text">
-            <h3 class="specs-manual__title">取扱説明書</h3>
-            <p class="specs-manual__description">製品の詳細な使用方法や注意事項をご確認いただけます</p>
-          </div>
-          <a href="./assets/サポートアーム取扱説明書(2024_03_27).pdf" target="_blank" class="btn btn--primary">
-            <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
-              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
-            </svg>
-            PDFを開く
-          </a>
         </div>
       </div>
     </div>
@@ -940,6 +839,61 @@
     </div>
   </div>
 
+  <!-- 360° Viewer Section -->
+  <section class="viewer360-section" id="viewer360-header">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">360°で見る</h2>
+        <p class="section-subtitle">ドラッグして回転、ボタンで表示を切り替えできます</p>
+      </div>
+
+      <div class="hero__model">
+        <div class="model-viewer-container">
+          <div class="model-viewer__toggle">
+            <button class="model-toggle-btn active" data-model="./assets/images/hero/supportarm.glb">
+              ダクトなし
+            </button>
+            <button class="model-toggle-btn" data-model="./assets/images/hero/with_duct.glb">
+              ダクトあり
+            </button>
+          </div>
+
+          <model-viewer
+            id="product-viewer"
+            src="./assets/images/hero/supportarm.glb"
+            alt="サポートアームの3Dモデル"
+            camera-controls
+            touch-action="pan-y"
+            shadow-intensity="1"
+            exposure="1"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            class="model-viewer"
+            interaction-prompt="auto">
+
+            <div class="model-viewer__loading" slot="poster">
+              <div class="spinner"></div>
+              <p>3Dモデル読み込み中...</p>
+            </div>
+
+            <button class="model-viewer__ar-button" slot="ar-button">
+              AR で見る
+            </button>
+          </model-viewer>
+
+          <div class="model-viewer__controls">
+            <p class="model-viewer__hint">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              ドラッグで回転・ピンチでズーム
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Parts Gallery Section -->
   <section class="parts-gallery" id="parts-gallery">
     <div class="container">
@@ -1181,6 +1135,113 @@
           </svg>
           YouTubeチャンネルで他の動画を見る
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specifications Section -->
+  <section class="specs" id="specs">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">製品仕様</h2>
+      </div>
+
+      <div class="specs-content">
+        <div class="specs-table" data-animate>
+          <table>
+            <tbody>
+              <tr>
+                <th>製品名</th>
+                <td>サポートアーム　SAK（壁取り付け型）/ SAT（天井取り付け型）</td>
+              </tr>
+              <tr>
+                <th>全長</th>
+                <td>最大700mm（折りたたみ時: 350mm）</td>
+              </tr>
+              <tr>
+                <th>可動範囲</th>
+                <td>水平360°、垂直±90°</td>
+              </tr>
+              <tr>
+                <th>保持荷重</th>
+                <td>3kg（最大4kg）</td>
+              </tr>
+              <tr>
+                <th>本体重量</th>
+                <td>約1.2kg</td>
+              </tr>
+              <tr>
+                <th>材質</th>
+                <td>アルミニウム合金、ステンレス鋼、導電性樹脂</td>
+              </tr>
+              <tr>
+                <th>静電気対策</th>
+                <td>導電性に配慮した素材構成（金属部＋導電性樹脂）により、静電気の蓄積を抑制</td>
+              </tr>
+              <tr>
+                <th>対応ダクト径</th>
+                <td>φ200、φ150、φ100</td>
+              </tr>
+              <tr>
+                <th>取付方式</th>
+                <td>ボルト固定式など</td>
+              </tr>
+              <tr>
+                <th>関節数</th>
+                <td>4関節</td>
+              </tr>
+              <tr>
+                <th>使用環境</th>
+                <td>温度: -10°C～60°C、湿度: 85%以下（結露なきこと）</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="specs-image specs-image--grid" data-animate>
+          <a href="./assets/images/company/21064_z00-1_200a_ceiling.pdf" target="_blank" class="specs-image__link">
+            <img
+              src="./assets/images/company/img_zumen_ceiling.png"
+              alt="天井取付型 寸法図"
+              class="specs-image__img"
+              loading="lazy">
+            <span class="specs-image__label">天井取付型</span>
+          </a>
+          <a href="./assets/images/company/21064_z00-1_200a_wall.pdf" target="_blank" class="specs-image__link">
+            <img
+              src="./assets/images/company/img_zumen_wall.png"
+              alt="壁掛け型 寸法図"
+              class="specs-image__img"
+              loading="lazy">
+            <span class="specs-image__label">壁掛け型</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Manual Download Button -->
+      <div class="specs-manual" data-animate>
+        <div class="specs-manual__content">
+          <div class="specs-manual__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
+              <line x1="12" y1="18" x2="12" y2="12" stroke-width="2"/>
+              <line x1="9" y1="15" x2="12" y2="18" stroke-width="2"/>
+              <line x1="15" y1="15" x2="12" y2="18" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="specs-manual__text">
+            <h3 class="specs-manual__title">取扱説明書</h3>
+            <p class="specs-manual__description">製品の詳細な使用方法や注意事項をご確認いただけます</p>
+          </div>
+          <a href="./assets/サポートアーム取扱説明書(2024_03_27).pdf" target="_blank" class="btn btn--primary">
+            <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
+            </svg>
+            PDFを開く
+          </a>
+        </div>
       </div>
     </div>
   </section>
