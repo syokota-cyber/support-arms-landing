@@ -9,10 +9,6 @@
 const header = document.getElementById('header');
 const navToggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
-const modal = document.getElementById('contactModal');
-const openFormBtn = document.getElementById('openFormBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
-const modalOverlay = document.getElementById('modalOverlay');
 const contactForm = document.getElementById('contactForm');
 const faqModal = document.getElementById('faqModal');
 const openFaqModalBtn = document.getElementById('openFaqModalBtn');
@@ -113,45 +109,9 @@ const animateOnScroll = () => {
 // Initialize scroll animations
 animateOnScroll();
 
-// ====================================
-// Modal Functionality
-// ====================================
-const openModal = () => {
-  modal.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-
-  // Focus first input
-  const firstInput = modal.querySelector('input');
-  if (firstInput) {
-    setTimeout(() => firstInput.focus(), 100);
-  }
-};
-
-const closeModal = () => {
-  modal.classList.remove('is-open');
-  document.body.style.overflow = '';
-};
-
-// Open modal
-if (openFormBtn) {
-  openFormBtn.addEventListener('click', openModal);
-}
-
-// Close modal
-if (closeModalBtn) {
-  closeModalBtn.addEventListener('click', closeModal);
-}
-
-if (modalOverlay) {
-  modalOverlay.addEventListener('click', closeModal);
-}
-
-// Close modal on Escape key
+// Close FAQ modal on Escape key
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (modal.classList.contains('is-open')) {
-      closeModal();
-    }
     if (faqModal && faqModal.classList.contains('is-open')) {
       closeFaqModal();
     }
@@ -197,12 +157,19 @@ if (faqModalOverlay) {
   faqModalOverlay.addEventListener('click', closeFaqModal);
 }
 
-// FAQ modal contact button - close FAQ modal and open contact modal
+// FAQ modal contact button - close FAQ modal and scroll to contact form
 if (faqModalContactBtn) {
   faqModalContactBtn.addEventListener('click', () => {
     closeFaqModal();
     setTimeout(() => {
-      openModal();
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        const headerHeight = header ? header.offsetHeight : 80;
+        window.scrollTo({
+          top: contactSection.offsetTop - headerHeight,
+          behavior: 'smooth'
+        });
+      }
     }, 300);
   });
 }
@@ -256,56 +223,79 @@ document.querySelectorAll('.faq-intro__category-item[data-faq-category]').forEac
 });
 
 // ====================================
-// Form Handling
+// Form Handling (sends to /api/contact)
 // ====================================
 if (contactForm) {
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const formResult = document.getElementById('formResult');
+    const submitBtn = document.getElementById('contactSubmitBtn');
+
     // Get form data
     const formData = new FormData(contactForm);
     const data = Object.fromEntries(formData.entries());
 
-    // Simple validation
-    if (!data.name || !data.email || !data.message) {
-      alert('必須項目を入力してください。');
+    // Validation
+    if (!data.name || !data.email) {
+      showFormResult(formResult, 'error', '必須項目（お名前、メールアドレス）を入力してください。');
       return;
     }
 
-    // Email validation
+    if (!data.inquiry_type) {
+      showFormResult(formResult, 'error', 'ご相談内容を選択してください。');
+      return;
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
-      alert('有効なメールアドレスを入力してください。');
+      showFormResult(formResult, 'error', '有効なメールアドレスを入力してください。');
       return;
     }
 
     // Disable submit button
-    const submitBtn = contactForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = '送信中...';
+    formResult.className = 'form-result';
 
     try {
-      // Google Formsへリダイレクト
-      const googleFormsUrl = 'https://forms.gle/mbuk9fu35Hn8gRtMA';
-      
-      // モーダルを閉じてGoogle Formsを開く
-      closeModal();
-      window.open(googleFormsUrl, '_blank');
-      
-      // フォームをリセット
-      contactForm.reset();
-      
-    } catch (error) {
-      // Error
-      alert('送信に失敗しました。\nもう一度お試しください。');
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        showFormResult(formResult, 'success', '送信が完了しました。3営業日以内にご回答いたします。');
+        contactForm.reset();
+
+        // Track with GA
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'form_submit', {
+            'event_category': 'Contact',
+            'event_label': data.inquiry_type
+          });
+        }
+      } else {
+        showFormResult(formResult, 'error', result.error || '送信に失敗しました。お手数ですがお電話（03-3756-1511）にてお問い合わせください。');
+      }
+    } catch (error) {
+      showFormResult(formResult, 'error', '送信に失敗しました。お手数ですがお電話（03-3756-1511）にてお問い合わせください。');
     } finally {
-      // Re-enable submit button
       submitBtn.disabled = false;
       submitBtn.textContent = originalText;
     }
   });
+}
+
+function showFormResult(el, type, message) {
+  if (!el) return;
+  el.className = 'form-result';
+  el.classList.add(type === 'success' ? 'is-success' : 'is-error');
+  el.textContent = message;
 }
 
 // ====================================
@@ -385,25 +375,6 @@ if ('loading' in HTMLImageElement.prototype) {
 // Keyboard Navigation Enhancement
 // ====================================
 document.addEventListener('keydown', (e) => {
-  // Trap focus in contact modal when open
-  if (modal.classList.contains('is-open')) {
-    const focusableElements = modal.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    if (e.key === 'Tab') {
-      if (e.shiftKey && document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
-      } else if (!e.shiftKey && document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
-      }
-    }
-  }
-
   // Trap focus in FAQ modal when open
   if (faqModal && faqModal.classList.contains('is-open')) {
     const focusableElements = faqModal.querySelectorAll(
@@ -626,16 +597,12 @@ initAppModals();
 // Google Analytics Event Tracking
 // ====================================
 if (typeof gtag !== 'undefined') {
-  // Track contact form button clicks
-  document.querySelectorAll('a[href*="forms.gle"], a[href*="contact"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      const linkText = link.textContent.trim();
-      
+  // Track contact CTA clicks
+  document.querySelectorAll('a[href="#contact"]').forEach(link => {
+    link.addEventListener('click', () => {
       gtag('event', 'contact_click', {
         'event_category': 'Contact',
-        'event_label': linkText,
-        'link_url': href
+        'event_label': link.textContent.trim()
       });
     });
   });

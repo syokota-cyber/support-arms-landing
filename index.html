@@ -314,15 +314,23 @@
             <li><a href="#parts-gallery">ギャラリー</a></li>
             <li><a href="#after-support">サポート</a></li>
             <li><a href="#faq">FAQ</a></li>
-            <li><a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="nav-cta" target="_blank">お問い合わせ</a></li>
+            <li class="nav-tel"><a href="tel:0337561511">TEL: 03-3756-1511</a></li>
+            <li><a href="#contact" class="nav-cta">ご相談・お見積もり</a></li>
           </ul>
         </nav>
 
-        <button class="header__toggle" id="navToggle" aria-label="メニュー">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div class="header__actions">
+          <a href="tel:0337561511" class="header__phone" aria-label="電話で相談する">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke-width="2"/>
+            </svg>
+          </a>
+          <button class="header__toggle" id="navToggle" aria-label="メニュー">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -756,7 +764,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="#contact" class="btn btn--primary" data-close-modal>この用途で相談する</a>
       </div>
     </div>
   </div>
@@ -813,7 +821,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="#contact" class="btn btn--primary" data-close-modal>この用途で相談する</a>
       </div>
     </div>
   </div>
@@ -870,7 +878,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="#contact" class="btn btn--primary" data-close-modal>この用途で相談する</a>
       </div>
     </div>
   </div>
@@ -927,7 +935,7 @@
         </div>
       </div>
       <div class="app-modal__footer">
-        <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" data-close-modal target="_blank">お問い合わせ</a>
+        <a href="#contact" class="btn btn--primary" data-close-modal>この用途で相談する</a>
       </div>
     </div>
   </div>
@@ -1288,6 +1296,19 @@
       </div>
     </div>
   </section>
+
+  <!-- Mid-Section CTA (信頼ピーク直後) -->
+  <div class="mid-cta" data-animate>
+    <div class="container">
+      <div class="mid-cta__content">
+        <p class="mid-cta__text">
+          「この用途に使える？」「取付方法は？」など、<br class="pc-only">どんなことでもお気軽にご相談ください。
+        </p>
+        <a href="#contact" class="btn btn--primary">ご相談・お見積もり</a>
+        <p class="mid-cta__note">※ 3営業日以内にご回答します</p>
+      </div>
+    </div>
+  </div>
 
   <!-- FAQ Intro Section -->
   <section class="faq-intro" id="faq">
@@ -1651,91 +1672,100 @@
 
         <!-- FAQ下部のCTA -->
         <div class="faq-cta">
-          <p class="faq-cta__text">その他のご質問やお見積りのご依頼は、お気軽にお問い合わせください</p>
-          <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" class="btn btn--primary" target="_blank">お問い合わせ</a>
+          <p class="faq-cta__text">その他のご質問やお見積りのご依頼は、お気軽にご相談ください</p>
+          <a href="#contact" class="btn btn--primary">ご相談・お見積もり</a>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- CTA Section -->
+  <!-- CTA Section with Embedded Form -->
   <section class="cta" id="contact">
     <div class="container">
       <div class="cta__content" data-animate>
-        <h2 class="cta__title">お問い合わせ</h2>
+        <h2 class="cta__title">ご相談・お見積もり</h2>
         <p class="cta__text">
-          サポートアームに関するご質問、お見積もり、導入のご相談など<br>
-          お気軽にお問い合わせください
+          導入前のご相談だけでも歓迎です。<br>
+          技術スタッフが最適なご提案をいたします。
         </p>
 
-        <div class="cta__buttons">
-          <a href="tel:0337561511" class="btn btn--secondary btn--large">
+        <div class="cta__form-wrapper">
+          <form class="contact-form" id="contactForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="company" class="form-label">会社名</label>
+                <input type="text" id="company" name="company" class="form-input" placeholder="例: 株式会社〇〇製作所">
+              </div>
+              <div class="form-group">
+                <label for="name" class="form-label">お名前 <span class="required">*</span></label>
+                <input type="text" id="name" name="name" class="form-input" placeholder="例: 山田 太郎" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email" class="form-label">メールアドレス <span class="required">*</span></label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="例: yamada@example.co.jp" required>
+              </div>
+              <div class="form-group">
+                <label for="phone" class="form-label">電話番号</label>
+                <input type="tel" id="phone" name="phone" class="form-input" placeholder="例: 03-1234-5678">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">ご相談内容 <span class="required">*</span></label>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="inquiry_type" value="導入のご相談" required>
+                  <span>導入のご相談</span>
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="inquiry_type" value="お見積もり依頼">
+                  <span>お見積もり依頼</span>
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="inquiry_type" value="カスタマイズ相談">
+                  <span>カスタマイズ相談</span>
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="inquiry_type" value="その他">
+                  <span>その他</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">詳細</label>
+              <textarea id="message" name="message" class="form-textarea" rows="4" placeholder="例: 食品工場のライン上で粉塵吸引用途、壁付け3台希望"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--primary btn--large btn--full" id="contactSubmitBtn">
+              送信する（3営業日以内に回答します）
+            </button>
+
+            <div class="form-notes">
+              <p>※ ご相談だけでも歓迎です</p>
+              <p>※ 個人情報はお見積もり対応以外には使用しません</p>
+            </div>
+
+            <div class="form-result" id="formResult" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <div class="cta__phone-info">
+          <p>お電話でのご相談も歓迎です</p>
+          <a href="tel:0337561511" class="cta__phone-link">
             <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" stroke-width="2"/>
             </svg>
-            電話で問い合わせ
+            TEL: 03-3756-1511
           </a>
-          <a href="https://forms.gle/mbuk9fu35Hn8gRtMA" target="_blank" class="btn btn--primary btn--large">
-            <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke-width="2"/>
-              <polyline points="22,6 12,13 2,6" stroke-width="2"/>
-            </svg>
-            お問い合わせフォーム
-          </a>
-        </div>
-
-        <div class="cta__info">
-          <p><strong>受付時間:</strong> 土日祝除く、8:30〜17:00</p>
+          <span class="cta__phone-hours">（土日祝除く 8:30〜17:00）</span>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- Contact Form Modal -->
-  <div class="modal" id="contactModal">
-    <div class="modal__overlay" id="modalOverlay"></div>
-    <div class="modal__content">
-      <button class="modal__close" id="closeModalBtn" aria-label="閉じる">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <line x1="18" y1="6" x2="6" y2="18" stroke-width="2"/>
-          <line x1="6" y1="6" x2="18" y2="18" stroke-width="2"/>
-        </svg>
-      </button>
-
-      <h3 class="modal__title">お問い合わせフォーム</h3>
-
-      <form class="contact-form" id="contactForm">
-        <div class="form-group">
-          <label for="name" class="form-label">お名前 <span class="required">*</span></label>
-          <input type="text" id="name" name="name" class="form-input" required>
-        </div>
-
-        <div class="form-group">
-          <label for="company" class="form-label">会社名</label>
-          <input type="text" id="company" name="company" class="form-input">
-        </div>
-
-        <div class="form-group">
-          <label for="email" class="form-label">メールアドレス <span class="required">*</span></label>
-          <input type="email" id="email" name="email" class="form-input" required>
-        </div>
-
-        <div class="form-group">
-          <label for="phone" class="form-label">電話番号</label>
-          <input type="tel" id="phone" name="phone" class="form-input">
-        </div>
-
-        <div class="form-group">
-          <label for="message" class="form-label">お問い合わせ内容 <span class="required">*</span></label>
-          <textarea id="message" name="message" class="form-textarea" rows="6" required></textarea>
-        </div>
-
-        <button type="submit" class="btn btn--primary btn--large btn--full">
-          送信する
-        </button>
-      </form>
-    </div>
-  </div>
 
   <!-- Footer -->
   <footer class="footer">
@@ -1764,7 +1794,7 @@
           <h4>お問い合わせ</h4>
           <ul>
             <li><a href="tel:0337561511">TEL: 03-3756-1511</a></li>
-            <li><a href="https://forms.gle/mbuk9fu35Hn8gRtMA" target="_blank">お問い合わせフォーム</a></li>
+            <li><a href="#contact">ご相談・お見積もりフォーム</a></li>
             <li><a href="https://www.youtube.com/@iwashirokougyou" target="_blank">YouTube</a></li>
           </ul>
         </div>
