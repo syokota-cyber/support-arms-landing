@@ -1,10 +1,8 @@
 /**
  * Cloudflare Pages Function: Contact Form Handler
- * Sends email to customer@iwashiro.co.jp via MailChannels API
+ * Sends email to customer@iwashiro.co.jp via Resend API
  *
- * Required: Add SPF record to DNS:
- *   _mailchannels.support-arm.com TXT "v=mc1 cfid=support-arms-landing.pages.dev"
- *   (adjust cfid to your actual Cloudflare Pages project name)
+ * Required: Set RESEND_API_KEY in Cloudflare Pages environment variables
  */
 
 export async function onRequestPost(context) {
@@ -35,6 +33,16 @@ export async function onRequestPost(context) {
       );
     }
 
+    // Get API key from environment
+    const apiKey = context.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error('RESEND_API_KEY is not set');
+      return new Response(
+        JSON.stringify({ success: false, error: '送信設定にエラーがあります。お電話にてお問い合わせください。' }),
+        { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      );
+    }
+
     // Build email body
     const company = body.company || '（未記入）';
     const phone = body.phone || '（未記入）';
@@ -59,42 +67,30 @@ ${message}
 このメールは https://support-arm.com のお問い合わせフォームから自動送信されました。
 `.trim();
 
-    // Send email via MailChannels
-    const mailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+    // Send email via Resend API
+    const resendResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
       body: JSON.stringify({
-        personalizations: [
-          {
-            to: [{ email: 'customer@iwashiro.co.jp', name: '岩代工業 お問い合わせ窓口' }],
-          },
-        ],
-        from: {
-          email: 'noreply@support-arm.com',
-          name: 'サポートアーム ウェブサイト',
-        },
-        reply_to: {
-          email: email,
-          name: name,
-        },
+        from: 'サポートアーム ウェブサイト <noreply@support-arm.com>',
+        to: ['customer@iwashiro.co.jp'],
+        reply_to: email,
         subject: `【サポートアーム】${inquiry_type} - ${company !== '（未記入）' ? company : name}様`,
-        content: [
-          {
-            type: 'text/plain',
-            value: emailBody,
-          },
-        ],
+        text: emailBody,
       }),
     });
 
-    if (mailResponse.status === 202 || mailResponse.status === 200) {
+    if (resendResponse.ok) {
       return new Response(
         JSON.stringify({ success: true }),
         { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
       );
     } else {
-      const errorText = await mailResponse.text();
-      console.error('MailChannels error:', mailResponse.status, errorText);
+      const errorData = await resendResponse.text();
+      console.error('Resend error:', resendResponse.status, errorData);
       return new Response(
         JSON.stringify({ success: false, error: '送信に失敗しました。お電話にてお問い合わせください。' }),
         { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
