@@ -705,7 +705,7 @@ const initPartsGallery = () => {
   const lightboxPrev = document.getElementById('lightboxPrev');
   const lightboxNext = document.getElementById('lightboxNext');
 
-  if (filterButtons.length === 0 || galleryItems.length === 0) return;
+  if (galleryItems.length === 0) return;
 
   let currentIndex = 0;
   let visibleItems = [...galleryItems];
@@ -813,6 +813,42 @@ initPartsGallery();
   const indicators = document.querySelectorAll('.features-carousel__indicator');
   const prevBtn = document.querySelector('.features-carousel__btn--prev');
   const nextBtn = document.querySelector('.features-carousel__btn--next');
+  if (!track || slides.length === 0) return;
+
+  let current = 0;
+  const total = slides.length;
+  let autoplayTimer = null;
+  const AUTOPLAY_INTERVAL = 5000;
+
+  function goTo(index) {
+    current = (index + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    indicators.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function stopAutoplay() {
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+
+  prevBtn.addEventListener('click', () => { stopAutoplay(); goTo(current - 1); });
+  nextBtn.addEventListener('click', () => { stopAutoplay(); goTo(current + 1); });
+  indicators.forEach(ind => {
+    ind.addEventListener('click', () => { stopAutoplay(); goTo(Number(ind.dataset.slide)); });
+  });
+
+  autoplayTimer = setInterval(() => goTo(current + 1), AUTOPLAY_INTERVAL);
+})();
+
+// ====================================
+// Gallery Carousel
+// ====================================
+(() => {
+  const track = document.querySelector('.gallery-carousel__track');
+  const slides = document.querySelectorAll('.gallery-carousel__slide');
+  const indicators = document.querySelectorAll('.gallery-carousel__indicator');
+  const prevBtn = document.querySelector('.gallery-carousel__btn--prev');
+  const nextBtn = document.querySelector('.gallery-carousel__btn--next');
   if (!track || slides.length === 0) return;
 
   let current = 0;
