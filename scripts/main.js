@@ -803,3 +803,40 @@ const initPartsGallery = () => {
 };
 
 initPartsGallery();
+
+// ====================================
+// Features Carousel
+// ====================================
+(() => {
+  const track = document.querySelector('.features-carousel__track');
+  const slides = document.querySelectorAll('.features-carousel__slide');
+  const indicators = document.querySelectorAll('.features-carousel__indicator');
+  const prevBtn = document.querySelector('.features-carousel__btn--prev');
+  const nextBtn = document.querySelector('.features-carousel__btn--next');
+  if (!track || slides.length === 0) return;
+
+  let current = 0;
+  const total = slides.length;
+  let autoplayTimer = null;
+  const AUTOPLAY_INTERVAL = 5000;
+
+  function goTo(index) {
+    current = (index + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    indicators.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function stopAutoplay() {
+    clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  }
+
+  prevBtn.addEventListener('click', () => { stopAutoplay(); goTo(current - 1); });
+  nextBtn.addEventListener('click', () => { stopAutoplay(); goTo(current + 1); });
+  indicators.forEach(ind => {
+    ind.addEventListener('click', () => { stopAutoplay(); goTo(Number(ind.dataset.slide)); });
+  });
+
+  autoplayTimer = setInterval(() => goTo(current + 1), AUTOPLAY_INTERVAL);
+})();
+

@@ -283,7 +283,7 @@
   </script>
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="./styles/main.css">
+  <link rel="stylesheet" href="./styles/main.css?v=20260320b">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -423,103 +423,132 @@
         <p class="section-subtitle">創業1966年。東京・大田区の自社工場から。</p>
       </div>
 
-      <div class="features-grid">
-        <!-- Feature 1 -->
-        <div class="feature-card" data-animate>
-          <div class="feature-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M2 17L12 22L22 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M2 12L12 17L22 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+      <div class="features-carousel">
+        <div class="features-carousel__track">
+          <!-- Slide 1: 性能 -->
+          <div class="features-carousel__slide">
+            <h3 class="features-group__heading">性能</h3>
+            <div class="features-grid features-grid--3">
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <h4 class="feature-card__title">狙った位置にピタッと固定</h4>
+                <p class="feature-card__text">
+                  4つの関節により、360度自由な角度調整が可能。作業に最適な位置へスムーズに移動できます。
+                </p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                    <path d="M12 6V12L16 14" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <h4 class="feature-card__title">最大4kg、振動にも揺るがない</h4>
+                <p class="feature-card__text">
+                  高精度な摩擦機構により、どんな位置でもしっかり固定。3kgまでの物を安定して保持します。
+                </p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+                    <polyline points="14,2 14,8 20,8" stroke-width="2"/>
+                  </svg>
+                </div>
+                <h4 class="feature-card__title">片手で楽に動かせる1.2kg</h4>
+                <p class="feature-card__text">
+                  ステンレス製角パイプやアルミニウム合金、樹脂部品などで構成し軽量化をしています。
+                </p>
+              </div>
+            </div>
           </div>
-          <h3 class="feature-card__title">狙った位置にピタッと固定</h3>
-          <p class="feature-card__text">
-            4つの関節により、360度自由な角度調整が可能。作業に最適な位置へスムーズに移動できます。
-          </p>
+
+          <!-- Slide 2: 設計 -->
+          <div class="features-carousel__slide">
+            <h3 class="features-group__heading">設計</h3>
+            <div class="features-grid features-grid--2">
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
+                    <polyline points="3.27,6.96 12,12.01 20.73,6.96" stroke-width="2"/>
+                    <line x1="12" y1="22.08" x2="12" y2="12" stroke-width="2"/>
+                  </svg>
+                </div>
+                <h4 class="feature-card__title">過酷な現場でも長く使える</h4>
+                <p class="feature-card__text">
+                  工業現場での使用を想定した堅牢設計。長期間の使用に耐える高品質を実現。
+                </p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke-width="2"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7" stroke-width="2"/>
+                  </svg>
+                </div>
+                <h4 class="feature-card__title">壁にも天井にも、現場に合わせて設置</h4>
+                <p class="feature-card__text">
+                  ボルト固定式など、様々な設置環境に対応。既存設備への後付けも可能です。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3: 安全 -->
+          <div class="features-carousel__slide">
+            <h3 class="features-group__heading">安全</h3>
+            <div class="features-grid features-grid--2">
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
+                  </svg>
+                </div>
+                <h4 class="feature-card__title">指挟み防止で安心して操作</h4>
+                <p class="feature-card__text">
+                  関節部分に指などが入り込まない構造。万が一の事故を防ぐ安全設計です。
+                </p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card__icon">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <h4 class="feature-card__title">静電気による発火リスクを抑制</h4>
+                <p class="feature-card__text">
+                  アーム本体に導電性に優れた素材を採用。静電気の蓄積を抑制し、可燃性の噴霧や粉塵が存在する環境にも配慮した設計です。
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Feature 2 -->
-        <div class="feature-card" data-animate>
-          <div class="feature-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <circle cx="12" cy="12" r="10" stroke-width="2"/>
-              <path d="M12 6V12L16 14" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+        <div class="features-carousel__controls">
+          <div class="features-carousel__indicators">
+            <button class="features-carousel__indicator active" data-slide="0">性能</button>
+            <button class="features-carousel__indicator" data-slide="1">設計</button>
+            <button class="features-carousel__indicator" data-slide="2">安全</button>
           </div>
-          <h3 class="feature-card__title">最大4kg、振動にも揺るがない</h3>
-          <p class="feature-card__text">
-            高精度な摩擦機構により、どんな位置でもしっかり固定。3kgまでの物を安定して保持します。
-          </p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="feature-card" data-animate>
-          <div class="feature-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
-              <polyline points="14,2 14,8 20,8" stroke-width="2"/>
-            </svg>
+          <div class="features-carousel__arrows">
+            <button class="features-carousel__btn features-carousel__btn--prev" aria-label="前へ">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <button class="features-carousel__btn features-carousel__btn--next" aria-label="次へ">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 6 15 12 9 18"/>
+              </svg>
+            </button>
           </div>
-          <h3 class="feature-card__title">片手で楽に動かせる1.2kg</h3>
-          <p class="feature-card__text">
-            ステンレス製角パイプやアルミニウム合金、樹脂部品などで構成し軽量化をしています。
-          </p>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="feature-card" data-animate>
-          <div class="feature-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-width="2"/>
-              <polyline points="3.27,6.96 12,12.01 20.73,6.96" stroke-width="2"/>
-              <line x1="12" y1="22.08" x2="12" y2="12" stroke-width="2"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">過酷な現場でも長く使える</h3>
-          <p class="feature-card__text">
-            工業現場での使用を想定した堅牢設計。長期間の使用に耐える高品質を実現。
-          </p>
-        </div>
-
-        <!-- Feature 5 -->
-        <div class="feature-card" data-animate>
-          <div class="feature-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke-width="2"/>
-              <line x1="7" y1="7" x2="7.01" y2="7" stroke-width="2"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">壁にも天井にも、現場に合わせて設置</h3>
-          <p class="feature-card__text">
-            ボルト固定式など、様々な設置環境に対応。既存設備への後付けも可能です。
-          </p>
-        </div>
-
-        <!-- Feature 6 -->
-        <div class="feature-card" data-animate>
-          <div class="feature-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-width="2"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">指挟み防止で安心して操作</h3>
-          <p class="feature-card__text">
-            関節部分に指などが入り込まない構造。万が一の事故を防ぐ安全設計です。
-          </p>
-        </div>
-
-        <!-- Feature 7 -->
-        <div class="feature-card" data-animate>
-          <div class="feature-card__icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">静電気による発火リスクを抑制</h3>
-          <p class="feature-card__text">
-            アーム本体に導電性に優れた素材を採用。静電気の蓄積を抑制し、可燃性の噴霧や粉塵が存在する環境にも配慮した設計です。
-          </p>
         </div>
       </div>
     </div>
