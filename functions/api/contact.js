@@ -16,8 +16,8 @@ export async function onRequestPost(context) {
     const body = await context.request.json();
 
     // Validate required fields
-    const { name, email, inquiry_type } = body;
-    if (!name || !email || !inquiry_type) {
+    const { company, name, email, inquiry_type } = body;
+    if (!company || !name || !email || !inquiry_type) {
       return new Response(
         JSON.stringify({ success: false, error: '必須項目を入力してください。' }),
         { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
@@ -44,7 +44,7 @@ export async function onRequestPost(context) {
     }
 
     // Build email body
-    const company = body.company || '（未記入）';
+
     const phone = body.phone || '（未記入）';
     const message = body.message || '（未記入）';
 
@@ -78,7 +78,7 @@ ${message}
         from: 'サポートアーム ウェブサイト <noreply@support-arm.com>',
         to: ['customer@iwashiro.co.jp'],
         reply_to: email,
-        subject: `【サポートアーム】${inquiry_type} - ${company !== '（未記入）' ? company : name}様`,
+        subject: `【サポートアーム】${inquiry_type} - ${company}様`,
         text: emailBody,
       }),
     });

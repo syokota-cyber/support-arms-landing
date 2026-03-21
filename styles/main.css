@@ -3,11 +3,11 @@
    ==================================== */
 :root {
   /* Colors */
-  --color-primary: #8b2335;
-  --color-primary-dark: #6b1a29;
-  --color-primary-light: #a52a40;
-  --color-secondary: #8b2335;
-  --color-secondary-dark: #6b1a29;
+  --color-primary: #00467F;
+  --color-primary-dark: #003562;
+  --color-primary-light: #005A9E;
+  --color-secondary: #00467F;
+  --color-secondary-dark: #003562;
 
   --color-white: #ffffff;
   --color-gray-50: #f9fafb;
@@ -269,7 +269,7 @@ button {
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .header__phone {
     display: none;
   }
@@ -321,7 +321,7 @@ button {
   transform: rotate(-45deg) translate(7px, -7px);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .header__nav {
     display: block;
     position: static;
@@ -335,7 +335,7 @@ button {
 
   .nav-list {
     flex-direction: row;
-    gap: var(--space-8);
+    gap: var(--space-6);
     align-items: center;
   }
 
@@ -2658,17 +2658,20 @@ section {
 }
 
 .application-card__more {
-  display: block;
+  display: inline-block;
   margin-top: var(--space-3);
-  padding-left: var(--space-6);
-  color: var(--color-primary);
+  margin-left: var(--space-6);
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-primary);
+  color: var(--color-white);
   font-weight: 600;
   font-size: var(--text-sm);
-  transition: color 0.2s ease;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: background 0.2s ease;
 }
 
 .application-card--clickable:hover .application-card__more {
-  color: var(--color-primary-dark);
+  background: var(--color-primary-dark);
 }
 
 /* ====================================
