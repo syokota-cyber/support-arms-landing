@@ -1500,6 +1500,36 @@ section {
 }
 
 /* ====================================
+   Inline CTA (セクション間の問い合わせ導線)
+   ==================================== */
+.inline-cta {
+  padding: var(--space-8) 0;
+  background: var(--color-gray-50, #f8f9fa);
+}
+
+.inline-cta__content {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.inline-cta__text {
+  font-size: var(--text-base);
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .inline-cta {
+    padding: var(--space-6) 0;
+  }
+
+  .inline-cta__text {
+    font-size: var(--text-sm);
+  }
+}
+
+/* ====================================
    CTA Section (Embedded Form)
    ==================================== */
 .cta {
