@@ -841,6 +841,62 @@ initPartsGallery();
 })();
 
 // ====================================
+// Display-toggle Carousel (Regulation / Knowledge)
+// ====================================
+function initDisplayCarousel(root) {
+  var trackEl = root.querySelector('[data-carousel-track]');
+  if (!trackEl) return;
+  var slideEls = trackEl.querySelectorAll('[data-carousel-slide]');
+  var indicatorEls = root.querySelectorAll('[data-carousel-indicator]');
+  var prevEl = root.querySelector('[data-carousel-prev]');
+  var nextEl = root.querySelector('[data-carousel-next]');
+  if (slideEls.length === 0) return;
+
+  var cur = 0;
+  var len = slideEls.length;
+
+  function show(i) {
+    cur = ((i % len) + len) % len;
+    for (var j = 0; j < slideEls.length; j++) {
+      slideEls[j].classList.toggle('active', j === cur);
+    }
+    for (var k = 0; k < indicatorEls.length; k++) {
+      indicatorEls[k].classList.toggle('active', k === cur);
+    }
+  }
+
+  if (prevEl) prevEl.onclick = function() { show(cur - 1); };
+  if (nextEl) nextEl.onclick = function() { show(cur + 1); };
+  for (var m = 0; m < indicatorEls.length; m++) {
+    (function(idx) {
+      indicatorEls[idx].onclick = function() { show(idx); };
+    })(m);
+  }
+}
+
+// Init all display carousels
+document.querySelectorAll('[data-display-carousel]').forEach(function(el) {
+  initDisplayCarousel(el);
+});
+
+// ====================================
+// Knowledge Tabs
+// ====================================
+(() => {
+  const tabs = document.querySelectorAll('[data-knowledge-tab]');
+  const articles = document.querySelectorAll('[data-knowledge-panel]');
+  if (!tabs.length || !articles.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const idx = Number(tab.dataset.knowledgeTab);
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+      articles.forEach(a => a.classList.toggle('active', Number(a.dataset.knowledgePanel) === idx));
+    });
+  });
+})();
+
+// ====================================
 // Gallery Carousel
 // ====================================
 (() => {
