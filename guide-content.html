@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>溶接ヒューム法規制 完全対応ガイド</title>
+  <style>
+    /* PDF用スタイル - html2pdf.jsで変換時に使用 */
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap');
+
+    :root {
+      --color-primary: #00467F;
+      --color-accent: #8B2335;
+      --color-text: #1f2937;
+      --color-text-light: #4b5563;
+      --color-border: #d1d5db;
+      --color-bg-warm: #faf6f1;
+      --color-bg-highlight: #f0f7ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--color-text);
+      line-height: 1.8;
+      font-size: 11pt;
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    .guide { padding: 15mm; }
+
+    /* 表紙 */
+    .cover {
+      text-align: center;
+      padding: 40mm 15mm;
+      page-break-after: always;
+      background: linear-gradient(135deg, #00467F 0%, #003562 100%);
+      color: #fff;
+      min-height: 280mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .cover__badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      padding: 6px 20px;
+      font-size: 10pt;
+      letter-spacing: 0.1em;
+      margin-bottom: 30px;
+    }
+    .cover__title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 22pt;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .cover__subtitle {
+      font-size: 12pt;
+      line-height: 1.8;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+    .cover__info {
+      margin-top: 40px;
+      font-size: 9pt;
+      opacity: 0.7;
+      line-height: 2;
+    }
+
+    /* 目次 */
+    .toc {
+      page-break-after: always;
+      padding: 15mm;
+    }
+    .toc h2 {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 16pt;
+      color: var(--color-primary);
+      border-bottom: 2px solid var(--color-primary);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+    .toc__list { list-style: none; }
+    .toc__list li {
+      padding: 10px 0;
+      border-bottom: 1px dotted var(--color-border);
+      font-size: 11pt;
+    }
+    .toc__list li span { color: var(--color-primary); font-weight: 700; margin-right: 12px; }
+
+    /* 章見出し */
+    .chapter {
+      page-break-before: always;
+      padding-top: 10mm;
+    }
+    .chapter:first-of-type { page-break-before: avoid; }
+    .chapter__number {
+      font-size: 9pt;
+      color: var(--color-primary);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .chapter__title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 16pt;
+      color: var(--color-primary);
+      border-bottom: 2px solid var(--color-primary);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-size: 12pt;
+      color: var(--color-primary);
+      margin: 20px 0 10px;
+      padding-left: 12px;
+      border-left: 3px solid var(--color-primary);
+    }
+
+    h4 {
+      font-size: 11pt;
+      color: var(--color-text);
+      margin: 16px 0 8px;
+    }
+
+    p { margin-bottom: 10px; text-align: justify; }
+
+    /* テーブル */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px;
+      font-size: 9.5pt;
+    }
+    th {
+      background: var(--color-primary);
+      color: #fff;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 500;
+    }
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #f9fafb; }
+
+    /* ハイライトボックス */
+    .highlight-box {
+      background: var(--color-bg-highlight);
+      border-left: 4px solid var(--color-primary);
+      padding: 14px 16px;
+      margin: 14px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .warning-box {
+      background: #fef3cd;
+      border-left: 4px solid #d4a017;
+      padding: 14px 16px;
+      margin: 14px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .penalty-box {
+      background: #fde8e8;
+      border-left: 4px solid var(--color-accent);
+      padding: 14px 16px;
+      margin: 14px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    ul, ol { margin: 8px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+
+    strong { color: var(--color-text); }
+
+    .note {
+      font-size: 9pt;
+      color: var(--color-text-light);
+      margin-top: 8px;
+    }
+
+    /* フッター */
+    .guide-footer {
+      margin-top: 30px;
+      padding-top: 16px;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+      font-size: 9pt;
+      color: var(--color-text-light);
+    }
+
+    /* 製品セクション */
+    .product-section {
+      background: var(--color-bg-warm);
+      padding: 16px;
+      border-radius: 6px;
+      margin: 16px 0;
+    }
+    .product-section h3 {
+      color: var(--color-accent);
+      border-left-color: var(--color-accent);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== 表紙 ===== -->
+<div class="cover">
+  <div class="cover__badge">専門資料 2026年版</div>
+  <h1 class="cover__title">
+    溶接ヒューム法規制<br>完全対応ガイド
+  </h1>
+  <p class="cover__subtitle">
+    特化則改正の背景から義務事項、局所排気装置の工学的要件、<br>
+    健康診断義務、活用できる補助金まで徹底解説
+  </p>
+  <div class="cover__info">
+    発行：岩代工業株式会社<br>
+    〒146-0093 東京都大田区矢口2丁目6番7号<br>
+    TEL: 03-3756-1511<br>
+    https://support-arm.com
+  </div>
+</div>
+
+<!-- ===== 目次 ===== -->
+<div class="toc">
+  <h2>目次</h2>
+  <ul class="toc__list">
+    <li><span>第1章</span>規制強化の背景 — なぜ溶接ヒュームが特定化学物質に指定されたのか</li>
+    <li><span>第2章</span>対象作業の定義と適用範囲</li>
+    <li><span>第3章</span>事業者に義務付けられた健康障害防止措置（全体像）</li>
+    <li><span>第4章</span>作業環境評価のパラダイムシフト — 個人ばく露測定</li>
+    <li><span>第5章</span>呼吸用保護具の科学的運用とフィットテスト義務化</li>
+    <li><span>第6章</span>局所排気装置（LEV）の工学的要件と届出制度</li>
+    <li><span>第7章</span>局所排気装置の維持管理と定期自主検査</li>
+    <li><span>第8章</span>特殊健康診断とじん肺管理</li>
+    <li><span>第9章</span>活用できる補助金・助成金制度</li>
+    <li><span>第10章</span>現場の課題を解決する — サポートアームのご提案</li>
+  </ul>
+</div>
+
+<div class="guide">
+
+<!-- ===== 第1章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 01</div>
+  <h2 class="chapter__title">規制強化の背景 — なぜ溶接ヒュームが特定化学物質に指定されたのか</h2>
+
+  <p>令和3年（2021年）4月1日に施行された<strong>特定化学物質障害予防規則（特化則）の改正</strong>は、金属アーク溶接作業を取り巻く労働安全衛生のパラダイムを根本から転換させる歴史的な契機となりました。</p>
+
+  <div class="highlight-box">
+    <strong>法改正の核心：</strong>金属アーク溶接等作業から発生する「溶接ヒューム」が、単なる粉塵ではなく、重大な健康被害をもたらす<strong>「特定化学物質（管理第2類物質）」</strong>として新たに指定されました。
+  </div>
+
+  <h3>溶接ヒュームとは何か</h3>
+  <p>溶接ヒュームとは、アーク溶接の数千度に達する高熱によって溶接棒や母材の金属材料が瞬時に蒸発・気化し、周辺の空気中で急速に冷却されて酸化・凝固した<strong>固体の微粒子群</strong>です。</p>
+  <ul>
+    <li><strong>粒径：</strong>0.1〜1マイクロメートル（肺胞にまで到達する極めて微細な粒子）</li>
+    <li><strong>特性：</strong>気道の物理的防御機構（線毛運動など）を容易にすり抜ける</li>
+    <li><strong>危険性：</strong>肺胞の毛細血管網から直接血流に乗り、中枢神経系に到達・蓄積</li>
+  </ul>
+
+  <h3>マンガン化合物の神経毒性</h3>
+  <p>規制強化の直接的な引き金となったのは、溶接ヒュームに高濃度で含まれる<strong>三酸化二マンガン（Mn₂O₃）</strong>などのマンガン化合物です。吸入ばく露された場合、微粒子は嗅神経を介して血液脳関門（BBB）を迂回し、脳の大脳基底核に異常蓄積。その結果、以下のような不可逆的な神経機能障害を引き起こします。</p>
+  <ul>
+    <li>歩行障害、筋強剛（筋肉のこわばり）</li>
+    <li>手指の震え、仮面様顔貌</li>
+    <li>パーキンソン病に極めて類似した症状（マンガン中毒）</li>
+  </ul>
+
+  <h3>IARCによる発がん性分類</h3>
+  <p>2017年、WHO傘下のIARC（国際がん研究機関）が溶接ヒュームを<strong>「グループ1：ヒトに対する発がん性がある」</strong>に分類しました。これはアスベストと同等の、最も危険度の高い分類です。</p>
+
+  <h3>含まれる有害物質一覧</h3>
+  <table>
+    <thead>
+      <tr><th>有害物質</th><th>主な発生源</th><th>健康への影響</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>マンガン</strong></td><td>軟鋼用溶接棒、高張力鋼</td><td>神経障害（パーキンソン病様症状）、疲労感、不眠</td></tr>
+      <tr><td><strong>六価クロム</strong></td><td>ステンレス鋼の溶接</td><td>肺がん、皮膚障害</td></tr>
+      <tr><td><strong>ニッケル</strong></td><td>ステンレス鋼・ニッケル合金</td><td>肺がん、鼻腔がん、皮膚炎</td></tr>
+      <tr><td><strong>酸化鉄</strong></td><td>軟鋼の溶接全般</td><td>じん肺（鉄肺症）</td></tr>
+      <tr><td><strong>酸化亜鉛</strong></td><td>亜鉛メッキ鋼の溶接</td><td>金属ヒューム熱（発熱・悪寒・筋肉痛）</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== 第2章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 02</div>
+  <h2 class="chapter__title">対象作業の定義と適用範囲</h2>
+
+  <p>本法規制の適用対象となる「金属アーク溶接等作業」の定義は、物理的現象と熱源の性質に基づき厳密に定められています。</p>
+
+  <h3>規制対象となる作業</h3>
+  <table>
+    <thead>
+      <tr><th>カテゴリー</th><th>具体的な作業内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>金属をアーク溶接する作業</strong></td><td>被覆アーク溶接、半自動溶接、TIG、MIG、MAG等</td></tr>
+      <tr><td><strong>アークを用いた溶断・ガウジング</strong></td><td>プラズマ切断、アークガウジング等</td></tr>
+      <tr><td><strong>その他</strong></td><td>溶接ヒュームを発生させ、または取り扱う作業</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <strong>業種を問わず、金属アーク溶接を行う全ての事業者が対象です。</strong>
+  </div>
+
+  <h3>規制対象外の作業</h3>
+  <ul>
+    <li>アセチレンガス等を熱源とする<strong>ガス溶接・ガス溶断</strong></li>
+    <li>高密度の光エネルギーを利用する<strong>レーザービーム溶接・溶断・ガウジング</strong></li>
+  </ul>
+  <p>これらはアーク放電特有の金属蒸発メカニズムとは異なり、発生粒子の特性が疫学的に中枢神経障害の閾値に合致しないという判断に基づきます。</p>
+</div>
+
+<!-- ===== 第3章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 03</div>
+  <h2 class="chapter__title">事業者に義務付けられた健康障害防止措置</h2>
+
+  <p>特化則の適用対象となった事業場では、屋内・屋外を問わず、多層的な健康障害防止措置を直ちに講じることが義務付けられています。</p>
+
+  <h3>義務事項の全体像</h3>
+  <table>
+    <thead>
+      <tr><th>義務事項</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>換気装置の設置</strong></td><td>屋内作業場で金属アーク溶接を行う場合、全体換気装置または局所排気装置の設置が必要</td></tr>
+      <tr><td><strong>溶接ヒュームの濃度測定</strong></td><td>個人サンプリング法による空気中濃度の測定を実施</td></tr>
+      <tr><td><strong>呼吸用保護具の使用</strong></td><td>濃度測定の結果に基づき、適切な防護係数の保護具を選定・使用</td></tr>
+      <tr><td><strong>特殊健康診断</strong></td><td>雇入れ時・配置替え時、以後6か月ごとに実施</td></tr>
+      <tr><td><strong>作業主任者の選任</strong></td><td>特定化学物質作業主任者技能講習の修了者から選任</td></tr>
+      <tr><td><strong>フィットテスト</strong></td><td>呼吸用保護具のフィットテストを1年以内ごとに実施</td></tr>
+    </tbody>
+  </table>
+
+  <div class="penalty-box">
+    <strong>罰則：</strong>違反した場合は、<strong>6か月以下の拘禁刑または50万円以下の罰金</strong>（労働安全衛生法第119条）
+  </div>
+
+  <h3>共通措置事項の詳細</h3>
+  <table>
+    <thead>
+      <tr><th>措置項目</th><th>根拠法令</th><th>具体的内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>安全衛生教育</strong></td><td>安衛則第35条</td><td>マンガンの神経毒性や保護具の正しい着脱手順に関する教育</td></tr>
+      <tr><td><strong>ぼろ等の密閉処理</strong></td><td>特化則第12条の2</td><td>ヒューム付着ウエスを不浸透性容器に密閉保管・処理</td></tr>
+      <tr><td><strong>不浸透性の床</strong></td><td>特化則第21条</td><td>コンクリートや鉄板など平滑な床面による確実な清掃を可能にする設計</td></tr>
+      <tr><td><strong>立入禁止区域</strong></td><td>特化則第24条</td><td>保護具未着用の非従事者への偶発的ばく露を空間的隔離で排除</td></tr>
+      <tr><td><strong>専用洗浄設備</strong></td><td>特化則第38条</td><td>身体・作業服に付着した金属ヒュームの除去、経皮吸収リスクの低減</td></tr>
+      <tr><td><strong>喫煙・飲食の禁止</strong></td><td>特化則第38条の2</td><td>消化管からの経口摂取による化学物質の体内取り込みを完全排除</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <strong>多重防御の思想：</strong>発生源でのヒューム抑制 → 空間内での拡散・二次発じん防止 → 作業者の物理的隔離 → 衛生行動の徹底。「スイスチーズ・モデル」に基づいた各層の対策を組み合わせることが求められています。
+  </div>
+</div>
+
+<!-- ===== 第4章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 04</div>
+  <h2 class="chapter__title">作業環境評価のパラダイムシフト — 個人ばく露測定</h2>
+
+  <p>従来の日本の作業環境測定は、作業場という「空間」の平均的な有害物質濃度を評価するA測定・B測定（エリアサンプリング）が主流でした。しかし、金属アーク溶接では、労働者の姿勢や溶接対象物の形状により、空間全体の濃度と実際に吸入する濃度の間に致命的な乖離が生じます。</p>
+
+  <div class="highlight-box">
+    <strong>評価軸の転換：</strong>「空間の評価」から「労働者個人の呼吸域の評価」へ。令和7年（2025年）5月に「個人ばく露測定」の概念が法体系に正式に位置づけられました。
+  </div>
+
+  <h3>個人ばく露測定の方法</h3>
+  <p>労働者の身体（襟元・肩・ヘルメットなど呼吸器に近い位置）に小型の吸引ポンプとフィルターカートリッジを装着し、実際の作業中の動きに追従しながら、呼吸域の空気濃度を連続的かつ正確に捕捉します。</p>
+
+  <h3>測定結果の活用</h3>
+  <ul>
+    <li>個々の労働者が直面している<strong>真のマンガンばく露リスクを定量的に可視化</strong></li>
+    <li>作業環境の<strong>改善目標の設定</strong></li>
+    <li>呼吸用保護具の<strong>要求防護係数（指定防護係数）の算出根拠</strong>として活用</li>
+  </ul>
+</div>
+
+<!-- ===== 第5章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 05</div>
+  <h2 class="chapter__title">呼吸用保護具の科学的運用とフィットテスト義務化</h2>
+
+  <h3>要求防護係数に基づくマスク選定</h3>
+  <p>個人ばく露測定で算出されたマンガン濃度と管理濃度との比率から「要求防護係数」が導き出され、この数値を上回る性能を持つ保護具を選定する必要があります。</p>
+
+  <div class="warning-box">
+    <strong>例：</strong>ばく露濃度が管理濃度の50倍の場合、指定防護係数50以上の電動ファン付き呼吸用保護具（PAPR）や全面形防じんマスクが必須。安価な半面形使い捨てマスクは法的に許容されません。
+  </div>
+
+  <h3>フィットテスト（密着性試験）の義務化</h3>
+  <p><strong>令和5年（2023年）4月1日より</strong>、屋内作業場で金属アーク溶接等作業を行う労働者に対し、<strong>1年以内ごとに1回</strong>のフィットテストが法的に義務化されました。</p>
+
+  <h4>なぜフィットテストが必要なのか</h4>
+  <p>いかに高性能なHEPAフィルターを搭載したマスクでも、顔面との間にわずかな隙間があれば、空気力学的にフィルターより抵抗の少いその隙間を通って溶接ヒュームが侵入します。</p>
+
+  <h4>フィットテストの方法</h4>
+  <p>凝縮核計数器（CNC）やレーザー光散乱方式の粉塵計を用い、マスクの外側・内側の粉塵濃度を同時測定し、漏れ率（フィットファクター）を定量的に評価します。</p>
+
+  <h4>公的支援</h4>
+  <p>厚生労働省は「フィットテスト測定機器購入補助金」を公益社団法人全国労働衛生団体連合会（全衛連）を通じて交付し、社会全体で高精度なフィットテストを実施できるインフラ整備を推進しています。</p>
+</div>
+
+<!-- ===== 第6章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 06</div>
+  <h2 class="chapter__title">局所排気装置（LEV）の工学的要件と届出制度</h2>
+
+  <h3>局所排気装置とは</h3>
+  <p>工場や作業場で発生する有害物質を、<strong>発生源のすぐそばで吸引し、作業者が吸い込む前に屋外へ排出する装置</strong>です。</p>
+
+  <h4>システム構成</h4>
+  <table>
+    <thead>
+      <tr><th>構成要素</th><th>役割</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>フード（吸引口）</strong></td><td>発生源を囲むか、近くに設置して有害物質を吸引する入口</td></tr>
+      <tr><td><strong>ダクト</strong></td><td>汚染空気をフードからファンまで運ぶ管</td></tr>
+      <tr><td><strong>空気清浄装置</strong></td><td>フィルターや集じん機で有害物質を除去</td></tr>
+      <tr><td><strong>ファン（排風機）</strong></td><td>空気を吸引・搬送する動力源</td></tr>
+      <tr><td><strong>排気口</strong></td><td>清浄化した空気を屋外へ排出</td></tr>
+    </tbody>
+  </table>
+
+  <h4>フードの種類と排気効率</h4>
+  <table>
+    <thead>
+      <tr><th>種類</th><th>特徴</th><th>排気効率</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>囲い式</strong></td><td>発生源を装置で囲み、作業用の開口部のみ残す</td><td>◎ 最も高い</td></tr>
+      <tr><td><strong>外付け式</strong></td><td>発生源のそばにフードを設置して吸引</td><td>○ 距離が離れると急激に低下</td></tr>
+      <tr><td><strong>レシーバー式</strong></td><td>熱上昇気流など自然気流をフードで受け止める</td><td>△ 限定的</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <strong>重要：</strong>外付け式フードは、吸引口と発生源の距離が離れると急激に効果が落ちます。溶接のように作業位置が変わる現場では、<strong>ダクトの位置を柔軟に調整できる仕組み</strong>が不可欠です。
+  </div>
+
+  <h3>労働安全衛生法第88条に基づく設置届出制度</h3>
+  <p>局所排気装置を新たに設置・移転・変更・廃止する際は、<strong>工事開始の30日前まで</strong>に所轄の労働基準監督署長へ届出が義務付けられています。届出を怠った場合は是正勧告や罰則の対象となります。</p>
+
+  <h4>届出に必要な9種類の専門書類</h4>
+  <table>
+    <thead>
+      <tr><th>書類名</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>機械等設備届</strong></td><td>事業場の基本属性、設備種別、設置予定日</td></tr>
+      <tr><td><strong>局所排気装置摘要書</strong></td><td>フードの形式、ダクト材質・径、排風機の定格能力、有害物質の特性</td></tr>
+      <tr><td><strong>局所排気装置計算書</strong></td><td>捕集効率、必要排風量、搬送風速、圧力損失の数学的証明</td></tr>
+      <tr><td><strong>排気系統図</strong></td><td>発生源からフード、ダクト網、清浄装置、排気口までのフロー図</td></tr>
+      <tr><td><strong>排気ファンの製品図面</strong></td><td>ファンケーシング寸法、インペラ構造、モーター定格出力</td></tr>
+      <tr><td><strong>予想性能曲線図</strong></td><td>ファン性能曲線とシステム抵抗曲線の動作点が必要排風量を上回ることの証明</td></tr>
+      <tr><td><strong>装置の製品図面</strong></td><td>各ユニットの全体構造、点検口位置、使用材質</td></tr>
+      <tr><td><strong>予定場所（レイアウト）</strong></td><td>設備配置、発生源位置、労働者動線の平面図</td></tr>
+      <tr><td><strong>建物配置図</strong></td><td>隣接建物との距離、排気口高さ、ショートサーキットリスク評価</td></tr>
+    </tbody>
+  </table>
+
+  <p class="note">※ ベルヌーイの定理やダルシー・ワイスバッハの式等の流体力学の基礎方程式を実務に適用する能力が必要であり、専門業者のコンサルティングを受けて作成・申請するのが一般的です。</p>
+</div>
+
+<!-- ===== 第7章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 07</div>
+  <h2 class="chapter__title">局所排気装置の維持管理と定期自主検査</h2>
+
+  <h3>1ヶ月を超えない期間ごとの簡易点検（日常保守）</h3>
+  <p>特定化学物質作業主任者が毎月1回以上実施。以下の点検を行います。</p>
+  <ul>
+    <li>フードの変形やダクトフランジの緩みの有無</li>
+    <li>スモークテスター等を用いたヒューム吸い込み状況の目視確認</li>
+    <li>ファン・モーター軸受からの異常振動・異音</li>
+    <li>Vベルトの劣化状況</li>
+    <li>労働者の保護具着用状況の監視</li>
+  </ul>
+
+  <h3>1年以内ごとの定期自主検査（年次詳細点検）</h3>
+  <p>局所排気装置の総合的な性能評価を行う「車検」に相当する検査です。</p>
+  <ul>
+    <li>熱線式風速計による全フード開口部・ダクト内の流速・風量の精密測定</li>
+    <li>ピトー管とマノメーターによる各セクションの静圧・動圧測定</li>
+    <li>ファイバースコープ等によるダクト内部の堆積状況点検</li>
+    <li>排風機インペラの摩耗・腐食確認</li>
+    <li>フィルターの差圧測定による目詰まり評価</li>
+    <li>テスターによる電気系統の点検（絶縁抵抗測定）</li>
+  </ul>
+
+  <div class="warning-box">
+    <strong>記録保存義務：</strong>定期自主検査の測定データおよび点検結果は、法定の記録簿に記載し<strong>3年間の保存</strong>が義務付けられています。臨検（立ち入り調査）の際には確実な提示が求められます。
+  </div>
+</div>
+
+<!-- ===== 第8章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 08</div>
+  <h2 class="chapter__title">特殊健康診断とじん肺管理</h2>
+
+  <h3>特殊健康診断の義務化</h3>
+  <p>溶接ヒュームの特化則対象指定に伴い、常時金属アーク溶接等作業に従事する全労働者に対して、マンガン等に係る<strong>「特定化学物質健康診断（特殊健康診断）」</strong>の実施が義務付けられました。</p>
+
+  <h4>検査内容</h4>
+  <ul>
+    <li>マンガン中毒の初期兆候スクリーニング（手指の震え、歩行のふらつき、発語障害等）</li>
+    <li>呼吸器系の異常の有無の評価</li>
+  </ul>
+
+  <h4>実施頻度と記録管理</h4>
+  <table>
+    <thead>
+      <tr><th>項目</th><th>要件</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>実施頻度</strong></td><td>6ヶ月以内に1回（一般健診の年1回より高頻度）</td></tr>
+      <tr><td><strong>記録保存</strong></td><td>健康診断個人票を5年間保存</td></tr>
+      <tr><td><strong>労働者への通知</strong></td><td>健診結果を速やかに本人に通知</td></tr>
+      <tr><td><strong>行政報告</strong></td><td>結果報告書（特化則様式第3号）を労働基準監督署長へ提出</td></tr>
+    </tbody>
+  </table>
+
+  <h3>じん肺健康診断との並行実施</h3>
+  <div class="highlight-box">
+    <strong>重要：</strong>特化則に基づく特殊健康診断が義務化された後も、従来からの<strong>じん肺健康診断</strong>（胸部X線検査等）の実施義務は免除されません。事業者は双方を並行して実施する必要があります。
+  </div>
+</div>
+
+<!-- ===== 第9章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 09</div>
+  <h2 class="chapter__title">活用できる補助金・助成金制度</h2>
+
+  <p>法改正への対応コストを軽減するため、国・都道府県・市区町村は多様な補助金・助成金プログラムを展開しています。これらを戦略的に活用することは、企業の存続を左右する経営課題です。</p>
+
+  <h3>東京都の大規模支援プログラム</h3>
+  <table>
+    <thead>
+      <tr><th>助成金名称</th><th>概要</th><th>限度額・助成率</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>設備投資緊急支援事業</strong></td>
+        <td>生産性向上に資する機械設備導入を支援。自動化溶接ロボット、大規模局所排気システムの導入等</td>
+        <td>最大1億円、助成率4/5以内</td>
+      </tr>
+      <tr>
+        <td><strong>緊急デジタル技術活用推進助成金</strong></td>
+        <td>ICT・AI・ロボット等のデジタル技術導入。排気装置のIoTモニタリングシステム等</td>
+        <td>最大3,000万円、助成率4/5以内</td>
+      </tr>
+      <tr>
+        <td><strong>躍進的な事業推進のための設備投資支援（アップグレード促進）</strong></td>
+        <td>賃上げ・ゼロエミッションを要件とした競争力強化設備支援。次世代クリーン製造ライン等</td>
+        <td>最大2億円、助成率4/5以内</td>
+      </tr>
+      <tr>
+        <td><strong>中小企業デジタルツール導入促進</strong></td>
+        <td>少額デジタルツール導入。安全衛生マネジメントシステムのクラウド化等</td>
+        <td>最大100万円、助成率1/2〜2/3</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="note">※ GビズIDプライムアカウントの取得と電子申請システム「Jグランツ」経由の申請が必要です。持参・郵送は不可。</p>
+
+  <h3>区レベルの独自支援制度</h3>
+  <table>
+    <thead>
+      <tr><th>制度名</th><th>概要</th><th>限度額・助成率</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>大田区 設備リニューアル臨時助成金</strong></td>
+        <td>既存設備の省エネ化・業務改善への更新費用。4%以上の賃上げで優遇</td>
+        <td>通常：上限50万円（1/2）<br>賃上げ優遇：上限80万円（4/5）</td>
+      </tr>
+      <tr>
+        <td><strong>墨田区 地球温暖化防止設備導入助成</strong></td>
+        <td>省エネ設備導入。インバータ制御式換気設備も対象可能性あり</td>
+        <td>制度により異なる</td>
+      </tr>
+      <tr>
+        <td><strong>北区 再生可能エネルギー・省エネ機器等導入助成</strong></td>
+        <td>高効率機器への更新</td>
+        <td>上限24万円</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box">
+    <strong>ハイブリッド戦略のすすめ：</strong>「労働安全衛生のコスト」だけでなく、「省エネ化によるCO2削減」という環境改善の文脈でも補助金申請を組み立てることで、より多様な公的資金にアクセスできます。
+  </div>
+</div>
+
+<!-- ===== 第10章 ===== -->
+<div class="chapter">
+  <div class="chapter__number">Chapter 10</div>
+  <h2 class="chapter__title">現場の課題を解決する — サポートアームのご提案</h2>
+
+  <div class="product-section">
+    <h3>局所排気装置でのダクト保持の課題</h3>
+    <p>法改正に対応するため多くの工場が局所排気装置を導入していますが、現場では以下の課題が生じています。</p>
+    <ul>
+      <li>排気ダクト（フレキシブルホース）が<strong>自重で垂れ下がり</strong>、吸引口が発生源から離れて捕集効率が低下</li>
+      <li>溶接位置が変わるたびに<strong>ダクト位置を手で調整</strong>する必要がある</li>
+      <li>ダクトを<strong>片手で支えながら溶接</strong>するため、作業効率・品質が低下</li>
+    </ul>
+
+    <h3>岩代工業のサポートアームが解決します</h3>
+    <table>
+      <thead>
+        <tr><th>特徴</th><th>詳細</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>3関節1伸縮構造</strong></td><td>360度自由な角度調整。作業に最適な位置へスムーズに移動</td></tr>
+        <tr><td><strong>本体1.2kg</strong></td><td>片手で軽く動かせる軽量設計</td></tr>
+        <tr><td><strong>確実な位置保持</strong></td><td>任意の位置・角度でダクトを確実に固定</td></tr>
+        <tr><td><strong>壁・天井設置対応</strong></td><td>限られたスペースの工場にも柔軟に対応</td></tr>
+        <tr><td><strong>導電性設計</strong></td><td>自社工場で一つひとつ製作、高品質な導電性を確保</td></tr>
+        <tr><td><strong>国内製造・サポート</strong></td><td>東京・大田区の自社工場製造、迅速なアフターサポート</td></tr>
+      </tbody>
+    </table>
+
+    <p>サポートアームにより、作業者は<strong>両手で溶接に集中できる環境</strong>を実現。局所排気装置の本来の性能を最大限に発揮させ、法令遵守と作業効率の向上を両立します。</p>
+  </div>
+
+  <div class="guide-footer">
+    <p><strong>岩代工業株式会社</strong></p>
+    <p>〒146-0093 東京都大田区矢口2丁目6番7号 ｜ TEL: 03-3756-1511</p>
+    <p>https://support-arm.com</p>
+    <p style="margin-top: 8px; font-size: 8pt;">本資料の内容は2026年4月時点の情報に基づいています。最新の法令・制度については各公的機関のウェブサイトをご確認ください。</p>
+  </div>
+
+</div><!-- /.guide -->
+
+</body>
+</html>

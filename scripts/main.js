@@ -897,6 +897,154 @@ document.querySelectorAll('[data-display-carousel]').forEach(function(el) {
 })();
 
 // ====================================
+// Survey Form & PDF Download
+// ====================================
+(() => {
+  const surveyForm = document.getElementById('surveyForm');
+  const downloadBtn = document.getElementById('surveyDownloadBtn');
+  if (!surveyForm || !downloadBtn) return;
+
+  const requiredQuestions = ['employee_count', 'lev_status', 'introduction_scale'];
+
+  // Check if all required questions are answered
+  const checkFormCompletion = () => {
+    const radiosComplete = requiredQuestions.every(name => {
+      return surveyForm.querySelector(`input[name="${name}"]:checked`);
+    });
+
+    // Check at least one checkbox for welding_types
+    const checkboxComplete = surveyForm.querySelectorAll('input[name="welding_types"]:checked').length > 0;
+
+    const allComplete = radiosComplete && checkboxComplete;
+
+    downloadBtn.disabled = !allComplete;
+    if (allComplete) {
+      downloadBtn.innerHTML = `
+        <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        無料PDFをダウンロードする
+      `;
+    }
+  };
+
+  // Listen for input changes
+  surveyForm.addEventListener('change', checkFormCompletion);
+
+  // Handle form submit (download)
+  surveyForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (downloadBtn.disabled) return;
+
+    // Collect form data
+    const formData = new FormData(surveyForm);
+    const data = {
+      employee_count: formData.get('employee_count'),
+      welding_types: formData.getAll('welding_types'),
+      lev_status: formData.get('lev_status'),
+      introduction_scale: formData.get('introduction_scale'),
+      free_text: formData.get('free_text') || '',
+      downloaded_at: new Date().toLocaleString('ja-JP'),
+    };
+
+    // Update button state
+    const originalHTML = downloadBtn.innerHTML;
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = 'PDF生成中...';
+
+    try {
+      // Send survey data to backend (fire-and-forget, don't block download)
+      fetch('/api/survey', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }).catch(() => {});
+
+      // Track with GA
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'guide_download', {
+          'event_category': 'Download',
+          'event_label': 'welding_fume_guide',
+          'employee_count': data.employee_count,
+          'lev_status': data.lev_status,
+        });
+      }
+
+      // Fetch guide-content.html and generate PDF
+      const response = await fetch('/guide-content.html');
+      const html = await response.text();
+
+      // Create a temporary container
+      const container = document.createElement('div');
+      container.innerHTML = html;
+
+      // Extract just the body content
+      const bodyContent = container.querySelector('body');
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = bodyContent ? bodyContent.innerHTML : html;
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.left = '-9999px';
+      tempDiv.style.top = '0';
+      document.body.appendChild(tempDiv);
+
+      // Copy the styles from guide-content.html
+      const styleTag = container.querySelector('style');
+      if (styleTag) {
+        const tempStyle = document.createElement('style');
+        tempStyle.textContent = styleTag.textContent;
+        tempDiv.prepend(tempStyle);
+      }
+
+      // Generate PDF using html2pdf.js
+      const opt = {
+        margin: 0,
+        filename: '溶接ヒューム法規制_完全対応ガイド_岩代工業.pdf',
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          letterRendering: true,
+        },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait',
+        },
+        pagebreak: { mode: ['css', 'legacy'], before: '.chapter' },
+      };
+
+      await html2pdf().set(opt).from(tempDiv).save();
+
+      // Cleanup
+      document.body.removeChild(tempDiv);
+
+      // Show success state
+      downloadBtn.innerHTML = `
+        <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        ダウンロード完了
+      `;
+      downloadBtn.disabled = true;
+
+      // Reset after 5 seconds
+      setTimeout(() => {
+        downloadBtn.innerHTML = originalHTML.replace('アンケートに全問ご回答ください', '再度ダウンロードする');
+        downloadBtn.disabled = false;
+      }, 5000);
+
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      downloadBtn.innerHTML = originalHTML;
+      downloadBtn.disabled = false;
+      alert('PDFの生成に失敗しました。ページを再読み込みして再度お試しください。');
+    }
+  });
+})();
+
+// ====================================
 // Gallery Carousel
 // ====================================
 (() => {
