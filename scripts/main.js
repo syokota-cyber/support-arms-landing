@@ -897,6 +897,36 @@ document.querySelectorAll('[data-display-carousel]').forEach(function(el) {
 })();
 
 // ====================================
+// Download Guide Modal
+// ====================================
+(() => {
+  const modal = document.getElementById('downloadGuideModal');
+  const openBtns = document.querySelectorAll('[data-open-download-modal]');
+  const closeBtn = modal ? modal.querySelector('[data-close-download-modal]') : null;
+  const overlay = modal ? modal.querySelector('.download-modal__overlay') : null;
+
+  if (!modal) return;
+
+  const openModal = () => {
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    const content = modal.querySelector('.download-modal__content');
+    if (content) setTimeout(() => { content.scrollTop = 0; }, 100);
+  };
+  const closeModal = () => {
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  };
+
+  openBtns.forEach(btn => btn.addEventListener('click', openModal));
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (overlay) overlay.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+  });
+})();
+
+// ====================================
 // Survey Form & PDF Download
 // ====================================
 (() => {
@@ -949,98 +979,30 @@ document.querySelectorAll('[data-display-carousel]').forEach(function(el) {
       downloaded_at: new Date().toLocaleString('ja-JP'),
     };
 
-    // Update button state
-    const originalHTML = downloadBtn.innerHTML;
-    downloadBtn.disabled = true;
-    downloadBtn.textContent = 'PDF生成中...';
+    // Send survey data to backend (fire-and-forget, don't block download)
+    fetch('/api/survey', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch(() => {});
 
-    try {
-      // Send survey data to backend (fire-and-forget, don't block download)
-      fetch('/api/survey', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      }).catch(() => {});
-
-      // Track with GA
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'guide_download', {
-          'event_category': 'Download',
-          'event_label': 'welding_fume_guide',
-          'employee_count': data.employee_count,
-          'lev_status': data.lev_status,
-        });
-      }
-
-      // Fetch guide-content.html and generate PDF
-      const response = await fetch('/guide-content.html');
-      const html = await response.text();
-
-      // Create a temporary container
-      const container = document.createElement('div');
-      container.innerHTML = html;
-
-      // Extract just the body content
-      const bodyContent = container.querySelector('body');
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = bodyContent ? bodyContent.innerHTML : html;
-      tempDiv.style.position = 'absolute';
-      tempDiv.style.left = '-9999px';
-      tempDiv.style.top = '0';
-      document.body.appendChild(tempDiv);
-
-      // Copy the styles from guide-content.html
-      const styleTag = container.querySelector('style');
-      if (styleTag) {
-        const tempStyle = document.createElement('style');
-        tempStyle.textContent = styleTag.textContent;
-        tempDiv.prepend(tempStyle);
-      }
-
-      // Generate PDF using html2pdf.js
-      const opt = {
-        margin: 0,
-        filename: '溶接ヒューム法規制_完全対応ガイド_岩代工業.pdf',
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          letterRendering: true,
-        },
-        jsPDF: {
-          unit: 'mm',
-          format: 'a4',
-          orientation: 'portrait',
-        },
-        pagebreak: { mode: ['css', 'legacy'], before: '.chapter' },
-      };
-
-      await html2pdf().set(opt).from(tempDiv).save();
-
-      // Cleanup
-      document.body.removeChild(tempDiv);
-
-      // Show success state
-      downloadBtn.innerHTML = `
-        <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        ダウンロード完了
-      `;
-      downloadBtn.disabled = true;
-
-      // Reset after 5 seconds
-      setTimeout(() => {
-        downloadBtn.innerHTML = originalHTML.replace('アンケートに全問ご回答ください', '再度ダウンロードする');
-        downloadBtn.disabled = false;
-      }, 5000);
-
-    } catch (error) {
-      console.error('PDF generation error:', error);
-      downloadBtn.innerHTML = originalHTML;
-      downloadBtn.disabled = false;
-      alert('PDFの生成に失敗しました。ページを再読み込みして再度お試しください。');
+    // Track with GA
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'guide_download', {
+        'event_category': 'Download',
+        'event_label': 'welding_fume_guide',
+        'employee_count': data.employee_count,
+        'lev_status': data.lev_status,
+      });
     }
+
+    // Download pre-generated PDF
+    const link = document.createElement('a');
+    link.href = '/assets/溶接ヒューム法規制_完全対応ガイド_岩代工業.pdf';
+    link.download = '溶接ヒューム法規制_完全対応ガイド_岩代工業.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   });
 })();
 

@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title>溶接ヒューム法規制 完全対応ガイド</title>
   <style>
-    /* PDF用スタイル - html2pdf.jsで変換時に使用 */
+    /* PDF用スタイル */
+    @page { size: A4; margin: 0; }
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700&display=swap');
 
     :root {
@@ -101,6 +102,10 @@
       padding-top: 10mm;
     }
     .chapter:first-of-type { page-break-before: avoid; }
+
+    table { page-break-inside: avoid; }
+    .highlight-box, .warning-box, .penalty-box { page-break-inside: avoid; }
+    .product-section { page-break-inside: avoid; }
     .chapter__number {
       font-size: 9pt;
       color: var(--color-primary);

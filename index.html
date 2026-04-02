@@ -307,15 +307,11 @@
 
         <nav class="header__nav" id="nav">
           <ul class="nav-list">
-            <li><a href="#regulation">法規制</a></li>
             <li><a href="#features">特徴</a></li>
-            <li><a href="#applications">活用例</a></li>
-            <li><a href="#case-studies">導入事例</a></li>
-            <li><a href="#viewer360-header">360°ビュー</a></li>
+            <li><a href="#applications">活用例・事例</a></li>
             <li><a href="#specs">仕様</a></li>
-            <li><a href="#after-support">サポート</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="#download-guide">無料資料</a></li>
+            <li><a href="#faq">FAQ・サポート</a></li>
+            <li><a href="#download-guide" data-open-download-modal>無料資料</a></li>
             <li class="nav-tel"><a href="tel:0337561511">TEL: 03-3756-1511</a></li>
             <li><a href="#contact" class="nav-cta">ご相談・お見積もり</a></li>
           </ul>
@@ -2262,43 +2258,70 @@
     </div>
   </section>
 
-  <!-- Download Guide Section -->
-  <section class="download-guide" id="download-guide">
+  <!-- Download Guide CTA Banner -->
+  <section class="download-banner" id="download-guide">
     <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">無料資料ダウンロード</h2>
-        <p class="section-subtitle">溶接ヒューム法規制の全体像を1冊にまとめた専門ガイドを無料でお届けします</p>
-      </div>
-
-      <div class="download-guide__content" data-animate>
-        <div class="download-guide__preview">
-          <div class="download-guide__book">
-            <div class="download-guide__book-cover">
-              <span class="download-guide__book-badge">PDF 全10章</span>
-              <h3 class="download-guide__book-title">溶接ヒューム法規制<br>完全対応ガイド</h3>
-              <p class="download-guide__book-subtitle">特化則改正・届出制度・<br>補助金活用まで徹底解説</p>
-              <span class="download-guide__book-year">2026年版</span>
-            </div>
+      <div class="download-banner__inner" data-animate>
+        <div class="download-banner__book">
+          <div class="download-banner__book-cover">
+            <span class="download-banner__book-badge">PDF 全10章</span>
+            <span class="download-banner__book-title">溶接ヒューム<br>法規制完全対応ガイド</span>
+            <span class="download-banner__book-year">2026年版</span>
           </div>
-          <div class="download-guide__toc">
+        </div>
+        <div class="download-banner__text">
+          <h2 class="download-banner__heading">法規制の全体像を1冊に。無料ガイドをダウンロード</h2>
+          <p class="download-banner__desc">特化則改正の背景から届出制度、補助金活用まで全10章で徹底解説。<strong>メールアドレス登録不要</strong>、簡単なアンケートですぐにダウンロードいただけます。</p>
+          <button class="btn btn--accent btn--large" data-open-download-modal>
+            <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            無料ダウンロードはこちら
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download Guide Modal -->
+  <div class="download-modal" id="downloadGuideModal" aria-hidden="true">
+    <div class="download-modal__overlay"></div>
+    <div class="download-modal__dialog">
+      <div class="download-modal__header">
+        <h2 class="download-modal__title">無料資料ダウンロード</h2>
+        <button class="download-modal__close" data-close-download-modal aria-label="閉じる">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="download-modal__content">
+        <div class="download-modal__intro">
+          <div class="download-modal__book-mini">
+            <span class="download-banner__book-badge">PDF 全10章</span>
+            <span class="download-banner__book-title">溶接ヒューム<br>法規制完全対応ガイド</span>
+          </div>
+          <div class="download-modal__toc">
             <h4>収録内容</h4>
-            <ul>
-              <li>第1章　規制強化の背景と溶接ヒュームの危険性</li>
-              <li>第2章　対象作業の定義と適用範囲</li>
-              <li>第3章　義務付けられた健康障害防止措置</li>
-              <li>第4章　個人ばく露測定の導入</li>
-              <li>第5章　フィットテスト義務化</li>
-              <li>第6章　局所排気装置の工学的要件と届出制度</li>
-              <li>第7章　定期自主検査の詳細</li>
-              <li>第8章　特殊健康診断とじん肺管理</li>
-              <li>第9章　活用できる補助金・助成金一覧</li>
-              <li>第10章　サポートアームによる現場課題の解決</li>
-            </ul>
+            <ol>
+              <li>規制強化の背景と溶接ヒュームの危険性</li>
+              <li>対象作業の定義と適用範囲</li>
+              <li>義務付けられた健康障害防止措置</li>
+              <li>個人ばく露測定の導入</li>
+              <li>フィットテスト義務化</li>
+              <li>局所排気装置の工学的要件と届出制度</li>
+              <li>定期自主検査の詳細</li>
+              <li>特殊健康診断とじん肺管理</li>
+              <li>活用できる補助金・助成金一覧</li>
+              <li>サポートアームによる現場課題の解決</li>
+            </ol>
           </div>
         </div>
 
-        <div class="download-guide__form-area">
-          <p class="download-guide__lead">簡単なアンケート（4問＋任意1問）にご回答いただくと、すぐにダウンロードいただけます。<br><strong>メールアドレスの登録は不要です。</strong></p>
+        <div class="download-modal__form-area">
+          <p class="download-modal__lead">簡単なアンケート（4問＋任意1問）にご回答ください。<br><strong>メールアドレスの登録は不要です。</strong></p>
 
           <form class="survey-form" id="surveyForm">
             <!-- Q1 -->
@@ -2385,7 +2408,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- CTA Section with Embedded Form -->
   <section class="cta" id="contact">
@@ -2495,7 +2518,7 @@
             <li><a href="#specs">仕様</a></li>
             <li><a href="#applications">活用例</a></li>
             <li><a href="#faq">よくある質問</a></li>
-            <li><a href="#download-guide">無料資料ダウンロード</a></li>
+            <li><a href="#download-guide" data-open-download-modal>無料資料ダウンロード</a></li>
           </ul>
         </div>
 
@@ -2514,9 +2537,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- html2pdf.js for guide download -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" defer></script>
 
   <!-- Scripts -->
   <script type="module" src="./scripts/main.js"></script>

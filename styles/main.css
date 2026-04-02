@@ -4296,133 +4296,275 @@ section {
 }
 
 /* ====================================
-   Download Guide Section
+   Download Banner (CTA strip)
    ==================================== */
-.download-guide {
-  padding: var(--space-20) 0;
-  background: var(--color-gray-50);
+.download-banner {
+  padding: var(--space-12) 0;
+  background: linear-gradient(135deg, #f0f7ff 0%, #e8f0fe 100%);
+  border-top: 1px solid rgba(0,70,127,0.08);
+  border-bottom: 1px solid rgba(0,70,127,0.08);
 }
 
-.download-guide .section-title {
-  font-family: 'Noto Serif JP', serif;
-}
-
-.download-guide__content {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: var(--space-12);
-  align-items: start;
-  margin-top: var(--space-10);
-}
-
-.download-guide__preview {
-  position: sticky;
-  top: calc(var(--header-height) + var(--space-8));
-}
-
-/* Book cover mockup */
-.download-guide__book {
-  perspective: 800px;
+.download-banner__inner {
   display: flex;
-  justify-content: center;
-  margin-bottom: var(--space-8);
+  align-items: center;
+  gap: var(--space-10);
 }
 
-.download-guide__book-cover {
-  width: 220px;
-  min-height: 310px;
+.download-banner__book {
+  flex-shrink: 0;
+  perspective: 600px;
+}
+
+.download-banner__book-cover {
+  width: 170px;
+  min-height: 230px;
   background: linear-gradient(135deg, #00467F 0%, #003562 100%);
   color: #fff;
-  border-radius: 4px 12px 12px 4px;
-  padding: 30px 24px;
+  border-radius: 3px 8px 8px 3px;
+  padding: 22px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   box-shadow:
-    -4px 0 8px rgba(0,0,0,0.15),
-    0 8px 24px rgba(0,70,127,0.3),
-    inset 3px 0 6px rgba(255,255,255,0.1);
-  transform: rotateY(-8deg);
+    -3px 0 6px rgba(0,0,0,0.12),
+    0 6px 18px rgba(0,70,127,0.25),
+    inset 2px 0 4px rgba(255,255,255,0.1);
+  transform: rotateY(-6deg);
   transition: transform var(--transition-base);
   position: relative;
 }
 
-.download-guide__book-cover::before {
+.download-banner__book-cover::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 6px;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
   background: linear-gradient(to right, rgba(0,0,0,0.2), transparent);
-  border-radius: 4px 0 0 4px;
+  border-radius: 3px 0 0 3px;
 }
 
-.download-guide__book:hover .download-guide__book-cover {
-  transform: rotateY(-3deg);
+.download-banner__book:hover .download-banner__book-cover {
+  transform: rotateY(-2deg);
 }
 
-.download-guide__book-badge {
+.download-banner__book-badge {
   display: inline-block;
   background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.3);
   border-radius: 3px;
-  padding: 3px 12px;
-  font-size: var(--text-xs);
+  padding: 2px 8px;
+  font-size: 10px;
   letter-spacing: 0.05em;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
-.download-guide__book-title {
+.download-banner__book-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
   font-weight: 700;
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
-
-.download-guide__book-subtitle {
-  font-size: var(--text-xs);
-  opacity: 0.85;
   line-height: 1.6;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  white-space: nowrap;
 }
 
-.download-guide__book-year {
-  font-size: var(--text-xs);
+.download-banner__book-year {
+  font-size: 10px;
   opacity: 0.6;
 }
 
-/* TOC list */
-.download-guide__toc h4 {
-  font-size: var(--text-sm);
+.download-banner__text {
+  flex: 1;
+}
+
+.download-banner__heading {
+  font-family: 'Noto Serif JP', serif;
+  font-size: var(--text-xl);
   color: var(--color-primary);
   margin-bottom: var(--space-3);
-  font-weight: 600;
-}
-
-.download-guide__toc ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.download-guide__toc li {
-  font-size: var(--text-xs);
-  color: var(--color-gray-600);
-  padding: 5px 0;
-  border-bottom: 1px dotted var(--color-gray-200);
   line-height: 1.5;
 }
 
-/* Form area */
-.download-guide__lead {
+.download-banner__desc {
   font-size: var(--text-sm);
   color: var(--color-gray-600);
-  margin-bottom: var(--space-6);
   line-height: 1.8;
+  margin-bottom: var(--space-5);
+}
+
+@media (max-width: 768px) {
+  .download-banner__inner {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-6);
+  }
+  .download-banner__book-cover {
+    width: 140px;
+    min-height: 190px;
+    padding: 16px 12px;
+  }
+  .download-banner__book-title {
+    font-size: var(--text-sm);
+  }
+  .download-banner__heading {
+    font-size: var(--text-lg);
+  }
+}
+
+/* ====================================
+   Download Modal
+   ==================================== */
+.download-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.download-modal.is-open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.download-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.download-modal__dialog {
+  position: relative;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 760px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-xl);
+  transform: translateY(20px);
+  transition: transform var(--transition-base);
+}
+
+.download-modal.is-open .download-modal__dialog {
+  transform: translateY(0);
+}
+
+.download-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-gray-200);
+  flex-shrink: 0;
+}
+
+.download-modal__title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: var(--text-lg);
+  color: var(--color-primary);
+}
+
+.download-modal__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gray-400);
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.download-modal__close:hover {
+  color: var(--color-gray-700);
+}
+
+.download-modal__content {
+  overflow-y: auto;
+  padding: var(--space-6);
+  -webkit-overflow-scrolling: touch;
+}
+
+.download-modal__intro {
+  display: flex;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.download-modal__book-mini {
+  flex-shrink: 0;
+  width: 150px;
+  min-height: 205px;
+  background: linear-gradient(135deg, #00467F 0%, #003562 100%);
+  color: #fff;
+  border-radius: 3px 8px 8px 3px;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow:
+    -3px 0 6px rgba(0,0,0,0.12),
+    0 4px 12px rgba(0,70,127,0.2);
+}
+
+.download-modal__toc {
+  flex: 1;
+}
+
+.download-modal__toc h4 {
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+}
+
+.download-modal__toc ol {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.download-modal__toc li {
+  font-size: var(--text-xs);
+  color: var(--color-gray-600);
+  padding: 3px 0;
+  line-height: 1.5;
+}
+
+.download-modal__lead {
+  font-size: var(--text-sm);
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-5);
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .download-modal__dialog {
+    width: 95%;
+    max-height: 95vh;
+  }
+  .download-modal__content {
+    padding: var(--space-4);
+  }
+  .download-modal__intro {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .download-modal__book-mini {
+    width: 130px;
+    min-height: 175px;
+  }
 }
 
 /* Survey form */
