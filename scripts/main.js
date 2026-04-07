@@ -247,6 +247,11 @@ if (contactForm) {
       return;
     }
 
+    if (!data.contact_job_role) {
+      showFormResult(formResult, 'error', '業種・職種を選択してください。');
+      return;
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
       showFormResult(formResult, 'error', '有効なメールアドレスを入力してください。');

@@ -16,8 +16,8 @@ export async function onRequestPost(context) {
     const body = await context.request.json();
 
     // Validate required fields
-    const { company, name, email, inquiry_type } = body;
-    if (!company || !name || !email || !inquiry_type) {
+    const { company, name, email, inquiry_type, contact_job_role } = body;
+    if (!company || !name || !email || !inquiry_type || !contact_job_role) {
       return new Response(
         JSON.stringify({ success: false, error: '必須項目を入力してください。' }),
         { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
@@ -59,6 +59,7 @@ export async function onRequestPost(context) {
 ■ お名前: ${name}
 ■ メールアドレス: ${email}
 ■ 電話番号: ${phone}
+■ 業種・職種: ${contact_job_role}
 
 ■ 詳細:
 ${message}
