@@ -16,7 +16,7 @@ export async function onRequestPost(context) {
     const body = await context.request.json();
 
     const {
-      employee_count,
+      job_role,
       welding_types,
       lev_status,
       introduction_scale,
@@ -25,7 +25,7 @@ export async function onRequestPost(context) {
     } = body;
 
     // Validate required fields
-    if (!employee_count || !welding_types || !lev_status || !introduction_scale) {
+    if (!job_role || !welding_types || !lev_status || !introduction_scale) {
       return new Response(
         JSON.stringify({ success: false, error: 'アンケートの回答が不足しています。' }),
         { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
@@ -54,8 +54,8 @@ export async function onRequestPost(context) {
 ダウンロード日時: ${downloaded_at || new Date().toISOString()}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-■ Q1. 事業場の従業員規模
-${employee_count}
+■ Q1. 業種・職種
+${job_role}
 
 ■ Q2. 現在行っている溶接作業の種類
 ${weldingTypesStr}
@@ -83,7 +83,7 @@ ${free_text || '（未記入）'}
       body: JSON.stringify({
         from: 'サポートアーム ウェブサイト <noreply@support-arm.com>',
         to: ['customer@iwashiro.co.jp'],
-        subject: `【資料DL】アンケート回答 - ${employee_count} / ${lev_status}`,
+        subject: `【資料DL】アンケート回答 - ${job_role} / ${lev_status}`,
         text: emailBody,
       }),
     });

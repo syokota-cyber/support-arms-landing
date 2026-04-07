@@ -4363,11 +4363,10 @@ section {
 
 .download-banner__book-title {
   font-family: 'Noto Serif JP', serif;
-  font-size: var(--text-base);
+  font-size: var(--text-sm);
   font-weight: 700;
   line-height: 1.6;
   margin-bottom: 8px;
-  white-space: nowrap;
 }
 
 .download-banner__book-year {

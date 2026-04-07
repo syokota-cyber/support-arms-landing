@@ -934,7 +934,7 @@ document.querySelectorAll('[data-display-carousel]').forEach(function(el) {
   const downloadBtn = document.getElementById('surveyDownloadBtn');
   if (!surveyForm || !downloadBtn) return;
 
-  const requiredQuestions = ['employee_count', 'lev_status', 'introduction_scale'];
+  const requiredQuestions = ['job_role', 'lev_status', 'introduction_scale'];
 
   // Check if all required questions are answered
   const checkFormCompletion = () => {
@@ -971,7 +971,7 @@ document.querySelectorAll('[data-display-carousel]').forEach(function(el) {
     // Collect form data
     const formData = new FormData(surveyForm);
     const data = {
-      employee_count: formData.get('employee_count'),
+      job_role: formData.get('job_role'),
       welding_types: formData.getAll('welding_types'),
       lev_status: formData.get('lev_status'),
       introduction_scale: formData.get('introduction_scale'),
@@ -991,7 +991,7 @@ document.querySelectorAll('[data-display-carousel]').forEach(function(el) {
       gtag('event', 'guide_download', {
         'event_category': 'Download',
         'event_label': 'welding_fume_guide',
-        'employee_count': data.employee_count,
+        'job_role': data.job_role,
         'lev_status': data.lev_status,
       });
     }
