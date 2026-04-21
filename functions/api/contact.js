@@ -84,6 +84,29 @@ ${message}
       }),
     });
 
+    // Save to Google Sheets via GAS (non-blocking)
+    const gasUrl = context.env.GAS_WEBHOOK_URL;
+    if (gasUrl) {
+      try {
+        await fetch(gasUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'contact',
+            company,
+            name,
+            email,
+            phone: body.phone || '',
+            contact_job_role,
+            inquiry_type,
+            message: body.message || '',
+          }),
+        });
+      } catch (gasError) {
+        console.error('GAS write error:', gasError);
+      }
+    }
+
     if (resendResponse.ok) {
       return new Response(
         JSON.stringify({ success: true }),

@@ -88,6 +88,27 @@ ${free_text || '（未記入）'}
       }),
     });
 
+    // Save to Google Sheets via GAS (non-blocking)
+    const gasUrl = context.env.GAS_WEBHOOK_URL;
+    if (gasUrl) {
+      try {
+        await fetch(gasUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'survey',
+            job_role,
+            welding_types: weldingTypesStr,
+            lev_status,
+            introduction_scale,
+            free_text: free_text || '',
+          }),
+        });
+      } catch (gasError) {
+        console.error('GAS write error:', gasError);
+      }
+    }
+
     if (resendResponse.ok) {
       return new Response(
         JSON.stringify({ success: true }),
