@@ -33,6 +33,31 @@ export async function onRequestPost(context) {
       );
     }
 
+    // Honeypot check - silently reject
+    if (body.website) {
+      return new Response(
+        JSON.stringify({ success: true }),
+        { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      );
+    }
+
+    // URL detection in text fields
+    const urlPattern = /https?:\/\/|www\./i;
+    if (urlPattern.test(body.message || '') || urlPattern.test(name || '') || urlPattern.test(company || '')) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'URLを含む送信はできません。' }),
+        { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      );
+    }
+
+    // Message length check
+    if (body.message && body.message.length > 500) {
+      return new Response(
+        JSON.stringify({ success: false, error: '詳細は500文字以内で入力してください。' }),
+        { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+      );
+    }
+
     // Get API key from environment
     const apiKey = context.env.RESEND_API_KEY;
     if (!apiKey) {

@@ -258,6 +258,20 @@ if (contactForm) {
       return;
     }
 
+    // Honeypot check
+    if (data.website) {
+      showFormResult(formResult, 'success', '送信が完了しました。3営業日以内にご回答いたします。');
+      contactForm.reset();
+      return;
+    }
+
+    // URL detection in text fields
+    const urlPattern = /https?:\/\/|www\./i;
+    if (urlPattern.test(data.message || '') || urlPattern.test(data.name || '') || urlPattern.test(data.company || '')) {
+      showFormResult(formResult, 'error', 'URLを含む送信はできません。お手数ですがURLを削除してください。');
+      return;
+    }
+
     // Disable submit button
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;

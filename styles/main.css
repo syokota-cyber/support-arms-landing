@@ -2631,6 +2631,12 @@ section {
   color: #ef4444;
 }
 
+.form-char-hint {
+  font-weight: 400;
+  font-size: 0.85em;
+  color: var(--color-gray-500);
+}
+
 .form-input,
 .form-textarea {
   padding: var(--space-3) var(--space-4);
