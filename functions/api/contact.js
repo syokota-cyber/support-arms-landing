@@ -132,12 +132,7 @@ ${message}
       }
     }
 
-    if (resendResponse.ok) {
-      return new Response(
-        JSON.stringify({ success: true }),
-        { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
-      );
-    } else {
+    if (!resendResponse.ok) {
       const errorData = await resendResponse.text();
       console.error('Resend error:', resendResponse.status, errorData);
       return new Response(
@@ -145,6 +140,63 @@ ${message}
         { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
       );
     }
+
+    // Auto-reply to the submitter (non-blocking)
+    try {
+      const autoReplyBody = `
+${name} 様
+
+この度はサポートアーム ウェブサイトよりお問い合わせいただき、
+誠にありがとうございます。
+
+以下の内容でお問い合わせを受け付けいたしました。
+担当者より折り返しご連絡いたしますので、
+今しばらくお待ちくださいますようお願い申し上げます。
+
+━━━━━━━━ お問い合わせ内容 ━━━━━━━━
+【ご相談内容】${inquiry_type}
+【会社名】${company}
+【お名前】${name}
+【電話番号】${phone}
+【業種・職種】${contact_job_role}
+【詳細】
+${message}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+※ このメールは自動送信されています。
+  本メールへの返信はできませんのでご了承ください。
+  ご不明点がございましたら下記までご連絡ください。
+
+─────────────────────────────
+岩代工業株式会社
+サポートアーム事業部
+TEL: 0250-62-1477
+Email: customer@iwashiro.co.jp
+https://support-arm.com
+─────────────────────────────
+`.trim();
+
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          from: 'サポートアーム 岩代工業 <noreply@support-arm.com>',
+          to: [email],
+          subject: '【サポートアーム】お問い合わせありがとうございます',
+          text: autoReplyBody,
+        }),
+      });
+    } catch (autoReplyError) {
+      console.error('Auto-reply error:', autoReplyError);
+    }
+
+    return new Response(
+      JSON.stringify({ success: true }),
+      { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
+    );
   } catch (error) {
     console.error('Contact form error:', error);
     return new Response(
