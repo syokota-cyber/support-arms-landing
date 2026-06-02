@@ -200,6 +200,7 @@ ${autoReplyBody}
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             type: 'contact',
+            site: 'support-arm',
             company,
             name,
             email,
