@@ -3,6 +3,11 @@
  * Sends email to customer@iwashiro.co.jp via Resend API
  *
  * Required: Set RESEND_API_KEY in Cloudflare Pages environment variables
+ *
+ * フロー（公式サイト iwashiro-contact と同一方針）:
+ *   1. 自動返信を先に送信し、成否・日時を記録
+ *   2. 管理通知メールに「自動返信ステータス（✅/⚠️）＋自動返信の写し」をぶら下げ
+ *   3. Googleスプレッドシート連携（GAS）
  */
 
 export async function onRequestPost(context) {
@@ -10,6 +15,13 @@ export async function onRequestPost(context) {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
+  // JST（日本時間）の "YYYY/MM/DD HH:MM" を返す（Workerは UTC 実行のため +9h）
+  const jstStamp = () => {
+    const d = new Date(Date.now() + 9 * 60 * 60 * 1000);
+    const p = (n) => String(n).padStart(2, '0');
+    return `${d.getUTCFullYear()}/${p(d.getUTCMonth() + 1)}/${p(d.getUTCDate())} ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`;
   };
 
   try {
@@ -68,10 +80,77 @@ export async function onRequestPost(context) {
       );
     }
 
-    // Build email body
-
     const phone = body.phone || '（未記入）';
     const message = body.message || '（未記入）';
+
+    const resendEndpoint = 'https://api.resend.com/emails';
+    const authHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    };
+
+    // --- 自動返信本文（送信にも、管理通知の「写し」にも同じ文面を使う） ---
+    const autoReplyBody = `
+${name} 様
+
+この度はサポートアーム ウェブサイトよりお問い合わせいただき、
+誠にありがとうございます。
+
+以下の内容でお問い合わせを受け付けいたしました。
+担当者より折り返しご連絡いたしますので、
+今しばらくお待ちくださいますようお願い申し上げます。
+
+━━━━━━━━ お問い合わせ内容 ━━━━━━━━
+【ご相談内容】${inquiry_type}
+【会社名】${company}
+【お名前】${name}
+【電話番号】${phone}
+【業種・職種】${contact_job_role}
+【詳細】
+${message}
+━━━━━━━━━━━━━━━━━━━━━━━━━
+
+※ このメールは自動送信されています。
+  本メールへの返信はできませんのでご了承ください。
+  ご不明点がございましたら下記までご連絡ください。
+
+─────────────────────────────
+岩代工業株式会社
+営業部
+TEL: 03-3756-1511
+Email: customer@iwashiro.co.jp
+https://support-arm.com
+─────────────────────────────
+`.trim();
+
+    // --- ① 自動返信を先に送信し、成否・日時を記録 ---
+    let autoReplySent = false;
+    let autoReplyAt = '';
+    try {
+      const ar = await fetch(resendEndpoint, {
+        method: 'POST',
+        headers: authHeaders,
+        body: JSON.stringify({
+          from: 'サポートアーム 岩代工業 <noreply@support-arm.com>',
+          to: [email],
+          subject: '【サポートアーム】お問い合わせありがとうございます',
+          text: autoReplyBody,
+        }),
+      });
+      autoReplySent = ar.ok;
+      if (ar.ok) {
+        autoReplyAt = jstStamp();
+      } else {
+        console.error('Auto-reply error:', ar.status, await ar.text());
+      }
+    } catch (autoReplyError) {
+      console.error('Auto-reply error:', autoReplyError);
+    }
+
+    // --- ② 管理通知（自動返信ステータス＋写しをぶら下げ） ---
+    const replyStatus = autoReplySent
+      ? `✅ 自動返信メール：送信済み（宛先: ${email} / ${autoReplyAt}）`
+      : `⚠️ 自動返信メール：送信に失敗しました（宛先: ${email}）。お手数ですが手動でご連絡ください。`;
 
     const emailBody = `
 サポートアーム ウェブサイトからお問い合わせがありました。
@@ -90,16 +169,19 @@ export async function onRequestPost(context) {
 ${message}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${replyStatus}
+
+──────── 以下、お客様へ送信した自動返信メールの写し ────────
+
+${autoReplyBody}
+──────────────────────────────────────────
+
 このメールは https://support-arm.com のお問い合わせフォームから自動送信されました。
 `.trim();
 
-    // Send email via Resend API
-    const resendResponse = await fetch('https://api.resend.com/emails', {
+    const resendResponse = await fetch(resendEndpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
+      headers: authHeaders,
       body: JSON.stringify({
         from: 'サポートアーム ウェブサイト <noreply@support-arm.com>',
         to: ['customer@iwashiro.co.jp'],
@@ -109,7 +191,7 @@ ${message}
       }),
     });
 
-    // Save to Google Sheets via GAS (non-blocking)
+    // --- ③ Save to Google Sheets via GAS (non-blocking) ---
     const gasUrl = context.env.GAS_WEBHOOK_URL;
     if (gasUrl) {
       try {
@@ -125,6 +207,7 @@ ${message}
             contact_job_role,
             inquiry_type,
             message: body.message || '',
+            auto_reply_sent: autoReplySent ? 'sent' : 'failed',
           }),
         });
       } catch (gasError) {
@@ -132,6 +215,7 @@ ${message}
       }
     }
 
+    // 管理通知（最重要）の失敗時は、フロントのmailtoフォールバックを促すため500を返す
     if (!resendResponse.ok) {
       const errorData = await resendResponse.text();
       console.error('Resend error:', resendResponse.status, errorData);
@@ -139,58 +223,6 @@ ${message}
         JSON.stringify({ success: false, error: '送信に失敗しました。お電話にてお問い合わせください。' }),
         { status: 500, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
       );
-    }
-
-    // Auto-reply to the submitter (non-blocking)
-    try {
-      const autoReplyBody = `
-${name} 様
-
-この度はサポートアーム ウェブサイトよりお問い合わせいただき、
-誠にありがとうございます。
-
-以下の内容でお問い合わせを受け付けいたしました。
-担当者より折り返しご連絡いたしますので、
-今しばらくお待ちくださいますようお願い申し上げます。
-
-━━━━━━━━ お問い合わせ内容 ━━━━━━━━
-【ご相談内容】${inquiry_type}
-【会社名】${company}
-【お名前】${name}
-【電話番号】${phone}
-【業種・職種】${contact_job_role}
-【詳細】
-${message}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-※ このメールは自動送信されています。
-  本メールへの返信はできませんのでご了承ください。
-  ご不明点がございましたら下記までご連絡ください。
-
-─────────────────────────────
-岩代工業株式会社
-営業部
-TEL: 03-3756-1511
-Email: customer@iwashiro.co.jp
-https://support-arm.com
-─────────────────────────────
-`.trim();
-
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          from: 'サポートアーム 岩代工業 <noreply@support-arm.com>',
-          to: [email],
-          subject: '【サポートアーム】お問い合わせありがとうございます',
-          text: autoReplyBody,
-        }),
-      });
-    } catch (autoReplyError) {
-      console.error('Auto-reply error:', autoReplyError);
     }
 
     return new Response(

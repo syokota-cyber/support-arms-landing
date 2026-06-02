@@ -8,7 +8,7 @@ function doPost(e) {
     var ws = sheet.getSheetByName('問い合わせ');
     if (!ws) {
       ws = sheet.insertSheet('問い合わせ');
-      ws.appendRow(['タイムスタンプ', '会社名', 'お名前', 'メールアドレス', '電話番号', '業種・職種', 'ご相談内容', '詳細']);
+      ws.appendRow(['タイムスタンプ', '会社名', 'お名前', 'メールアドレス', '電話番号', '業種・職種', 'ご相談内容', '詳細', '自動返信']);
     }
     ws.appendRow([
       timestamp,
@@ -18,7 +18,8 @@ function doPost(e) {
       data.phone,
       data.contact_job_role,
       data.inquiry_type,
-      data.message
+      data.message,
+      data.auto_reply_sent === 'sent' ? '✅ 送信済' : '⚠️ 失敗'
     ]);
   } else if (data.type === 'survey') {
     var ws = sheet.getSheetByName('アンケート回答');
