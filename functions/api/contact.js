@@ -220,8 +220,9 @@ ${autoReplyBody}
     //   公式サイトの受信プラグイン iwashiro-contact が record_only=1 を受けると
     //   「DB記録のみ（自動返信・管理通知・GAS送信はスキップ）」で保存し、共有ポータルに表示される。
     //   ① Resend / ③ GAS は既に実施済みのため二重発火させない。失敗してもユーザー応答には影響させない。
+    // WordPressは /wp/ 配下に設置されているため REST は /wp/wp-json/...（/wp 抜けは404）
     const wpContactUrl = context.env.WP_CONTACT_URL
-      || 'https://iwashiro.co.jp/wp-json/iwashiro/v1/contact';
+      || 'https://iwashiro.co.jp/wp/wp-json/iwashiro/v1/contact';
     try {
       await fetch(wpContactUrl, {
         method: 'POST',
