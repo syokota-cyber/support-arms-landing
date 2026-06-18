@@ -223,10 +223,16 @@ ${autoReplyBody}
     // WordPressは /wp/ 配下に設置されているため REST は /wp/wp-json/...（/wp 抜けは404）
     const wpContactUrl = context.env.WP_CONTACT_URL
       || 'https://iwashiro.co.jp/wp/wp-json/iwashiro/v1/contact';
+    // 共有シークレット（Cloudflare Pages 環境変数 WP_INGEST_SECRET）。公開リポジトリのため値はコードに置かない。
+    // WP側の IWASHIRO_INGEST_SECRET と一致すれば record_only 投入が許可される。未設定なら送らない（WP側も未設定なら従来動作）。
+    const wpIngestSecret = context.env.WP_INGEST_SECRET || '';
     try {
       await fetch(wpContactUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(wpIngestSecret ? { 'X-Iwashiro-Token': wpIngestSecret } : {}),
+        },
         body: JSON.stringify({
           record_only: 1,
           source: 'support-arm',
