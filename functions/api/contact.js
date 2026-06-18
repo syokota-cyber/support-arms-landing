@@ -216,6 +216,34 @@ ${autoReplyBody}
       }
     }
 
+    // --- ④ WP wp_iwashiro_contacts へ記録のみ送信（共有ポータル統合用・non-blocking） ---
+    //   公式サイトの受信プラグイン iwashiro-contact が record_only=1 を受けると
+    //   「DB記録のみ（自動返信・管理通知・GAS送信はスキップ）」で保存し、共有ポータルに表示される。
+    //   ① Resend / ③ GAS は既に実施済みのため二重発火させない。失敗してもユーザー応答には影響させない。
+    const wpContactUrl = context.env.WP_CONTACT_URL
+      || 'https://iwashiro.co.jp/wp-json/iwashiro/v1/contact';
+    try {
+      await fetch(wpContactUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          record_only: 1,
+          source: 'support-arm',
+          company,
+          name,
+          email,
+          phone: body.phone || '',
+          inquiry_type,
+          message: body.message || '',   // WP側で details に変換
+          contact_job_role,              // WP側で details 先頭に追記
+          source_url: 'https://support-arm.com',
+          auto_reply_sent: autoReplySent ? 1 : 0,
+        }),
+      });
+    } catch (wpError) {
+      console.error('WP record_only write error:', wpError);
+    }
+
     // 管理通知（最重要）の失敗時は、フロントのmailtoフォールバックを促すため500を返す
     if (!resendResponse.ok) {
       const errorData = await resendResponse.text();
