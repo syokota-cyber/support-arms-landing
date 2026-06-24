@@ -109,6 +109,40 @@ ${free_text || '（未記入）'}
       }
     }
 
+    // --- WP iwashiro-portal /dl-lead へ記録のみ転送（資料DLリード統合・non-blocking） ---
+    //   公式サイトと同一の dl_leads テーブルへ site=support-arm で集約し、共有ポータルの「資料DL」タブに表示する。
+    //   個人情報は送らず（WP側は job_role / answers 等のみ受理）。Resend/GAS とは別経路なので二重でも害なし。
+    //   共有シークレット（Cloudflare Pages 環境変数 WP_DL_SECRET）。公開リポジトリのため値はコードに置かない。
+    //   WP側 IWASHIRO_PORTAL_DL_SECRET と一致すれば record_only 投入が許可される。未設定なら送らない（安全な no-op）。
+    const wpDlUrl = context.env.WP_DL_URL
+      || 'https://iwashiro.co.jp/wp/wp-json/iwashiro-portal/v1/dl-lead';
+    const wpDlSecret = context.env.WP_DL_SECRET || '';
+    if (wpDlSecret) {
+      try {
+        await fetch(wpDlUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Iwashiro-Dl-Secret': wpDlSecret,
+          },
+          body: JSON.stringify({
+            site: 'support-arm',
+            document: '溶接ヒューム法規制 完全対応ガイド',
+            job_role,
+            answers: {
+              welding_types: weldingTypesStr,
+              lev_status,
+              introduction_scale,
+            },
+            free_text: free_text || '',
+            page: 'https://support-arm.com',
+          }),
+        });
+      } catch (wpError) {
+        console.error('WP dl-lead write error:', wpError);
+      }
+    }
+
     if (resendResponse.ok) {
       return new Response(
         JSON.stringify({ success: true }),
