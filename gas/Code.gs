@@ -32,7 +32,23 @@ function doPost(e) {
     var stamp = Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm:ss');
     var reply = data.auto_reply_sent === 'sent' ? '✅ 送信済' : '⚠️ 失敗';
 
-    if (data.type === 'survey') {
+    if (data.type === 'dl_lead') {
+      // 資料DLリード（公式／サポートアーム統合）。site列で出所を区別し1シートに集約。
+      var ans = data.answers;
+      var ansStr = '';
+      if (ans && typeof ans === 'object') {
+        ansStr = Object.keys(ans).map(function (k) {
+          var v = ans[k];
+          return k + ': ' + (Array.isArray(v) ? v.join('、') : v);
+        }).join(' / ');
+      } else if (ans) {
+        ansStr = String(ans);
+      }
+      appendRow_(ss, '資料DL',
+        ['タイムスタンプ', 'サイト', '資料', '業種・職種', '回答', '自由記述', '送信元ページ'],
+        [stamp, data.site || '', data.document || '', data.job_role || '', ansStr, data.free_text || '', data.page || '']);
+
+    } else if (data.type === 'survey') {
       appendRow_(ss, 'アンケート回答',
         ['タイムスタンプ', '業種・職種', '溶接作業の種類', '局所排気装置の導入状況', '導入検討の規模・予算感', 'お悩み・ご相談'],
         [stamp, data.job_role, data.welding_types, data.lev_status, data.introduction_scale, data.free_text]);
