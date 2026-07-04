@@ -33,11 +33,15 @@ def make_mat(name, color, metallic, roughness):
     bsdf.inputs["Roughness"].default_value = roughness
     return m
 
-MAT_STEEL   = make_mat("stainless",      (0.75, 0.76, 0.78), 1.0, 0.35)
-MAT_SHINY   = make_mat("inner_tube",     (0.82, 0.83, 0.85), 1.0, 0.15)
+# ベースカラー・粗さは白とび（環境光の鏡面反射で真っ白に飛ぶ）を抑えた値
+# metallicは高く保ちつつアルベドを半分に抑えることで、金属らしい反射の
+# コントラストを残しながら白とび（輝度が背景#f4f4f6超え）を防ぐ
+MAT_STEEL   = make_mat("stainless",      (0.50, 0.51, 0.53), 0.85, 0.45)
+MAT_SHINY   = make_mat("inner_tube",     (0.58, 0.59, 0.61), 1.00, 0.25)
 MAT_DARK    = make_mat("dark_metal",     (0.28, 0.28, 0.30), 1.0, 0.45)
-MAT_TABLET  = make_mat("tablet_black",   (0.015, 0.015, 0.018), 0.0, 0.40)
-MAT_SCREEN  = make_mat("tablet_screen",  (0.01, 0.01, 0.012), 0.0, 0.10)
+# タブレットは「明るいアルミ筐体＋暗いスクリーン」のコントラストで輪郭を出す
+MAT_TABLET  = make_mat("tablet_body",    (0.30, 0.31, 0.33), 0.9, 0.40)
+MAT_SCREEN  = make_mat("tablet_screen",  (0.03, 0.035, 0.055), 0.0, 0.55)
 
 def assign(obj, mat, smooth=False):
     obj.data.materials.append(mat)
@@ -131,25 +135,38 @@ seg(B - d2 * 0.01, end_fitting, 0, MAT_STEEL, kind="round", r=0.016, name="end_f
 ball_c = end_fitting + d2 * 0.022
 ball(ball_c, 0.020, MAT_STEEL, name="ball_joint")
 
-# tablet plane: tilted up toward viewer
-rot = (math.radians(-38), math.radians(8), math.radians(6))
-holder_c = ball_c + Vector((0.045, 0.0, -0.045))
-box(holder_c, (0.13, 0.10, 0.010), MAT_DARK, rot=rot, name="holder_plate")
-# neck between ball and holder
-seg(ball_c, holder_c, 0, MAT_STEEL, kind="round", r=0.009, name="neck")
-# tablet body slightly above holder plate (local +Z of the tilted plane)
+# 実機写真(parts_with_monitor.webp)の取付構造を再現:
+# ボールジョイント → 黒いクランプブロック → タブレット背面を下りるブラケット
+# → 下端のL字受け棚＋クリップ。タブレットはブラケットに載り上端が奥へ約28°傾く。
+# （model-viewerの初期カメラはBlenderの-Y方向から見るため、法線を-Yへ向ける）
+rot = (math.radians(62), 0.0, 0.0)
 import mathutils
-n = mathutils.Euler(rot).to_matrix() @ Vector((0, 0, 1))
-tab_c = holder_c + n * 0.011
-box(tab_c, (0.185, 0.26, 0.009), MAT_TABLET, rot=rot, name="tablet")
-scr_c = holder_c + n * 0.0165
-box(scr_c, (0.170, 0.245, 0.001), MAT_SCREEN, rot=rot, name="screen")
-# corner clips holding the tablet
-ey = mathutils.Euler(rot).to_matrix() @ Vector((0, 1, 0))
-ex = mathutils.Euler(rot).to_matrix() @ Vector((1, 0, 0))
-for sy in (-1, 1):
-    clip_c = holder_c + ey * (sy * 0.135) + n * 0.012
-    box(clip_c, (0.05, 0.012, 0.020), MAT_DARK, rot=rot, name="clip")
+mat_rot = mathutils.Euler(rot).to_matrix()
+n  = mat_rot @ Vector((0, 0, 1))   # 画面法線（正面＝-Y向き、上向き約28°）
+ex = mat_rot @ Vector((1, 0, 0))   # 画面内の横方向
+ey = mat_rot @ Vector((0, 1, 0))   # 画面内の上方向
+
+# ボール下のステム＋クランプブロック（黒）
+block_c = ball_c + Vector((0.0, 0.0, -0.036))
+seg(ball_c, block_c + Vector((0, 0, 0.010)), 0, MAT_STEEL, kind="round", r=0.008, name="ball_stem")
+box(block_c, (0.055, 0.035, 0.024), MAT_DARK, name="mount_block")
+
+# 背面ブラケット板（タブレットと平行に背後を下りる）
+plate_top = block_c + Vector((0.0, 0.006, -0.014))
+plate_c = plate_top - ey * 0.080
+box(plate_c, (0.12, 0.16, 0.008), MAT_DARK, rot=rot, name="back_plate")
+
+# タブレット本体＋スクリーン（ブラケットの前面に載る）
+tab_c = plate_c + n * 0.012 - ey * 0.005
+box(tab_c, (0.26, 0.185, 0.009), MAT_TABLET, rot=rot, name="tablet")
+box(tab_c + n * 0.006, (0.242, 0.168, 0.002), MAT_SCREEN, rot=rot, name="screen")
+
+# 下端のL字受け棚とクリップ
+bottom_c = tab_c - ey * 0.0955
+box(bottom_c + n * 0.004, (0.15, 0.010, 0.048), MAT_DARK, rot=rot, name="bottom_lip")
+for sx in (-1, 1):
+    clip_c = bottom_c + ex * (sx * 0.055) + n * 0.022 + ey * 0.010
+    box(clip_c, (0.030, 0.024, 0.006), MAT_DARK, rot=rot, name="clip")
 
 # ---------- export ----------
 bpy.ops.object.select_all(action="SELECT")
