@@ -489,7 +489,7 @@ const initFaqAccordion = () => {
         gtag('event', 'faq_click', {
           'event_category': 'FAQ',
           'event_label': questionText,
-          'category': categoryTitle || 'Unknown'
+          'faq_category': categoryTitle || 'Unknown'
         });
       }
     });

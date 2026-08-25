@@ -62,6 +62,12 @@
 `contact_form_submit` / `guide_download` / `product_3d_load` / `product_3d_toggle` /
 `video_load` / `scroll_depth`
 
+`faq_click` のカテゴリは `category` という汎用名だったため、`faq_modal_open` と揃えて `faq_category` にリネームした。
+
+既存イベントは UA 由来の `event_category` / `event_label` を送っている。`event_label` には
+FAQの質問文・CTAの文言・活用例名・3Dモデル種別など、他のパラメータでは取れない値が入っているため
+カスタムディメンションとして登録が必要。`event_category` は固定文字列なので登録しない。
+
 `contact_click` と `external_link_click` には今回 `section_id` / `section_name` を追加した。
 同じ文言のCTA（「この用途で相談する」など）が複数箇所にあり、これまで区別できなかったため。
 
@@ -89,7 +95,8 @@
 section_id / section_name / section_index
 form_name / field_name
 file_name / file_extension / link_text
-image_label / direction / open_from / faq_category / tab_name / target_section
+image_label / direction / open_from / faq_category / tab_index / tab_name / target_section
+event_label                          （既存イベントが実データを載せているため必要）
 phone_number / top_section_id / top_section_name / summary_seq
 inquiry_type / contact_job_role      （contact_form_submit 用）
 job_role / lev_status                （guide_download 用）
@@ -103,6 +110,24 @@ modal_id / link_url                  （既存イベント用）
 ```
 engagement_sec / top_section_sec / total_engagement_sec
 ```
+
+### 3-2b. 一括登録スクリプト
+
+管理画面での手入力（コピペが効かない）を避けるため、Admin API で 3-1 / 3-2 をまとめて登録できる。
+
+```bash
+# アクセストークンを取得（gcloud不要・有効期限1時間）
+#   https://developers.google.com/oauthplayground/ で
+#   スコープ https://www.googleapis.com/auth/analytics.edit を承認 → Access token をコピー
+export GA4_TOKEN="ya29...."
+
+node tools/ga4-setup-dimensions.mjs           # 差分表示のみ
+node tools/ga4-setup-dimensions.mjs --apply   # 作成・修正を実行
+```
+
+登録済みのものは触らない（表示名・説明は管理画面で付けたものを尊重する）。
+スクリプト内の `FIXES` に挙げたものだけ表示名・説明を上書きする。
+`parameterName` は作成後に変更できないため、パラメータ名を間違えた場合は削除して作り直す。
 
 ### 3-3. キーイベント（旧コンバージョン）
 
