@@ -3,6 +3,9 @@
  * Features: Navigation, Scroll Animations, Modal, Smooth Scroll
  */
 
+// セクション閲覧・滞在時間・追加クリックの GA4 計測
+import { sectionParams, isFileLink } from './analytics.js';
+
 // ====================================
 // DOM Elements
 // ====================================
@@ -293,9 +296,12 @@ if (contactForm) {
 
         // Track with GA
         if (typeof gtag !== 'undefined') {
-          gtag('event', 'form_submit', {
+          // GA4拡張計測が自動収集する form_submit と衝突するため独自名にしている
+          gtag('event', 'contact_form_submit', {
             'event_category': 'Contact',
-            'event_label': data.inquiry_type
+            'event_label': data.inquiry_type,
+            'inquiry_type': data.inquiry_type,
+            'contact_job_role': data.contact_job_role || ''
           });
         }
       } else {
@@ -619,9 +625,11 @@ if (typeof gtag !== 'undefined') {
   // Track contact CTA clicks
   document.querySelectorAll('a[href="#contact"]').forEach(link => {
     link.addEventListener('click', () => {
+      // 同じ文言のCTAが複数セクションにあるため、発生元セクションを必ず添える
       gtag('event', 'contact_click', {
         'event_category': 'Contact',
-        'event_label': link.textContent.trim()
+        'event_label': link.textContent.trim(),
+        ...sectionParams(link)
       });
     });
   });
@@ -630,11 +638,13 @@ if (typeof gtag !== 'undefined') {
   document.querySelectorAll('a[target="_blank"]').forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
-      if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+      // PDF等のファイルは analytics.js の file_open で計測するため二重に数えない
+      if (href && (href.startsWith('http://') || href.startsWith('https://')) && !isFileLink(href)) {
         gtag('event', 'external_link_click', {
           'event_category': 'Outbound',
           'event_label': link.textContent.trim(),
-          'link_url': href
+          'link_url': href,
+          ...sectionParams(link)
         });
       }
     });
@@ -693,7 +703,7 @@ if (typeof gtag !== 'undefined') {
   const modelViewer = document.getElementById('product-viewer');
   if (modelViewer) {
     modelViewer.addEventListener('load', () => {
-      gtag('event', '3d_model_load', {
+      gtag('event', 'product_3d_load', {
         'event_category': '3D Model',
         'event_label': 'Product Viewer'
       });
@@ -703,7 +713,7 @@ if (typeof gtag !== 'undefined') {
     document.querySelectorAll('.model-toggle-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const modelType = btn.textContent.trim();
-        gtag('event', '3d_model_toggle', {
+        gtag('event', 'product_3d_toggle', {
           'event_category': '3D Model',
           'event_label': modelType
         });
