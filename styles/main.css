@@ -2870,6 +2870,10 @@ section {
   padding: 0;
 }
 
+.specs-manual--stacked {
+  margin-top: var(--space-6);
+}
+
 .specs-manual__content {
   background: linear-gradient(135deg, #f8f9fa, #ffffff);
   border: 2px solid var(--color-gray-200);
