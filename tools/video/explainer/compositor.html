@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Explainer Compositor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&family=Barlow+Condensed:ital,wght@0,600;0,800;1,800&display=block" rel="stylesheet">
+<style>
+  :root {
+    --blue: #00467F;
+    --blue-dark: #002a4d;
+    --cyan: #3fd0ff;
+    --ink: rgba(0, 22, 44, 0.84);
+  }
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+  #stage { position: absolute; inset: 0; overflow: hidden; font-family: 'Noto Sans JP', sans-serif; color: #fff; }
+  .layer { position: absolute; inset: 0; overflow: hidden; }
+  .layer img { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  .abs { position: absolute; }
+  .num { font-family: 'Barlow Condensed', sans-serif; }
+  .shadow { text-shadow: 0 4px 18px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.6); }
+  .label {
+    position: absolute; white-space: nowrap; background: var(--ink); border-left: 10px solid var(--cyan);
+    padding: 14px 30px 16px 24px; font-size: 46px; font-weight: 700; letter-spacing: 0.02em;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+  .glass {
+    background: rgba(0, 20, 40, 0.62); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 18px;
+  }
+  .char { display: inline-block; }
+  .mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: 0.08em; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+(() => {
+  const W = 1920, H = 1080;
+  let TL = null;
+  const stage = document.getElementById('stage');
+
+  // ---------- math ----------
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const prog = (t, t0, d) => clamp((t - t0) / d);
+  const eOut = (k) => 1 - Math.pow(1 - k, 3);
+  const eInOut = (k) => (k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+  const eBack = (k) => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(k - 1, 3) + c1 * Math.pow(k - 1, 2); };
+  const pad = (n) => String(n).padStart(5, '0');
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  // in/out の出入りを 0..1 で返す（出現 dIn 秒、消滅 dOut 秒）
+  const life = (t, t0, t1, dIn = 0.35, dOut = 0.25) => {
+    if (t < t0 || (t1 != null && t > t1)) return 0;
+    const a = eOut(prog(t, t0, dIn));
+    const b = t1 == null ? 1 : 1 - eInOut(prog(t, t1 - dOut, dOut));
+    return Math.min(a, b);
+  };
+
+  // ---------- scene geometry ----------
+  function kbAt(sc, tau) {
+    const [a, b] = sc.kb || [{ s: 1, cx: 50, cy: 50 }, { s: 1, cx: 50, cy: 50 }];
+    const k = eInOut(clamp(tau / sc.dur));
+    const s = lerp(a.s, b.s, k);
+    const lim = 50 / s;
+    const cx = clamp(lerp(a.cx, b.cx, k), lim, 100 - lim);
+    const cy = clamp(lerp(a.cy, b.cy, k), lim, 100 - lim);
+    return { s, cx, cy };
+  }
+  // 元フレーム上の % 座標 → 画面 px
+  function mapPt(sc, t, x, y) {
+    const { s, cx, cy } = kbAt(sc, t - sc.start);
+    return { x: ((x - cx) * s + 50) / 100 * W, y: ((y - cy) * s + 50) / 100 * H, s };
+  }
+  function frameIdx(sc, tau) {
+    if (sc.still) return 0;
+    let te = tau;
+    for (const h of sc.holds || []) {
+      if (tau >= h.at + h.d) te -= h.d;
+      else if (tau >= h.at) te -= tau - h.at;
+    }
+    return clamp(Math.floor(te * TL.fps + 1e-6), 0, sc.frames - 1);
+  }
+  const sceneAt = (id) => TL.scenes.find((s) => s.id === id);
+
+  // ---------- scene layer ----------
+  function sceneLayer(sc, t, role, p) {
+    const tau = t - sc.start;
+    let layerStyle = '';
+    let extra = '';
+    if (sc.type === 'cards') {
+      extra = cardsScene(sc, tau);
+    } else {
+      const { s, cx, cy } = kbAt(sc, tau);
+      const tx = (50 - cx * s) / 100 * W;
+      const ty = (50 - cy * s) / 100 * H;
+      const src = `${TL.base}/${sc.id}/${pad(frameIdx(sc, tau))}.jpg`;
+      let filt = 'contrast(1.07) saturate(1.06)';
+      const fx = sc.fx || {};
+      if (fx.introReveal) {
+        const k = eOut(prog(tau, 0, fx.introReveal));
+        filt += ` blur(${(1 - k) * 22}px) brightness(${0.2 + 0.8 * k})`;
+      }
+      if (fx.blur) filt += ` blur(${fx.blur}px)`;
+      // スポットライト（フリーズ中に周囲を減光・脱色）
+      let sk = 0;
+      if (sc.spot) sk = life(tau, sc.spot.t0, sc.spot.t1, 0.25, 0.3);
+      const baseFilt = sk > 0 ? `${filt} grayscale(${sk * 0.9}) brightness(${1 - sk * 0.58})` : filt;
+      const imgT = `transform:translate(${tx}px,${ty}px) scale(${s})`;
+      extra += `<img src="${src}" style="${imgT};filter:${baseFilt}">`;
+      if (sk > 0) {
+        const sp = sc.spot;
+        const px = sp.x / 100 * W * s + tx, py = sp.y / 100 * H * s + ty;
+        const rx = sp.rx / 100 * W * s, ry = sp.ry / 100 * H * s;
+        const m = `radial-gradient(ellipse ${rx}px ${ry}px at ${px}px ${py}px, #000 55%, transparent 100%)`;
+        extra += `<div class="abs" style="inset:0;opacity:${sk};-webkit-mask-image:${m};mask-image:${m}"><img src="${src}" style="${imgT};filter:${filt}"></div>`;
+      }
+      if (fx.dim) {
+        if (sc.id === 'cta') extra += `<div class="abs" style="inset:0;background:rgba(0,14,30,${fx.dim})"></div>`;
+        else extra += `<div class="abs" style="inset:0;background:linear-gradient(90deg,rgba(0,12,28,${fx.dim + 0.35}) 0%,rgba(0,12,28,${fx.dim}) 50%,rgba(0,0,0,0) 85%)"></div>`;
+      }
+      if (sc.id === 'cta') extra += ctaScene(sc, tau);
+    }
+
+    // トランジション
+    const tr = role === 'in' ? sc.trans : role === 'out' ? sc._outTrans : null;
+    if (tr && p != null) {
+      const e = eInOut(p);
+      const dir = tr.dir || 1;
+      if (tr.type === 'fade') {
+        if (role === 'in') layerStyle += `opacity:${p};`;
+      } else if (tr.type === 'flash') {
+        if (role === 'in') layerStyle += `opacity:${clamp(p * 1.6)};`;
+      } else if (tr.type === 'whip') {
+        const b = Math.sin(Math.PI * p) * 28;
+        const x = role === 'in' ? dir * W * (1 - e) : -dir * W * e;
+        layerStyle += `transform:translateX(${x}px);filter:blur(${b}px);`;
+      } else if (tr.type === 'zoom') {
+        if (role === 'in') layerStyle += `transform:scale(${1.4 - 0.4 * e});filter:blur(${(1 - e) * 24}px);opacity:${clamp(p * 2)};`;
+        else layerStyle += `transform:scale(${1 + 0.6 * e});filter:blur(${e * 24}px);`;
+      } else if (tr.type === 'wipe') {
+        if (role === 'in') {
+          const edge = lerp(W + 420, -420, e);
+          layerStyle += `clip-path:polygon(${edge}px 0, ${W + 420}px 0, ${W + 420}px ${H}px, ${edge - 360}px ${H}px);`;
+        }
+      }
+    }
+    return `<div class="layer" style="${layerStyle}">${extra}</div>`;
+  }
+
+  function wipeBar(sc, p) {
+    const e = eInOut(p);
+    const edge = lerp(W + 420, -420, e);
+    return `<div class="abs" style="inset:0;pointer-events:none">
+      <div class="abs" style="left:0;top:0;width:${W}px;height:${H}px;clip-path:polygon(${edge - 26}px 0, ${edge}px 0, ${edge - 360}px ${H}px, ${edge - 386}px ${H}px);background:var(--cyan)"></div>
+      <div class="abs" style="left:0;top:0;width:${W}px;height:${H}px;clip-path:polygon(${edge}px 0, ${edge + 70}px 0, ${edge - 290}px ${H}px, ${edge - 360}px ${H}px);background:var(--blue)"></div>
+    </div>`;
+  }
+
+  // ---------- cards scene（吸引口の形状） ----------
+  function cardsScene(sc, tau) {
+    let h = `<div class="abs" style="inset:0;background:radial-gradient(1200px 700px at 50% 40%, #0b3d6b 0%, #021a33 70%, #010d1c 100%)"></div>`;
+    // 背景グリッド
+    h += `<div class="abs" style="inset:0;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:80px 80px;transform:translateY(${-tau * 20}px)"></div>`;
+    const hk = eOut(prog(tau, 0.15, 0.5));
+    h += `<div class="abs" style="left:0;right:0;top:${70 - (1 - hk) * 30}px;text-align:center;opacity:${hk}">
+      <span class="num" style="font-size:64px;font-weight:800;font-style:italic;color:var(--cyan);margin-right:22px">06</span>
+      <span style="font-size:64px;font-weight:900">吸引口の形状</span></div>`;
+    const cards = [
+      { img: 'straight', label: 'ストレート', x: 330 },
+      { img: 'hood', label: 'フード（オプション）', x: 1010 },
+    ];
+    cards.forEach((c, i) => {
+      const k = eOut(prog(tau, 0.35 + i * 0.18, 0.6));
+      const zoom = 1 + 0.07 * clamp(tau / sc.dur);
+      h += `<div class="abs" style="left:${c.x}px;top:${200 + (1 - k) * 90}px;width:580px;height:596px;opacity:${k};border-radius:20px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.5);border:2px solid rgba(255,255,255,.2)">
+        <img src="${TL.base}/stills/${c.img}.jpg" style="position:absolute;left:0;top:0;width:580px;height:596px;transform-origin:50% 60%;transform:scale(${zoom})"></div>`;
+      const lk = eOut(prog(tau, 0.9 + i * 0.18, 0.5));
+      h += `<div class="abs" style="left:${c.x}px;width:580px;top:830px;text-align:center;opacity:${lk};font-size:52px;font-weight:900">${c.label}
+        <div style="margin:10px auto 0;height:8px;width:${lk * 220}px;background:var(--cyan);border-radius:4px"></div></div>`;
+    });
+    const fk = eOut(prog(tau, 1.7, 0.5));
+    h += `<div class="abs" style="left:0;right:0;top:${960 + (1 - fk) * 20}px;text-align:center;opacity:${fk};font-size:40px;font-weight:700;color:rgba(255,255,255,.9)">
+      対応ダクト径 <span class="num" style="font-size:52px;font-weight:800;color:var(--cyan)">φ200 / φ150 / φ100</span></div>`;
+    return h;
+  }
+
+  // ---------- CTA scene ----------
+  function ctaScene(sc, tau) {
+    let h = '';
+    const k0 = eOut(prog(tau, 0.3, 0.5));
+    h += `<div class="abs num" style="left:0;right:0;top:${250 - (1 - k0) * 20}px;text-align:center;opacity:${k0};font-size:40px;font-weight:600;letter-spacing:.5em;color:var(--cyan)">SUPPORT ARM</div>`;
+    h += `<div class="abs shadow" style="left:0;right:0;top:330px;text-align:center;font-size:84px;font-weight:900;line-height:1.3">${charsRise('現場に合わせた取付を、', tau, 0.55)}<br>${charsRise('ご提案します。', tau, 0.9)}</div>`;
+    const k2 = eOut(prog(tau, 1.6, 0.5));
+    h += `<div class="abs" style="left:0;right:0;top:${590 + (1 - k2) * 20}px;text-align:center;opacity:${k2};font-size:42px;font-weight:500;color:rgba(255,255,255,.92)">導入前のご相談・お見積もりだけでも歓迎です</div>`;
+    const k3 = prog(tau, 2.2, 0.55);
+    const sc3 = k3 <= 0 ? 0 : eBack(k3);
+    const shine = ((tau - 2.8) % 1.8) / 1.8;
+    h += `<div class="abs" style="left:50%;top:700px;transform:translateX(-50%) scale(${sc3});opacity:${clamp(k3 * 3)}">
+      <div style="position:relative;overflow:hidden;padding:30px 84px 32px;border-radius:999px;background:linear-gradient(180deg,#0a63ad,#00467F);box-shadow:0 18px 40px rgba(0,70,127,.55),0 0 0 4px rgba(63,208,255,.55);font-size:60px;font-weight:900;white-space:nowrap">
+        お問い合わせはこちら <span style="display:inline-block;transform:translateX(${Math.sin(tau * 5) * 6}px)">▶</span>
+        ${tau > 2.8 ? `<div class="abs" style="top:-20px;bottom:-20px;width:120px;left:${lerp(-200, 900, shine)}px;transform:skewX(-20deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent)"></div>` : ''}
+      </div></div>`;
+    const k4 = eOut(prog(tau, 2.9, 0.5));
+    h += `<div class="abs" style="left:0;right:0;top:900px;text-align:center;opacity:${k4}">
+      <div style="font-size:44px;font-weight:700;letter-spacing:.08em">岩代工業株式会社</div></div>`;
+    return h;
+  }
+
+  function charsRise(text, tau, t0, stagger = 0.035, d = 0.45) {
+    return [...text].map((ch, i) => {
+      const k = eOut(prog(tau, t0 + i * stagger, d));
+      return `<span class="mask"><span class="char" style="transform:translateY(${(1 - k) * 110}%)">${esc(ch)}</span></span>`;
+    }).join('');
+  }
+
+  // ---------- overlays ----------
+  function ovTitle(o, t) {
+    const a = life(t, o.t0, o.t1, 0.01, 0.35);
+    if (!a) return '';
+    const tau = t - o.t0;
+    let h = `<div class="abs shadow" style="left:120px;top:210px;opacity:${a};filter:blur(${(1 - a) * 8}px)">`;
+    o.lines.forEach((ln, i) => {
+      const big = i === o.accentLine;
+      h += `<div style="font-size:${big ? 150 : 96}px;font-weight:900;line-height:1.22;letter-spacing:.02em">${charsRise(ln, tau, i * 0.55)}</div>`;
+      if (big) {
+        const k = eOut(prog(tau, 0.55 + ln.length * 0.035 + 0.1, 0.5));
+        h += `<div style="height:14px;width:${k * 760}px;background:linear-gradient(90deg,var(--cyan),#0a63ad);margin-top:8px;border-radius:7px"></div>`;
+      }
+    });
+    return h + '</div>';
+  }
+
+  function ovHero(o, t) {
+    const a = life(t, o.t0, o.t1, 0.01, 0.35);
+    if (!a) return '';
+    const tau = t - o.t0;
+    const k1 = eOut(prog(tau, 0, 0.4));
+    const k3 = eOut(prog(tau, 0.9, 0.5));
+    const k4 = eOut(prog(tau, 1.4, 0.5));
+    return `<div class="abs shadow" style="left:120px;top:250px;opacity:${a}">
+      <div style="display:inline-block;opacity:${k1};transform:translateX(${(1 - k1) * -40}px);font-size:40px;font-weight:700;padding:6px 26px;border:3px solid var(--cyan);border-radius:999px;color:var(--cyan);text-shadow:none;background:rgba(0,20,40,.5)">${o.kicker}</div>
+      <div style="font-size:128px;font-weight:900;line-height:1.25;margin-top:18px">${charsRise(o.name, tau, 0.2, 0.05)}</div>
+      <div style="opacity:${k3};transform:translateY(${(1 - k3) * 30}px);font-size:92px;font-weight:900;margin-top:4px">
+        <span class="num" style="font-size:150px;font-weight:800;font-style:italic;color:var(--cyan)">3</span>関節<span style="color:var(--cyan)">＋</span><span class="num" style="font-size:150px;font-weight:800;font-style:italic;color:var(--cyan)">1</span>伸縮</div>
+      <div style="opacity:${k4};font-size:48px;font-weight:700;margin-top:10px">${o.sub}</div>
+    </div>`;
+  }
+
+  function ovCallout(o, t) {
+    const a = life(t, o.t0, o.t1, 0.01, 0.25);
+    if (!a) return '';
+    const sc = sceneAt(o.scene);
+    const P = mapPt(sc, t, o.x, o.y);
+    const tau = t - o.t0;
+    const r = (o.ring || 60) * Math.min(P.s, 1.3);
+    const kRing = eOut(prog(tau, 0, 0.4));
+    const kLine = eOut(prog(tau, 0.2, 0.35));
+    const kLab = eOut(prog(tau, 0.45, 0.4));
+    const L = { x: clamp(P.x + o.dx, 60, W - 60), y: clamp(P.y + o.dy, 80, H - 140) };
+    const ang = Math.atan2(L.y - P.y, L.x - P.x);
+    const S = { x: P.x + Math.cos(ang) * r, y: P.y + Math.sin(ang) * r };
+    const len = Math.hypot(L.x - S.x, L.y - S.y);
+    const pulse = ((tau % 1.3) / 1.3);
+    const circ = 2 * Math.PI * r;
+    let h = `<svg class="abs" width="${W}" height="${H}" style="left:0;top:0;opacity:${a};overflow:visible">
+      <defs><filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      <circle cx="${P.x}" cy="${P.y}" r="${r + pulse * 60}" fill="none" stroke="rgba(63,208,255,${(1 - pulse) * 0.7 * kRing})" stroke-width="4"/>
+      <circle cx="${P.x}" cy="${P.y}" r="${r}" fill="rgba(63,208,255,.12)" stroke="#3fd0ff" stroke-width="7" filter="url(#gl)"
+        stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - kRing)}" transform="rotate(-90 ${P.x} ${P.y})"/>
+      <circle cx="${P.x}" cy="${P.y}" r="9" fill="#fff" opacity="${kRing}"/>
+      <line x1="${S.x}" y1="${S.y}" x2="${S.x + (L.x - S.x) * kLine}" y2="${S.y + (L.y - S.y) * kLine}" stroke="#fff" stroke-width="5" stroke-linecap="round" filter="url(#gl)"/>
+      <circle cx="${L.x}" cy="${L.y}" r="${8 * kLine}" fill="#fff"/>
+    </svg>`;
+    const right = o.dx >= 0;
+    // ラベル幅を概算して画面内に収める
+    const estW = [...o.label].length * 47 + 70;
+    const style = right ? `left:${Math.min(L.x + 14, W - 40 - estW)}px` : `right:${Math.min(W - L.x + 14, W - 40 - estW)}px`;
+    h += `<div class="label" style="${style};top:${L.y - 42}px;opacity:${a};clip-path:inset(0 ${right ? (1 - kLab) * 100 : 0}% 0 ${right ? 0 : (1 - kLab) * 100}%)">${esc(o.label)}</div>`;
+    return h;
+  }
+
+  function ovArc(o, t) {
+    const a = life(t, o.t0, o.t1, 0.01, 0.25);
+    if (!a) return '';
+    const sc = sceneAt(o.scene);
+    const P = mapPt(sc, t, o.x, o.y);
+    const tau = t - o.t0;
+    const r = o.r * P.s;
+    const k = eInOut(prog(tau, 0, 0.9));
+    const a0 = o.a0 * Math.PI / 180;
+    const a1 = lerp(o.a0, o.a1, k) * Math.PI / 180;
+    const pt = (an, rr = r) => ({ x: P.x + Math.cos(an) * rr, y: P.y + Math.sin(an) * rr });
+    const p0 = pt(a0), p1 = pt(a1);
+    const large = (a1 - a0) > Math.PI ? 1 : 0;
+    let ticks = '';
+    for (let d = o.a0; d <= o.a1 + 0.1; d += 10) {
+      const an = d * Math.PI / 180;
+      if (an > a1 + 1e-6) break;
+      const q0 = pt(an, r + 16), q1 = pt(an, r + (d % 30 === 0 ? 40 : 28));
+      ticks += `<line x1="${q0.x}" y1="${q0.y}" x2="${q1.x}" y2="${q1.y}" stroke="rgba(255,255,255,.8)" stroke-width="3"/>`;
+    }
+    const head = (an, sgn) => {
+      const tip = pt(an);
+      const tg = an + sgn * Math.PI / 2;
+      const b1 = { x: tip.x - Math.cos(tg) * 30 + Math.cos(an) * 16, y: tip.y - Math.sin(tg) * 30 + Math.sin(an) * 16 };
+      const b2 = { x: tip.x - Math.cos(tg) * 30 - Math.cos(an) * 16, y: tip.y - Math.sin(tg) * 30 - Math.sin(an) * 16 };
+      return `<polygon points="${tip.x},${tip.y} ${b1.x},${b1.y} ${b2.x},${b2.y}" fill="#3fd0ff"/>`;
+    };
+    const mid = pt((o.a0 + o.a1) / 2 * Math.PI / 180, r + 90);
+    const kt = eOut(prog(tau, 0.7, 0.4));
+    let h = `<svg class="abs" width="${W}" height="${H}" style="left:0;top:0;opacity:${a};overflow:visible">
+      <circle cx="${P.x}" cy="${P.y}" r="${r}" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3" stroke-dasharray="6 12"/>
+      <path d="M ${p0.x} ${p0.y} A ${r} ${r} 0 ${large} 1 ${p1.x} ${p1.y}" fill="none" stroke="#3fd0ff" stroke-width="12" stroke-linecap="round"/>
+      ${ticks}
+      ${k > 0.05 ? head(a1, 1) + head(a0, -1) : ''}
+    </svg>`;
+    h += `<div class="abs shadow" style="left:${mid.x}px;top:${mid.y}px;transform:translate(-50%,-50%) scale(${0.8 + 0.2 * kt});opacity:${kt * a};text-align:center;white-space:nowrap">
+      <div style="font-size:64px;font-weight:900">${o.label.replace(/(\d+°)/, '<span class="num" style="font-size:110px;font-weight:800;font-style:italic;color:var(--cyan)">$1</span>')}</div>
+      ${o.note ? `<div style="font-size:34px;font-weight:700;opacity:.9">（${o.note}）</div>` : ''}
+    </div>`;
+    return h;
+  }
+
+  function ovSpin(o, t) {
+    const a = life(t, o.t0, o.t1, 0.3, 0.25);
+    if (!a) return '';
+    const sc = sceneAt(o.scene);
+    const P = mapPt(sc, t, o.x, o.y);
+    const r = o.r * P.s;
+    const rot = (t - o.t0) * 70;
+    const seg = (s0, s1) => {
+      const q0 = { x: P.x + Math.cos(s0) * r, y: P.y + Math.sin(s0) * r * 0.55 };
+      const q1 = { x: P.x + Math.cos(s1) * r, y: P.y + Math.sin(s1) * r * 0.55 };
+      return `M ${q0.x} ${q0.y} A ${r} ${r * 0.55} 0 0 1 ${q1.x} ${q1.y}`;
+    };
+    const head = (an) => {
+      const tip = { x: P.x + Math.cos(an) * r, y: P.y + Math.sin(an) * r * 0.55 };
+      const tg = Math.atan2(Math.cos(an) * r * 0.55, -Math.sin(an) * r);
+      const b1 = { x: tip.x - Math.cos(tg) * 34 + Math.cos(tg + Math.PI / 2) * 18, y: tip.y - Math.sin(tg) * 34 + Math.sin(tg + Math.PI / 2) * 18 };
+      const b2 = { x: tip.x - Math.cos(tg) * 34 - Math.cos(tg + Math.PI / 2) * 18, y: tip.y - Math.sin(tg) * 34 - Math.sin(tg + Math.PI / 2) * 18 };
+      return `<polygon points="${tip.x},${tip.y} ${b1.x},${b1.y} ${b2.x},${b2.y}" fill="#3fd0ff"/>`;
+    };
+    const base = rot * Math.PI / 180;
+    let paths = '';
+    for (const off of [0, Math.PI]) {
+      const s0 = base + off, s1 = base + off + Math.PI * 0.7;
+      paths += `<path d="${seg(s0, s1)}" fill="none" stroke="#3fd0ff" stroke-width="10" stroke-linecap="round"/>` + head(s1);
+    }
+    return `<svg class="abs" width="${W}" height="${H}" style="left:0;top:0;opacity:${a}">
+      <g style="filter:drop-shadow(0 0 10px rgba(63,208,255,.8))">${paths}</g></svg>`;
+  }
+
+  function ovLower(o, t) {
+    const a = life(t, o.t0, o.t1, 0.01, 0.25);
+    if (!a) return '';
+    const k = eOut(prog(t, o.t0, 0.5));
+    return `<div class="abs" style="left:0;right:0;bottom:0;height:300px;opacity:${a};background:linear-gradient(0deg,rgba(0,10,22,.72),rgba(0,10,22,0))"></div>
+      <div class="abs shadow" style="left:110px;bottom:92px;opacity:${a};display:flex;align-items:center;gap:26px;clip-path:inset(-20px ${(1 - k) * 100}% -20px 0)">
+        <div style="width:12px;height:76px;background:var(--cyan);border-radius:6px"></div>
+        <div style="font-size:62px;font-weight:900;letter-spacing:.02em">${esc(o.text)}</div>
+      </div>`;
+  }
+
+  function ovBadge(o, t) {
+    const a = life(t, o.t0, o.t1, 0.01, 0.25);
+    if (!a) return '';
+    const k = eOut(prog(t, o.t0, 0.5));
+    const kc = eOut(prog(t, o.t0 + 0.15, 0.9));
+    const v = Math.round(o.value * kc).toLocaleString('ja-JP');
+    return `<div class="abs glass" style="right:${90 - (1 - k) * 200}px;top:150px;opacity:${a};padding:26px 44px 22px;text-align:right;min-width:380px">
+      <div style="font-size:36px;font-weight:700;color:rgba(255,255,255,.9)">${esc(o.label)}</div>
+      <div style="line-height:1;margin-top:8px;white-space:nowrap">${o.prefix ? `<span style="font-size:48px;font-weight:700;margin-right:6px">${o.prefix}</span>` : ''}<span class="num" style="font-size:170px;font-weight:800;font-style:italic;color:var(--cyan)">${v}</span><span class="num" style="font-size:72px;font-weight:800;margin-left:8px">${o.unit}</span></div>
+    </div>`;
+  }
+
+  function ovFreeze(o, t) {
+    if (t < o.t0 || t > o.t1) return '';
+    const tau = t - o.t0;
+    const flash = Math.max(0, 1 - tau / 0.18);
+    const k = eOut(prog(tau, 0, 0.35));
+    const a = life(t, o.t0, o.t1, 0.01, 0.2);
+    const m = 36 + (1 - k) * 60, L = 110;
+    const c = (x, y, sx, sy) => `<path d="M ${x} ${y + sy * L} L ${x} ${y} L ${x + sx * L} ${y}" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="square"/>`;
+    return `<div class="abs" style="inset:0;background:#fff;opacity:${flash * 0.75}"></div>
+      <svg class="abs" width="${W}" height="${H}" style="left:0;top:0;opacity:${a}">
+        ${c(m, m, 1, 1)}${c(W - m, m, -1, 1)}${c(m, H - m, 1, -1)}${c(W - m, H - m, -1, -1)}
+      </svg>`;
+  }
+
+  function ovChip(o, t) {
+    const a = life(t, o.t0, o.t1, 0.01, 0.3);
+    if (!a) return '';
+    const k = eOut(prog(t, o.t0, 0.45));
+    const kp = clamp((t - o.t0) / (o.t1 - o.t0));
+    return `<div class="abs" style="left:80px;bottom:${86 - (1 - k) * 40}px;opacity:${a}">
+      <div class="glass" style="display:flex;align-items:center;gap:22px;padding:18px 40px 20px 22px;border-radius:999px">
+        ${o.n ? `<div class="num" style="width:84px;height:84px;border-radius:50%;background:var(--cyan);color:#002a4d;display:flex;align-items:center;justify-content:center;font-size:52px;font-weight:800;font-style:italic">${o.n}</div>` : ''}
+        <div style="font-size:64px;font-weight:900;white-space:nowrap;${o.n ? '' : 'padding-left:18px'}">${esc(o.text)}</div>
+      </div>
+      <div style="margin:12px 30px 0;height:6px;border-radius:3px;background:rgba(255,255,255,.25)"><div style="height:100%;width:${kp * 100}%;background:var(--cyan);border-radius:3px"></div></div>
+    </div>`;
+  }
+
+  // ---------- chapters / HUD ----------
+  function chapterLayer(t) {
+    let h = '';
+    const ch = TL.chapters;
+    if (!ch.length) return h;
+    const cta = sceneAt('cta');
+    const endT = cta ? cta.start : TL.duration;
+    // スラム（章タイトル）
+    for (const c of ch) {
+      if (c.slam === false) continue;
+      const tau = t - c.t0;
+      if (tau < 0 || tau > 1.5) continue;
+      const out = eInOut(prog(tau, 1.2, 0.3));
+      const kN = eOut(prog(tau, 0, 0.45));
+      const kT = eOut(prog(tau, 0.12, 0.45));
+      const kS = eOut(prog(tau, 0.3, 0.4));
+      const dark = (1 - out) * Math.min(1, tau / 0.15);
+      h += `<div class="abs" style="inset:0;background:linear-gradient(90deg,rgba(0,12,28,.82) 0%,rgba(0,12,28,.55) 45%,rgba(0,0,0,0) 75%);opacity:${dark}"></div>
+        <div class="abs" style="left:110px;top:300px;opacity:${1 - out};transform:translateX(${-out * 80}px)">
+          <div class="num" style="font-size:300px;line-height:.85;font-weight:800;font-style:italic;color:transparent;-webkit-text-stroke:5px var(--cyan);transform:translateX(${(1 - kN) * -220}px);opacity:${kN}">${c.n}</div>
+          <div class="shadow" style="font-size:136px;font-weight:900;margin-top:10px;clip-path:inset(0 ${(1 - kT) * 100}% 0 0)">${esc(c.title)}</div>
+          <div class="shadow" style="font-size:46px;font-weight:700;opacity:${kS};transform:translateY(${(1 - kS) * 20}px)">${esc(c.sub)}</div>
+        </div>`;
+    }
+    // 章チップ（左上）
+    let cur = null;
+    for (const c of ch) if (t >= c.t0) cur = c;
+    if (cur && t < endT && cur.slam !== false) {
+      const tc = cur.t0 + 1.25;
+      const nextT = (ch[ch.indexOf(cur) + 1] || {}).t0 ?? endT;
+      const a = life(t, tc, nextT, 0.35, 0.2);
+      if (a) {
+        h += `<div class="abs glass" style="left:70px;top:${60 - (1 - a) * 30}px;opacity:${a};display:flex;align-items:center;gap:18px;padding:12px 32px 14px 24px;border-radius:999px">
+          <span class="num" style="font-size:46px;font-weight:800;font-style:italic;color:var(--cyan)">${cur.n}</span>
+          <span style="font-size:42px;font-weight:900">${esc(cur.title)}</span></div>`;
+      }
+    }
+    // 進捗バー
+    const t0 = ch[0].t0;
+    if (t >= t0 - 0.3 && t < endT) {
+      const a = life(t, t0 - 0.3, endT, 0.3, 0.3);
+      let segs = '';
+      ch.forEach((c, i) => {
+        const e = (ch[i + 1] || {}).t0 ?? endT;
+        const fill = clamp((t - c.t0) / (e - c.t0));
+        segs += `<div style="flex:${e - c.t0};height:100%;background:rgba(255,255,255,.22);position:relative"><div style="position:absolute;inset:0;width:${fill * 100}%;background:var(--cyan)"></div></div>`;
+      });
+      h += `<div class="abs" style="left:0;right:0;bottom:0;height:10px;display:flex;gap:6px;opacity:${a}">${segs}</div>`;
+    }
+    return h;
+  }
+
+  function diagramLayer(t) {
+    const intro = TL.overlays.find((o) => o.type === 'diagramIntro');
+    if (!intro) return '';
+    const cta = sceneAt('cta');
+    const endT = (sceneAt('cards') || cta).start;
+    if (t < intro.t0 || t > endT + 0.4) return '';
+    const a = life(t, intro.t0, endT + 0.4, 0.4, 0.4);
+    const dock = eInOut(prog(t, intro.t0 + 2.4, 0.8));
+    // 紹介時は右側に大きく、その後右下にドック
+    const big = { x: 1180, y: 300, s: 1.55 };
+    const small = { x: W - 420 - 60, y: H - 290 - 60, s: 1.0 };
+    const x = lerp(big.x, small.x, dock), y = lerp(big.y, small.y, dock), s = lerp(big.s, small.s, dock);
+    let active = [];
+    for (const c of TL.chapters) if (t >= c.t0) active = c.joints;
+    if (dock < 1) active = [];
+    const pulse = 0.5 + 0.5 * Math.sin(t * 8);
+    const draw = eOut(prog(t, intro.t0, 1.0));
+    const J = { j1: [56, 70], j2: [236, 44], j3: [318, 188], tele: [282, 120], mouth: [330, 218] };
+    const on = (k) => active.includes(k);
+    const joint = (k) => {
+      const [cx, cy] = J[k];
+      const act = on(k);
+      return `${act ? `<circle cx="${cx}" cy="${cy}" r="${20 + pulse * 10}" fill="rgba(63,208,255,${0.25 + 0.25 * pulse})"/>` : ''}
+        <circle cx="${cx}" cy="${cy}" r="12" fill="${act ? '#3fd0ff' : '#fff'}" stroke="#0b2a48" stroke-width="4"/>`;
+    };
+    const teleAct = on('tele');
+    const mouthAct = on('mouth');
+    const tlen = teleAct ? 18 * Math.sin(t * 4) : 0;
+    return `<div class="abs glass" style="left:${x}px;top:${y}px;width:420px;height:290px;transform-origin:0 0;transform:scale(${s});opacity:${a}">
+      <div style="position:absolute;left:22px;top:14px;font-size:24px;font-weight:700;color:rgba(255,255,255,.85)"><span class="num" style="font-size:30px;font-weight:800;color:var(--cyan)">3</span>関節＋<span class="num" style="font-size:30px;font-weight:800;color:var(--cyan)">1</span>伸縮</div>
+      <svg width="420" height="290" viewBox="0 -24 420 290" style="position:absolute;inset:0">
+        <g stroke-dasharray="900" stroke-dashoffset="${900 * (1 - draw)}">
+          <rect x="30" y="40" width="16" height="64" fill="#cfd8e3" stroke="none"/>
+          <path d="M 56 70 C 150 40, 210 30, 236 44 S 300 120, 330 218" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="30" stroke-linecap="round"/>
+          <path d="M 56 70 C 150 40, 210 30, 236 44 S 300 120, 330 218" fill="none" stroke="#3a3f46" stroke-width="22" stroke-linecap="round" stroke-dasharray="4 5"/>
+          <line x1="56" y1="70" x2="236" y2="44" stroke="#e8edf3" stroke-width="10" stroke-linecap="round"/>
+          <line x1="236" y1="44" x2="${282 + tlen * 0.3}" y2="${120 + tlen}" stroke="#e8edf3" stroke-width="13" stroke-linecap="round"/>
+          <line x1="${270}" y1="${100}" x2="${318 + tlen * 0.3}" y2="${188 + tlen}" stroke="${teleAct ? '#3fd0ff' : '#b7c3d0'}" stroke-width="8" stroke-linecap="round"/>
+        </g>
+        <path d="M ${312 + tlen * 0.3} ${206 + tlen} L ${348 + tlen * 0.3} ${206 + tlen} L ${356 + tlen * 0.3} ${238 + tlen} L ${304 + tlen * 0.3} ${238 + tlen} Z" fill="${mouthAct ? '#3fd0ff' : '#cfd8e3'}" opacity="${draw}" transform="rotate(${mouthAct ? Math.sin(t * 3) * 14 : 0} ${330 + tlen * 0.3} ${206 + tlen})"/>
+        <g opacity="${draw}">${joint('j1')}${joint('j2')}${joint('j3')}</g>
+      </svg></div>`;
+  }
+
+  // ---------- grain / vignette ----------
+  const grains = [];
+  function makeGrain() {
+    for (let g = 0; g < 4; g++) {
+      const c = document.createElement('canvas');
+      c.width = 480; c.height = 270;
+      const x = c.getContext('2d');
+      const d = x.createImageData(480, 270);
+      let seed = 1234 + g * 777;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      for (let i = 0; i < d.data.length; i += 4) {
+        const v = rnd() * 255;
+        d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255;
+      }
+      x.putImageData(d, 0, 0);
+      grains.push(c.toDataURL());
+    }
+  }
+
+  // ---------- main ----------
+  window.setTimeline = (tl) => {
+    TL = tl;
+    // 出ていくシーンには次シーンの入りトランジションを紐付ける
+    TL.scenes.forEach((s, i) => { s._outTrans = TL.scenes[i + 1]?.trans || null; });
+    if (!grains.length) makeGrain();
+  };
+
+  window.renderFrame = async (t, frameNo = 0) => {
+    let html = '';
+    const active = TL.scenes.filter((s) => t >= s.start && t < s.start + s.dur + 1e-6);
+    for (let i = 0; i < active.length; i++) {
+      const sc = active[i];
+      const next = active[i + 1];
+      if (next && next.trans) {
+        const p = clamp((t - next.start) / next.trans.d);
+        html += sceneLayer(sc, t, 'out', p);
+      } else if (sc.trans && t - sc.start < sc.trans.d && i > 0) {
+        const p = clamp((t - sc.start) / sc.trans.d);
+        html += sceneLayer(sc, t, 'in', p);
+        if (sc.trans.type === 'wipe') html += wipeBar(sc, p);
+        if (sc.trans.type === 'flash') html += `<div class="abs" style="inset:0;background:#fff;opacity:${Math.sin(Math.PI * p) * 0.85}"></div>`;
+      } else {
+        html += sceneLayer(sc, t, null, null);
+      }
+    }
+    // vignette
+    html += `<div class="abs" style="inset:0;background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.38) 100%)"></div>`;
+    // overlays
+    for (const o of TL.overlays) {
+      if (t < o.t0 - 0.01 || (o.t1 != null && t > o.t1 + 0.01)) continue;
+      switch (o.type) {
+        case 'title': html += ovTitle(o, t); break;
+        case 'hero': html += ovHero(o, t); break;
+        case 'callout': html += ovCallout(o, t); break;
+        case 'arc': html += ovArc(o, t); break;
+        case 'spin': html += ovSpin(o, t); break;
+        case 'lower': html += ovLower(o, t); break;
+        case 'badge': html += ovBadge(o, t); break;
+        case 'freeze': html += ovFreeze(o, t); break;
+        case 'chip': html += ovChip(o, t); break;
+      }
+    }
+    html += diagramLayer(t);
+    html += chapterLayer(t);
+    // grain（毎フレーム変えるとビットレートが跳ねるため固定パターン）
+    html += `<div class="abs" style="inset:0;background-image:url(${grains[0]});background-size:960px 540px;opacity:.05;mix-blend-mode:overlay"></div>`;
+    stage.innerHTML = html;
+    const imgs = [...stage.querySelectorAll('img')];
+    await Promise.all(imgs.map((im) => im.decode().catch(() => {})));
+    // Google Fonts のサブセットは使用文字に応じて遅延読込されるため、読込完了を待つ
+    await document.fonts.ready;
+    return true;
+  };
+})();
+</script>
+</body>
+</html>
