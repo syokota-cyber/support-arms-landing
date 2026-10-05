@@ -472,31 +472,92 @@
     if (dock < 1) active = [];
     const pulse = 0.5 + 0.5 * Math.sin(t * 8);
     const draw = eOut(prog(t, intro.t0, 1.0));
-    const J = { j1: [56, 70], j2: [236, 44], j3: [318, 188], tele: [282, 120], mouth: [330, 218] };
     const on = (k) => active.includes(k);
-    const joint = (k) => {
-      const [cx, cy] = J[k];
-      const act = on(k);
-      return `${act ? `<circle cx="${cx}" cy="${cy}" r="${20 + pulse * 10}" fill="rgba(63,208,255,${0.25 + 0.25 * pulse})"/>` : ''}
-        <circle cx="${cx}" cy="${cy}" r="12" fill="${act ? '#3fd0ff' : '#fff'}" stroke="#0b2a48" stroke-width="4"/>`;
-    };
     const teleAct = on('tele');
     const mouthAct = on('mouth');
-    const tlen = teleAct ? 18 * Math.sin(t * 4) : 0;
+    const tlen = teleAct ? 16 * Math.sin(t * 4) : 0;
+    const ctx = { draw, pulse, on, teleAct, mouthAct, tlen, t };
+    const svgs = diagramMix(t).map(([P, w]) => armSvg(P, w, ctx)).join('');
     return `<div class="abs glass" style="left:${x}px;top:${y}px;width:420px;height:290px;transform-origin:0 0;transform:scale(${s});opacity:${a}">
       <div style="position:absolute;left:22px;top:14px;font-size:24px;font-weight:700;color:rgba(255,255,255,.85)"><span class="num" style="font-size:30px;font-weight:800;color:var(--cyan)">3</span>関節＋<span class="num" style="font-size:30px;font-weight:800;color:var(--cyan)">1</span>伸縮</div>
-      <svg width="420" height="290" viewBox="0 -24 420 290" style="position:absolute;inset:0">
+      ${svgs}</div>`;
+  }
+
+  // アーム図の姿勢（viewBox 0 -24 420 290、角度は SVG 座標で 0=右・90=下）。
+  // j1 から第1アーム(a1, L1)→j2、第2アーム(a2, L2・先端が伸縮)→j3、その先に吸引口。
+  // 元動画の見え方に合わせ、壁付け型は取付け金具が右・アームは左へ、天井付け型は支柱が真下へ下りる。
+  const DIAGRAMS = {
+    wall: { mount: 'wall', j1: [344, 52], a1: 168, L1: 150, a2: 108, L2: 150 },
+    ceiling: { mount: 'ceiling', j1: [196, 60], a1: 90, L1: 70, a2: 78, L2: 100 },
+    'ceiling-reach': { mount: 'ceiling', j1: [292, 60], a1: 90, L1: 70, a2: 128, L2: 116 },
+  };
+
+  // 現在シーンの diagram（未指定は wall）を返す。入りトランジション中は前シーンと補間し、
+  // 取付け型が同じなら姿勢を連続的に動かし、違えばクロスフェードする。戻り値は [姿勢, 不透明度] の配列
+  function diagramMix(t) {
+    const spec = (sc) => DIAGRAMS[(sc && sc.diagram) || 'wall'];
+    let i = 0;
+    for (let k = 0; k < TL.scenes.length; k++) if (TL.scenes[k].start <= t) i = k;
+    const cur = TL.scenes[i];
+    const d = cur.trans?.d ?? 0;
+    const B = spec(cur);
+    if (i === 0 || d <= 0 || t >= cur.start + d) return [[B, 1]];
+    const A = spec(TL.scenes[i - 1]);
+    const k = eInOut(prog(t, cur.start, d));
+    if (A === B) return [[B, 1]];
+    if (A.mount === B.mount) {
+      const m = (key) => lerp(A[key], B[key], k);
+      return [[{ mount: B.mount, j1: [0, 1].map((n) => lerp(A.j1[n], B.j1[n], k)), a1: m('a1'), L1: m('L1'), a2: m('a2'), L2: m('L2') }, 1]];
+    }
+    return [[A, 1 - k], [B, k]].filter(([, w]) => w > 0.001);
+  }
+
+  function armSvg(P, op, { draw, pulse, on, teleAct, mouthAct, tlen, t }) {
+    const rad = (deg) => (deg * Math.PI) / 180;
+    const d1 = [Math.cos(rad(P.a1)), Math.sin(rad(P.a1))];
+    const d2 = [Math.cos(rad(P.a2)), Math.sin(rad(P.a2))];
+    const at = (p, d, l) => [p[0] + d[0] * l, p[1] + d[1] * l];
+    const J1 = P.j1, J2 = at(J1, d1, P.L1), J3 = at(J2, d2, P.L2 + tlen);
+    const f = (p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
+    const line = (p, q, color, w) => `<line x1="${p[0]}" y1="${p[1]}" x2="${q[0]}" y2="${q[1]}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>`;
+    const ceil = P.mount === 'ceiling';
+    // 取付け部：壁付けは右側の壁と金具、天井付けは天井面とプレート
+    const base = ceil
+      ? `<line x1="${J1[0] - 50}" y1="${J1[1] - 20}" x2="${J1[0] + 140}" y2="${J1[1] - 20}" stroke="#8d99a8" stroke-width="3"/>
+         <rect x="${J1[0] - 26}" y="${J1[1] - 20}" width="52" height="9" rx="2" fill="#cfd8e3" stroke="none"/>`
+      : `<line x1="${J1[0] + 34}" y1="-4" x2="${J1[0] + 34}" y2="${J1[1] + 90}" stroke="#8d99a8" stroke-width="3"/>
+         <rect x="${J1[0] + 12}" y="${J1[1] - 30}" width="20" height="60" rx="2" fill="#cfd8e3" stroke="none"/>`;
+    // ダクト：右側の排気ダクトから入り、第1アームに沿って曲がり、第2アームに沿って吸引口へ
+    const ML = 30; // 吸引口の長さ
+    const M0 = J3, M1 = at(J3, d2, ML);
+    const n2 = [-d2[1], d2[0]]; // 第2アームの法線
+    const side = ceil ? -1 : 1; // ダクトはアームの脇を通る
+    const off = (p, n, k) => [p[0] + n[0] * k, p[1] + n[1] * k];
+    const n1 = [-d1[1], d1[0]];
+    const start = ceil ? [440, J1[1] + 8] : [J1[0] + 76, J1[1] + 40];
+    const mid = off(J2, n1, ceil ? 22 : -16);
+    const duct = `M ${f(start)} C ${f([start[0] - 70, start[1]])}, ${f(at(mid, d1, -P.L1 * 0.5))}, ${f(mid)} `
+      + `S ${f(off(at(M0, d2, -P.L2 * 0.35), n2, side * 14))}, ${f(at(M0, d2, ML * 0.4))}`;
+    const outerEnd = at(J2, d2, P.L2 * 0.6), innerStart = at(J2, d2, P.L2 * 0.42);
+    const joint = (k, p) => {
+      const act = on(k);
+      return `${act ? `<circle cx="${p[0]}" cy="${p[1]}" r="${20 + pulse * 10}" fill="rgba(63,208,255,${0.25 + 0.25 * pulse})"/>` : ''}
+        <circle cx="${p[0]}" cy="${p[1]}" r="12" fill="${act ? '#3fd0ff' : '#fff'}" stroke="#0b2a48" stroke-width="4"/>`;
+    };
+    const wig = mouthAct ? Math.sin(t * 3) * 14 : 0;
+    const w0 = 17, w1 = 26;
+    const mouth = `<path d="M ${f(off(M0, n2, w0))} L ${f(off(M0, n2, -w0))} L ${f(off(M1, n2, -w1))} L ${f(off(M1, n2, w1))} Z" fill="${mouthAct ? '#3fd0ff' : '#cfd8e3'}" transform="rotate(${wig} ${M0[0]} ${M0[1]})"/>`;
+    return `<svg width="420" height="290" viewBox="0 -24 420 290" style="position:absolute;inset:0;opacity:${op}">
         <g stroke-dasharray="900" stroke-dashoffset="${900 * (1 - draw)}">
-          <rect x="30" y="40" width="16" height="64" fill="#cfd8e3" stroke="none"/>
-          <path d="M 56 70 C 150 40, 210 30, 236 44 S 300 120, 330 218" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="30" stroke-linecap="round"/>
-          <path d="M 56 70 C 150 40, 210 30, 236 44 S 300 120, 330 218" fill="none" stroke="#3a3f46" stroke-width="22" stroke-linecap="round" stroke-dasharray="4 5"/>
-          <line x1="56" y1="70" x2="236" y2="44" stroke="#e8edf3" stroke-width="10" stroke-linecap="round"/>
-          <line x1="236" y1="44" x2="${282 + tlen * 0.3}" y2="${120 + tlen}" stroke="#e8edf3" stroke-width="13" stroke-linecap="round"/>
-          <line x1="${270}" y1="${100}" x2="${318 + tlen * 0.3}" y2="${188 + tlen}" stroke="${teleAct ? '#3fd0ff' : '#b7c3d0'}" stroke-width="8" stroke-linecap="round"/>
+          ${base}
+          <path d="${duct}" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="30" stroke-linecap="round"/>
+          <path d="${duct}" fill="none" stroke="#3a3f46" stroke-width="22" stroke-linecap="round" stroke-dasharray="4 5"/>
+          ${line(J1, J2, '#e8edf3', ceil ? 12 : 10)}
+          ${line(J2, outerEnd, '#e8edf3', 13)}
+          ${line(innerStart, J3, teleAct ? '#3fd0ff' : '#b7c3d0', 8)}
         </g>
-        <path d="M ${312 + tlen * 0.3} ${206 + tlen} L ${348 + tlen * 0.3} ${206 + tlen} L ${356 + tlen * 0.3} ${238 + tlen} L ${304 + tlen * 0.3} ${238 + tlen} Z" fill="${mouthAct ? '#3fd0ff' : '#cfd8e3'}" opacity="${draw}" transform="rotate(${mouthAct ? Math.sin(t * 3) * 14 : 0} ${330 + tlen * 0.3} ${206 + tlen})"/>
-        <g opacity="${draw}">${joint('j1')}${joint('j2')}${joint('j3')}</g>
-      </svg></div>`;
+        <g opacity="${draw}">${mouth}${joint('j1', J1)}${joint('j2', J2)}${joint('j3', J3)}</g>
+      </svg>`;
   }
 
   // ---------- grain / vignette ----------

@@ -1,4 +1,5 @@
 // サポートアーム解説動画のタイムライン定義
+// diagram は右下アーム図の姿勢（compositor.html の DIAGRAMS のキー。省略時は 'wall'）。
 // 座標(x, y)は元動画フレームに対する % 指定。kb はケンバーンズ（s=倍率, cx/cy=画面中心に来る元フレーム上の点）。
 // シーンの開始時刻は「前シーン終了 − 入りトランジション長」で自動計算する。
 // overlay の at はシーン内のローカル秒（scene を省略した場合は絶対秒）。
@@ -21,7 +22,7 @@ const full = {
       fx: { introReveal: 1.2, dim: 0.35 },
     },
     {
-      id: 'family', src: 170.9, speed: 1.3, dur: 4.4, trans: { type: 'whip', d: 0.4, dir: -1 },
+      id: 'family', src: 170.9, diagram: 'ceiling', speed: 1.3, dur: 4.4, trans: { type: 'whip', d: 0.4, dir: -1 },
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.1, cx: 58, cy: 45 }],
       fx: { dim: 0.25 },
     },
@@ -47,7 +48,7 @@ const full = {
       id: 'tele1', src: 19.0, speed: 1.5, dur: 5.0, trans: { type: 'wipe', d: 0.5 },
       holds: [{ at: 2.67, d: 1.5 }],
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.28, cx: 40, cy: 58 }],
-      spot: { t0: 2.67, t1: 4.17, x: 37, y: 66, rx: 11, ry: 17 },
+      spot: { t0: 2.67, t1: 4.17, x: 39, y: 45, rx: 11, ry: 17 },
     },
     {
       id: 'tele2', src: 69.0, speed: 1.3, dur: 3.8, trans: { type: 'whip', d: 0.35, dir: 1 },
@@ -62,15 +63,15 @@ const full = {
       kb: [{ s: 1.05, cx: 48, cy: 45 }, { s: 1.0, cx: 50, cy: 50 }],
     },
     {
-      id: 'ceil1', src: 140.6, speed: 1.0, dur: 4.0, trans: { type: 'wipe', d: 0.5 },
+      id: 'ceil1', src: 140.6, diagram: 'ceiling-reach', speed: 1.0, dur: 4.0, trans: { type: 'wipe', d: 0.5 },
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.15, cx: 53, cy: 52 }],
     },
     {
-      id: 'ceil2', src: 185.5, speed: 1.6, dur: 4.4, trans: { type: 'whip', d: 0.35, dir: 1 },
+      id: 'ceil2', src: 185.5, diagram: 'ceiling-reach', speed: 1.6, dur: 4.4, trans: { type: 'whip', d: 0.35, dir: 1 },
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.1, cx: 45, cy: 55 }],
     },
     {
-      id: 'cards', type: 'cards', dur: 4.4, trans: { type: 'flash', d: 0.4 },
+      id: 'cards', type: 'cards', diagram: 'ceiling-reach', dur: 4.4, trans: { type: 'flash', d: 0.4 },
     },
     {
       id: 'cta', src: 171.5, speed: 0.6, dur: 5.6, trans: { type: 'fade', d: 0.6 },
@@ -105,9 +106,9 @@ const full = {
     { type: 'badge', scene: 'hold2', at: 3.4, until: 5.3, label: '保持荷重', value: 3, unit: 'kg', pos: 'right' },
     // 03 伸縮
     { type: 'freeze', scene: 'tele1', at: 2.67, until: 4.17 },
-    { type: 'callout', scene: 'tele1', at: 2.8, until: 4.3, x: 37, y: 66, label: 'クランプレバー', dx: 360, dy: -40, ring: 60 },
+    { type: 'callout', scene: 'tele1', at: 2.8, until: 4.3, x: 39, y: 45, label: 'クランプレバー', dx: 360, dy: -40, ring: 60 },
     { type: 'lower', scene: 'tele1', at: 2.9, until: 4.8, text: 'レバーを緩めて、先端アームを伸縮' },
-    { type: 'badge', scene: 'tele2', at: 0.4, until: 3.6, label: '全長（壁付け型）', value: 1485, unit: 'mm', prefix: '約', pos: 'right' },
+    { type: 'badge', scene: 'tele2', at: 0.4, until: 3.6, label: '全長（壁付け型）', value: 1862, unit: 'mm', prefix: '約', pos: 'right' },
     { type: 'lower', scene: 'tele2', at: 0.5, until: 3.6, text: '伸ばせば、離れた発生源にも届く' },
     // 04 吸引口の向き
     { type: 'spin', scene: 'mouth1', at: 1.0, until: 4.0, x: 31, y: 32, r: 190 },
