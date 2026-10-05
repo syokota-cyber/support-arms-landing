@@ -487,7 +487,9 @@
   // j1 から第1アーム(a1, L1)→j2、第2アーム(a2, L2・先端が伸縮)→j3、その先に吸引口。
   // 元動画の見え方に合わせ、壁付け型は取付け金具が右・アームは左へ、天井付け型は支柱が真下へ下りる。
   const DIAGRAMS = {
-    wall: { mount: 'wall', j1: [344, 52], a1: 168, L1: 150, a2: 108, L2: 150 },
+    wall: { mount: 'wall', j1: [344, 52], a1: 168, L1: 125, a2: 108, L2: 125 },
+    'wall-steep': { mount: 'wall', j1: [330, 22], a1: 130, L1: 120, a2: 100, L2: 120 },
+    'wall-extend': { mount: 'wall', j1: [356, 52], a1: 166, L1: 125, a2: 172, L2: 125 },
     ceiling: { mount: 'ceiling', j1: [196, 60], a1: 90, L1: 70, a2: 78, L2: 100 },
     'ceiling-reach': { mount: 'ceiling', j1: [292, 60], a1: 90, L1: 70, a2: 128, L2: 116 },
   };
@@ -534,7 +536,7 @@
     const side = ceil ? -1 : 1; // ダクトはアームの脇を通る
     const off = (p, n, k) => [p[0] + n[0] * k, p[1] + n[1] * k];
     const n1 = [-d1[1], d1[0]];
-    const start = ceil ? [440, J1[1] + 8] : [J1[0] + 76, J1[1] + 40];
+    const start = [440, J1[1] + (ceil ? 8 : 40)];
     const mid = off(J2, n1, ceil ? 22 : -16);
     const duct = `M ${f(start)} C ${f([start[0] - 70, start[1]])}, ${f(at(mid, d1, -P.L1 * 0.5))}, ${f(mid)} `
       + `S ${f(off(at(M0, d2, -P.L2 * 0.35), n2, side * 14))}, ${f(at(M0, d2, ML * 0.4))}`;

@@ -31,7 +31,7 @@ const full = {
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.18, cx: 50, cy: 42 }],
     },
     {
-      id: 'rot2', src: 37.4, speed: 1.8, dur: 3.6, trans: { type: 'whip', d: 0.35, dir: 1 },
+      id: 'rot2', src: 37.4, diagram: 'wall-steep', speed: 1.8, dur: 3.6, trans: { type: 'whip', d: 0.35, dir: 1 },
       kb: [{ s: 1.08, cx: 46, cy: 50 }, { s: 1.0, cx: 50, cy: 50 }],
     },
     {
@@ -39,27 +39,27 @@ const full = {
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.12, cx: 55, cy: 45 }],
     },
     {
-      id: 'hold2', src: 64.0, speed: 1.0, dur: 5.4, trans: { type: 'whip', d: 0.35, dir: -1 },
+      id: 'hold2', src: 64.0, diagram: 'wall-steep', speed: 1.0, dur: 5.4, trans: { type: 'whip', d: 0.35, dir: -1 },
       holds: [{ at: 3.0, d: 1.8 }],
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.22, cx: 44, cy: 46 }],
       spot: { t0: 3.0, t1: 4.8, x: 43, y: 46, rx: 17, ry: 34 },
     },
     {
-      id: 'tele1', src: 19.0, speed: 1.5, dur: 5.0, trans: { type: 'wipe', d: 0.5 },
+      id: 'tele1', src: 19.0, diagram: 'wall-steep', speed: 1.5, dur: 5.0, trans: { type: 'wipe', d: 0.5 },
       holds: [{ at: 2.67, d: 1.5 }],
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.28, cx: 40, cy: 58 }],
       spot: { t0: 2.67, t1: 4.17, x: 39, y: 45, rx: 11, ry: 17 },
     },
     {
-      id: 'tele2', src: 69.0, speed: 1.3, dur: 3.8, trans: { type: 'whip', d: 0.35, dir: 1 },
+      id: 'tele2', src: 69.0, diagram: 'wall-extend', speed: 1.3, dur: 3.8, trans: { type: 'whip', d: 0.35, dir: 1 },
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.06, cx: 45, cy: 45 }],
     },
     {
-      id: 'mouth1', src: 82.4, speed: 1.6, dur: 4.2, trans: { type: 'zoom', d: 0.45 },
+      id: 'mouth1', src: 82.4, diagram: 'wall-steep', speed: 1.6, dur: 4.2, trans: { type: 'zoom', d: 0.45 },
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.12, cx: 34, cy: 40 }],
     },
     {
-      id: 'mouth2', src: 90.5, speed: 1.2, dur: 3.2, trans: { type: 'whip', d: 0.35, dir: -1 },
+      id: 'mouth2', src: 90.5, diagram: 'wall-steep', speed: 1.2, dur: 3.2, trans: { type: 'whip', d: 0.35, dir: -1 },
       kb: [{ s: 1.05, cx: 48, cy: 45 }, { s: 1.0, cx: 50, cy: 50 }],
     },
     {
