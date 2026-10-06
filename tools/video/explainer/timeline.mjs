@@ -39,20 +39,15 @@ const full = {
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.12, cx: 55, cy: 45 }],
     },
     {
-      id: 'hold2', src: 64.0, diagram: 'wall-steep', speed: 1.0, dur: 5.4, trans: { type: 'whip', d: 0.35, dir: -1 },
-      holds: [{ at: 3.0, d: 1.8 }],
-      kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.22, cx: 44, cy: 46 }],
-      spot: { t0: 3.0, t1: 4.8, x: 43, y: 46, rx: 17, ry: 34 },
+      // 伸ばしたアームから手を離し、その位置で止まっている様子（元動画 72.7s で手を離す）
+      id: 'hold2', src: 70.3, diagram: 'wall-extend', speed: 0.8, dur: 5.6, trans: { type: 'whip', d: 0.35, dir: -1 },
+      kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.1, cx: 40, cy: 42 }],
     },
     {
       id: 'tele1', src: 19.0, diagram: 'wall-steep', speed: 1.5, dur: 5.0, trans: { type: 'wipe', d: 0.5 },
       holds: [{ at: 2.67, d: 1.5 }],
       kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.28, cx: 40, cy: 58 }],
       spot: { t0: 2.67, t1: 4.17, x: 39, y: 45, rx: 11, ry: 17 },
-    },
-    {
-      id: 'tele2', src: 69.0, diagram: 'wall-extend', speed: 1.3, dur: 3.8, trans: { type: 'whip', d: 0.35, dir: 1 },
-      kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.06, cx: 45, cy: 45 }],
     },
     {
       id: 'mouth1', src: 82.4, diagram: 'wall-steep', speed: 1.6, dur: 4.2, trans: { type: 'zoom', d: 0.45 },
@@ -101,15 +96,12 @@ const full = {
     // 02 角度保持
     { type: 'callout', scene: 'hold1', at: 1.3, until: 4.4, x: 45.5, y: 30, label: '関節', dx: -330, dy: -40, ring: 55, track: true },
     { type: 'lower', scene: 'hold1', at: 2.0, until: 4.4, text: '関節を曲げて、好きな高さ・角度に' },
-    { type: 'freeze', scene: 'hold2', at: 3.0, until: 4.8 },
-    { type: 'callout', scene: 'hold2', at: 3.15, until: 4.9, x: 46, y: 20, label: '手を離しても止まる', dx: -560, dy: 60, ring: 55 },
-    { type: 'badge', scene: 'hold2', at: 3.4, until: 5.3, label: '保持荷重', value: 3, unit: 'kg', pos: 'right' },
+    { type: 'callout', scene: 'hold2', at: 3.4, until: 5.3, x: 16.5, y: 37, label: '手を離しても止まる', dx: 330, dy: 230, ring: 70 },
+    { type: 'badge', scene: 'hold2', at: 3.7, until: 5.3, label: '保持荷重', value: 3, unit: 'kg', pos: 'right' },
     // 03 伸縮
     { type: 'freeze', scene: 'tele1', at: 2.67, until: 4.17 },
     { type: 'callout', scene: 'tele1', at: 2.8, until: 4.3, x: 39, y: 45, label: 'クランプレバー', dx: 360, dy: -40, ring: 60 },
     { type: 'lower', scene: 'tele1', at: 2.9, until: 4.8, text: 'レバーを緩めて、先端アームを伸縮' },
-    { type: 'badge', scene: 'tele2', at: 0.4, until: 3.6, label: '全長（壁付け型）', value: 1862, unit: 'mm', prefix: '約', pos: 'right' },
-    { type: 'lower', scene: 'tele2', at: 0.5, until: 3.6, text: '伸ばせば、離れた発生源にも届く' },
     // 04 吸引口の向き
     { type: 'spin', scene: 'mouth1', at: 1.0, until: 4.0, x: 31, y: 32, r: 190 },
     { type: 'lower', scene: 'mouth1', at: 1.2, until: 4.0, text: '吸引口は、前後・左右どの向きでも保持' },
