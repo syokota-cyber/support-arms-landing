@@ -1184,6 +1184,34 @@ section {
   background: var(--color-white);
 }
 
+.applications__movie {
+  max-width: 960px;
+  margin: 0 auto var(--space-12);
+}
+
+.applications__video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  background: var(--color-gray-900);
+  box-shadow: var(--shadow-lg);
+}
+
+.applications__movie-caption {
+  margin-top: var(--space-3);
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .applications__movie {
+    margin-bottom: var(--space-8);
+  }
+}
+
 .applications-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -3495,6 +3523,118 @@ section {
 @media (max-width: 768px) {
   .regulation-video {
     padding: var(--space-12) 0;
+  }
+}
+
+/* ====================================
+   Explainer Video Section
+   ==================================== */
+.explainer {
+  padding: var(--space-20) 0;
+  background: var(--color-gray-900);
+  color: var(--color-white);
+}
+
+/* 課題セクション（同じ濃色背景）から続けて見せる */
+.challenges + .explainer {
+  padding-top: var(--space-4);
+}
+
+.explainer__kicker {
+  margin-bottom: var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #c9a961;
+}
+
+.explainer__title {
+  color: var(--color-white);
+}
+
+.explainer__subtitle {
+  color: var(--color-gray-300);
+}
+
+.explainer__wrap {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.explainer__player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--color-black);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.explainer__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--color-black);
+}
+
+.explainer__chapters {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.explainer__chapters button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  padding: var(--space-3);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-gray-200);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-base), border-color var(--transition-base), color var(--transition-base);
+}
+
+.explainer__chapters button span {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #c9a961;
+}
+
+.explainer__chapters button small {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: var(--color-gray-400);
+}
+
+.explainer__chapters button:hover,
+.explainer__chapters button:focus-visible,
+.explainer__chapters button.is-active {
+  border-color: #c9a961;
+  background: rgba(201, 169, 97, 0.12);
+  color: var(--color-white);
+}
+
+@media (max-width: 768px) {
+  .explainer {
+    padding: var(--space-12) 0;
+  }
+
+  .explainer__chapters {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

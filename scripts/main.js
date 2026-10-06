@@ -370,6 +370,56 @@ if (heroVideo) {
 }
 
 // ====================================
+// Applications Loop Video (play only while visible)
+// ====================================
+const applicationsVideo = document.querySelector('.applications__video');
+
+if (applicationsVideo && 'IntersectionObserver' in window) {
+  new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        applicationsVideo.play().catch(() => {});
+      } else {
+        applicationsVideo.pause();
+      }
+    });
+  }, { threshold: 0.25 }).observe(applicationsVideo);
+}
+
+// ====================================
+// Explainer Video Chapters
+// ====================================
+const explainerVideo = document.querySelector('.explainer__video');
+
+if (explainerVideo) {
+  const chapterButtons = [...document.querySelectorAll('[data-explainer-seek]')];
+  const chapterTimes = chapterButtons.map((btn) => parseFloat(btn.dataset.explainerSeek));
+
+  chapterButtons.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      explainerVideo.currentTime = chapterTimes[i];
+      explainerVideo.play();
+    });
+  });
+
+  explainerVideo.addEventListener('timeupdate', () => {
+    const t = explainerVideo.currentTime;
+    let current = -1;
+    chapterTimes.forEach((ct, i) => { if (t >= ct) current = i; });
+    chapterButtons.forEach((btn, i) => btn.classList.toggle('is-active', i === current));
+  });
+
+  explainerVideo.addEventListener('play', () => {
+    if (typeof gtag === 'function') {
+      gtag('event', 'video_play', {
+        'event_category': 'Video',
+        'event_label': 'Explainer Video'
+      });
+    }
+  }, { once: true });
+}
+
+// ====================================
 // Lazy Loading Images (if any)
 // ====================================
 if ('loading' in HTMLImageElement.prototype) {

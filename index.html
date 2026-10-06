@@ -274,8 +274,11 @@
 
         <!-- Background Video -->
         <div class="hero__video-bg">
-          <video autoplay muted loop playsinline class="hero__video">
-            <source src="./assets/intro_sparm2.mp4" type="video/mp4">
+          <video autoplay muted loop playsinline preload="auto" class="hero__video"
+            poster="./assets/videos/hero/supportarm-hero-loop-poster.jpg"
+            aria-label="サポートアームの動き（旋回・角度保持・伸縮・吸引口の向き・天井付け）">
+            <source src="./assets/videos/hero/supportarm-hero-loop-1080.mp4" type="video/mp4" media="(min-width: 1024px)">
+            <source src="./assets/videos/hero/supportarm-hero-loop-720.mp4" type="video/mp4">
           </video>
           <div class="hero__overlay"></div>
         </div>
@@ -333,6 +336,36 @@
           </svg>
         </div>
         <p class="challenges__lead-text">サポートアームは、これらの課題を解決するために生まれました。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explainer Video Section -->
+  <section class="explainer" id="explainer">
+    <div class="container">
+      <div class="section-header">
+        <p class="explainer__kicker">MOVIE</p>
+        <h2 class="section-title explainer__title">約50秒でわかる、サポートアームの動き</h2>
+        <p class="section-subtitle explainer__subtitle">旋回・角度保持・伸縮・吸引口の向き。ダクトを狙った位置で止める仕組みを映像でご覧ください。</p>
+      </div>
+
+      <div class="explainer__wrap" data-animate>
+        <div class="explainer__player">
+          <video class="explainer__video" controls playsinline preload="none"
+            poster="./assets/videos/explainer/supportarm-explainer-poster.jpg"
+            aria-label="サポートアーム解説動画（約50秒）">
+            <source src="./assets/videos/explainer/supportarm-explainer-1080.mp4" type="video/mp4" media="(min-width: 1024px)">
+            <source src="./assets/videos/explainer/supportarm-explainer-720.mp4" type="video/mp4">
+          </video>
+        </div>
+        <ol class="explainer__chapters">
+          <li><button type="button" data-explainer-seek="8.55"><span>01</span>旋回<small>0:08</small></button></li>
+          <li><button type="button" data-explainer-seek="15.9"><span>02</span>角度保持<small>0:15</small></button></li>
+          <li><button type="button" data-explainer-seek="25.25"><span>03</span>伸縮<small>0:25</small></button></li>
+          <li><button type="button" data-explainer-seek="29.8"><span>04</span>吸引口の向き<small>0:29</small></button></li>
+          <li><button type="button" data-explainer-seek="36.35"><span>05</span>天井付け型<small>0:36</small></button></li>
+          <li><button type="button" data-explainer-seek="44"><span>06</span>吸引口の形状<small>0:44</small></button></li>
+        </ol>
       </div>
     </div>
   </section>
@@ -430,8 +463,32 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- Regulation Video Section -->
+  <section class="regulation-video" id="regulation-video">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">動画で解説｜溶接ヒューム法令対応</h2>
+        <p class="section-subtitle">法改正のポイントと、現場で取るべき対策をわかりやすくまとめました。</p>
+      </div>
+
+      <div class="regulation-video__wrap" data-animate>
+        <div class="regulation-video__player">
+          <iframe
+            src="https://www.youtube.com/embed/qAOiXYYkUts"
+            loading="lazy"
+            title="溶接ヒューム法令対応解説動画"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="regulation-video__note">※ 動画内容は公開時点の情報です。最新の法令詳細は<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000099121_00001.html" target="_blank" rel="noopener noreferrer">厚生労働省のウェブサイト</a>をご確認ください。</p>
+      </div>
+
       <div class="regulation__cta" data-animate>
-        <a href="#regulation-video" class="btn btn--secondary">動画で法令対応のポイントを見る</a>
         <a href="#contact" class="btn btn--primary">排気ダクトの保持についてご相談ください</a>
       </div>
     </div>
@@ -592,6 +649,16 @@
       <div class="section-header">
         <h2 class="section-title">活用例</h2>
         <p class="section-subtitle">様々な現場で活躍するサポートアーム<br><small>※クリックで詳細を表示</small></p>
+      </div>
+
+      <div class="applications__movie" data-animate>
+        <video class="applications__video" muted loop playsinline preload="none"
+          poster="./assets/videos/applications/supportarm-applications-loop-poster.jpg"
+          aria-label="検査ライン・工場の局所排気・物流倉庫でのサポートアーム使用イメージ">
+          <source src="./assets/videos/applications/supportarm-applications-loop-1080.mp4" type="video/mp4" media="(min-width: 1024px)">
+          <source src="./assets/videos/applications/supportarm-applications-loop-720.mp4" type="video/mp4">
+        </video>
+        <p class="applications__movie-caption">検査ライン・工場の局所排気・物流倉庫まで。1本のアームが、現場ごとの「持つ」を引き受けます。</p>
       </div>
 
       <div class="applications-grid">
@@ -967,6 +1034,80 @@
     </div>
   </section>
 
+  <!-- YouTube Section -->
+  <section class="videos" id="videos">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">動画で見る</h2>
+        <p class="section-subtitle">実際の現場での使い方や、取付けタイプごとの動きをご覧ください</p>
+      </div>
+
+      <div class="videos-grid" data-animate>
+        <div class="video-card">
+          <div class="video-card__wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/pnYGnJruxn4" 
+              title="【粉塵対策】工場の作業環境を変える｜多関節サポートアームによる局所排気"
+              loading="lazy"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/ZcwpZggcE_c" 
+              title="1本で、現場が変わる。｜多目的サポートアーム活用事例"
+              loading="lazy"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/O3FKxTyWTE4" 
+              title="サポートアーム｜局所排気ダクト・フレキシブルホースを任意の位置で保持"
+              loading="lazy"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__wrapper">
+            <iframe 
+              src="https://www.youtube.com/embed/xh-19Yr5nr0" 
+              title="サポートアーム（支柱取付け型）｜局所排気ダクト・フレキシブルホースを任意の位置で保持"
+              loading="lazy"
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <div class="videos-cta" data-animate>
+        <a href="https://www.youtube.com/@iwashirokougyou" target="_blank" class="btn btn--secondary">
+          <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" stroke-width="2"/>
+            <polygon points="9.75,15.02 15.5,11.75 9.75,8.48" stroke-width="2"/>
+          </svg>
+          YouTubeチャンネルで他の動画を見る
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- 360° Viewer Section -->
   <section class="viewer360-section" id="viewer360-header">
     <div class="container">
@@ -1221,76 +1362,6 @@
       </div>
     </div>
   </div>
-
-  <!-- YouTube Section -->
-  <section class="videos" id="videos">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">動画で見る</h2>
-        <p class="section-subtitle">サポートアームの動きや使用方法をご覧ください</p>
-      </div>
-
-      <div class="videos-grid" data-animate>
-        <div class="video-card">
-          <div class="video-card__wrapper">
-            <iframe 
-              src="https://www.youtube.com/embed/pnYGnJruxn4" 
-              title="サポートアーム紹介動画1"
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowfullscreen>
-            </iframe>
-          </div>
-        </div>
-
-        <div class="video-card">
-          <div class="video-card__wrapper">
-            <iframe 
-              src="https://www.youtube.com/embed/ZcwpZggcE_c" 
-              title="サポートアーム紹介動画2"
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowfullscreen>
-            </iframe>
-          </div>
-        </div>
-
-        <div class="video-card">
-          <div class="video-card__wrapper">
-            <iframe 
-              src="https://www.youtube.com/embed/O3FKxTyWTE4" 
-              title="サポートアーム紹介動画3"
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowfullscreen>
-            </iframe>
-          </div>
-        </div>
-
-        <div class="video-card">
-          <div class="video-card__wrapper">
-            <iframe 
-              src="https://www.youtube.com/embed/xh-19Yr5nr0" 
-              title="サポートアーム紹介動画4"
-              frameborder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-              allowfullscreen>
-            </iframe>
-          </div>
-        </div>
-      </div>
-
-      <div class="videos-cta" data-animate>
-        <a href="https://www.youtube.com/@iwashirokougyou" target="_blank" class="btn btn--secondary">
-          <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" stroke-width="2"/>
-            <polygon points="9.75,15.02 15.5,11.75 9.75,8.48" stroke-width="2"/>
-          </svg>
-          YouTubeチャンネルで他の動画を見る
-        </a>
-      </div>
-    </div>
-  </section>
 
   <!-- Specifications Section -->
   <section class="specs" id="specs">
@@ -2154,29 +2225,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Regulation Video Section -->
-  <section class="regulation-video" id="regulation-video">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">動画で解説｜溶接ヒューム法令対応</h2>
-        <p class="section-subtitle">法改正のポイントと、現場で取るべき対策をわかりやすくまとめました。</p>
-      </div>
-
-      <div class="regulation-video__wrap" data-animate>
-        <div class="regulation-video__player">
-          <iframe
-            src="https://www.youtube.com/embed/qAOiXYYkUts"
-            title="溶接ヒューム法令対応解説動画"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-          </iframe>
-        </div>
-        <p class="regulation-video__note">※ 動画内容は公開時点の情報です。最新の法令詳細は<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000099121_00001.html" target="_blank" rel="noopener noreferrer">厚生労働省のウェブサイト</a>をご確認ください。</p>
       </div>
     </div>
   </section>
