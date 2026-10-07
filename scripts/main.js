@@ -361,12 +361,6 @@ if (heroVideo) {
       heroVideo.play();
     }
   });
-
-  // Reduce video playback on mobile to save data
-  if (window.matchMedia('(max-width: 768px)').matches) {
-    // Optionally reduce playback rate on mobile
-    heroVideo.playbackRate = 0.8;
-  }
 }
 
 // ====================================

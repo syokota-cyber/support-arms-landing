@@ -118,24 +118,27 @@ const full = {
 const hero = {
   name: 'hero',
   loop: true,
+  // 落ち着いたテンポにするため、切り替えはすべてゆっくりしたクロスフェード（0.9秒）にそろえ、
+  // カメラの寄り・パンも小さくする。チップは前後のクロスフェードと重ならない時間だけ表示する。
   scenes: [
-    { id: 'h1', src: 31.8, speed: 1.4, dur: 3.3, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.12, cx: 50, cy: 42 }] },
-    { id: 'h2', src: 44.4, speed: 1.8, dur: 3.2, trans: { type: 'whip', d: 0.35, dir: -1 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.1, cx: 55, cy: 45 }] },
-    { id: 'h3', src: 69.0, speed: 1.4, dur: 3.2, trans: { type: 'wipe', d: 0.45 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.06, cx: 45, cy: 45 }] },
-    { id: 'h4', src: 82.4, speed: 2.0, dur: 3.0, trans: { type: 'zoom', d: 0.4 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.1, cx: 34, cy: 40 }] },
-    { id: 'h5', src: 185.5, speed: 1.8, dur: 3.3, trans: { type: 'whip', d: 0.35, dir: 1 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.1, cx: 45, cy: 55 }] },
-    { id: 'h6', src: 205.9, speed: 0.8, dur: 3.4, trans: { type: 'wipe', d: 0.45 }, kb: [{ s: 1.25, cx: 42, cy: 60 }, { s: 1.12, cx: 46, cy: 55 }] },
-    // ループの継ぎ目：先頭シーンの1フレーム目へクロスフェード
-    { id: 'hloop', src: 31.8, speed: 1.4, dur: 0.6, still: true, trans: { type: 'fade', d: 0.6 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.0, cx: 50, cy: 50 }] },
+    // 画面下端に作業者の帽子が見切れるため、上寄りに少し寄せて下端を元フレームの約86%までにする
+    { id: 'h1', src: 31.8, speed: 1.0, dur: 4.4, kb: [{ s: 1.16, cx: 50, cy: 43.1 }, { s: 1.2, cx: 50, cy: 41.7 }] },
+    { id: 'h2', src: 44.4, speed: 1.3, dur: 4.3, trans: { type: 'fade', d: 0.9 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.05, cx: 52, cy: 48 }] },
+    { id: 'h3', src: 69.0, speed: 1.0, dur: 4.3, trans: { type: 'fade', d: 0.9 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.04, cx: 48, cy: 48 }] },
+    { id: 'h4', src: 82.4, speed: 1.4, dur: 4.1, trans: { type: 'fade', d: 0.9 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.05, cx: 44, cy: 46 }] },
+    { id: 'h5', src: 185.5, speed: 1.3, dur: 4.4, trans: { type: 'fade', d: 0.9 }, kb: [{ s: 1.0, cx: 50, cy: 50 }, { s: 1.05, cx: 48, cy: 52 }] },
+    { id: 'h6', src: 205.9, speed: 0.8, dur: 4.4, trans: { type: 'fade', d: 0.9 }, kb: [{ s: 1.2, cx: 43, cy: 58 }, { s: 1.14, cx: 45, cy: 56 }] },
+    // ループの継ぎ目：先頭シーンの1フレーム目（h1 の開始構図）へクロスフェード
+    { id: 'hloop', src: 31.8, speed: 1.0, dur: 0.9, still: true, trans: { type: 'fade', d: 0.9 }, kb: [{ s: 1.16, cx: 50, cy: 43.1 }, { s: 1.16, cx: 50, cy: 43.1 }] },
   ],
   chapters: [],
   overlays: [
-    { type: 'chip', scene: 'h1', at: 0.3, until: 3.1, n: '01', text: '左右に旋回' },
-    { type: 'chip', scene: 'h2', at: 0.4, until: 3.0, n: '02', text: '好きな角度で保持' },
-    { type: 'chip', scene: 'h3', at: 0.4, until: 3.0, n: '03', text: '先端アームを伸縮' },
-    { type: 'chip', scene: 'h4', at: 0.4, until: 2.8, n: '04', text: '吸引口の向きも自在' },
-    { type: 'chip', scene: 'h5', at: 0.4, until: 3.1, n: '05', text: '天井付けにも対応' },
-    { type: 'chip', scene: 'h6', at: 0.5, until: 3.0, n: '', text: '発生源のそばで、吸う。' },
+    { type: 'chip', scene: 'h1', at: 0.6, until: 3.4, n: '01', text: '左右に旋回' },
+    { type: 'chip', scene: 'h2', at: 1.0, until: 3.3, n: '02', text: '好きな角度で保持' },
+    { type: 'chip', scene: 'h3', at: 1.0, until: 3.3, n: '03', text: '先端アームを伸縮' },
+    { type: 'chip', scene: 'h4', at: 1.0, until: 3.1, n: '04', text: '吸引口の向きも自在' },
+    { type: 'chip', scene: 'h5', at: 1.0, until: 3.4, n: '05', text: '天井付けにも対応' },
+    { type: 'chip', scene: 'h6', at: 1.0, until: 3.4, n: '', text: '発生源のそばで、吸う。' },
   ],
 };
 

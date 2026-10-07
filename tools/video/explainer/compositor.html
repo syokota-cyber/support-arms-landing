@@ -390,16 +390,15 @@
   }
 
   function ovChip(o, t) {
-    const a = life(t, o.t0, o.t1, 0.01, 0.3);
+    // ヒーローループ用：ゆっくりフェードし、わずかに浮き上がるだけにして慌ただしさを抑える
+    const a = life(t, o.t0, o.t1, 0.8, 0.6);
     if (!a) return '';
-    const k = eOut(prog(t, o.t0, 0.45));
-    const kp = clamp((t - o.t0) / (o.t1 - o.t0));
-    return `<div class="abs" style="left:80px;bottom:${86 - (1 - k) * 40}px;opacity:${a}">
+    const k = eOut(prog(t, o.t0, 0.9));
+    return `<div class="abs" style="left:80px;bottom:${86 - (1 - k) * 14}px;opacity:${a}">
       <div class="glass" style="display:flex;align-items:center;gap:22px;padding:18px 40px 20px 22px;border-radius:999px">
         ${o.n ? `<div class="num" style="width:84px;height:84px;border-radius:50%;background:var(--cyan);color:#002a4d;display:flex;align-items:center;justify-content:center;font-size:52px;font-weight:800;font-style:italic">${o.n}</div>` : ''}
         <div style="font-size:64px;font-weight:900;white-space:nowrap;${o.n ? '' : 'padding-left:18px'}">${esc(o.text)}</div>
       </div>
-      <div style="margin:12px 30px 0;height:6px;border-radius:3px;background:rgba(255,255,255,.25)"><div style="height:100%;width:${kp * 100}%;background:var(--cyan);border-radius:3px"></div></div>
     </div>`;
   }
 
