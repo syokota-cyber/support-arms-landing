@@ -16,12 +16,16 @@ const WORK = fs.mkdtempSync(path.join(os.tmpdir(), 'supportarm-ogp-'));
 
 // 伸ばしたアームを片手で支え、手を離す直前のカット（解説動画の「手を離しても止まる」と同じ場面）
 const FRAME_AT = 72.4;
-// 写真の切り抜き位置（object-position）。人物とアームが中央の正方形にも収まるよう少し左寄せ
-const PHOTO_POS = '30% 20%';
+// 元フレーム(1920x1080)から使う範囲（1200x630 と同じ比率）。右端は壁際の箱に入るダクトの切れ目（x≈79%）が
+// 見えないよう、最後のバンド（x≈73%）の先（x=76%）で切ってダクトが画面外へ続いて見えるようにする。
+// 上下は作業者の顔が文字に重ならない位置まで下げる
+const CROP = { x: 0, y: 140, w: 1459, h: 766 };
+const PHOTO_POS = 'center';
 const OUT = 'assets/images/ogp/support-arm-ogp.jpg';
 
 const frame = path.join(WORK, 'frame.jpg');
-execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(FRAME_AT), '-i', path.join(ROOT, SRC), '-frames:v', '1', '-q:v', '2', frame]);
+execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(FRAME_AT), '-i', path.join(ROOT, SRC), '-frames:v', '1',
+  '-vf', `crop=${CROP.w}:${CROP.h}:${CROP.x}:${CROP.y}`, '-q:v', '2', frame]);
 
 const browser = await puppeteer.launch({ headless: true, args: ['--allow-file-access-from-files'] });
 const page = await browser.newPage();
