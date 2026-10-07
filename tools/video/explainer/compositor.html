@@ -248,13 +248,29 @@
     </div>`;
   }
 
+  // path: [[シーン内秒, x, y], ...] を指定すると、カメラが動く映像でも対象を追従する（区間内は線形補間）
+  function pathAt(path, tau) {
+    if (tau <= path[0][0]) return path[0].slice(1);
+    for (let i = 1; i < path.length; i++) {
+      const [t1, x1, y1] = path[i];
+      if (tau <= t1) {
+        const [t0, x0, y0] = path[i - 1];
+        const k = (tau - t0) / (t1 - t0);
+        return [lerp(x0, x1, k), lerp(y0, y1, k)];
+      }
+    }
+    return path[path.length - 1].slice(1);
+  }
+
+  // plain: true は水色リングを付けず、白い点と引き出し線だけで指す（可動部ではない箇所の名称表示用）
   function ovCallout(o, t) {
     const a = life(t, o.t0, o.t1, 0.01, 0.25);
     if (!a) return '';
     const sc = sceneAt(o.scene);
-    const P = mapPt(sc, t, o.x, o.y);
+    const [ox, oy] = o.path ? pathAt(o.path, t - sc.start) : [o.x, o.y];
+    const P = mapPt(sc, t, ox, oy);
     const tau = t - o.t0;
-    const r = (o.ring || 60) * Math.min(P.s, 1.3);
+    const r = o.plain ? 16 : (o.ring || 60) * Math.min(P.s, 1.3);
     const kRing = eOut(prog(tau, 0, 0.4));
     const kLine = eOut(prog(tau, 0.2, 0.35));
     const kLab = eOut(prog(tau, 0.45, 0.4));
@@ -264,12 +280,15 @@
     const len = Math.hypot(L.x - S.x, L.y - S.y);
     const pulse = ((tau % 1.3) / 1.3);
     const circ = 2 * Math.PI * r;
-    let h = `<svg class="abs" width="${W}" height="${H}" style="left:0;top:0;opacity:${a};overflow:visible">
-      <defs><filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      <circle cx="${P.x}" cy="${P.y}" r="${r + pulse * 60}" fill="none" stroke="rgba(63,208,255,${(1 - pulse) * 0.7 * kRing})" stroke-width="4"/>
+    const marker = o.plain
+      ? `<circle cx="${P.x}" cy="${P.y}" r="11" fill="#fff" stroke="#0b2a48" stroke-width="4" opacity="${kRing}"/>`
+      : `<circle cx="${P.x}" cy="${P.y}" r="${r + pulse * 60}" fill="none" stroke="rgba(63,208,255,${(1 - pulse) * 0.7 * kRing})" stroke-width="4"/>
       <circle cx="${P.x}" cy="${P.y}" r="${r}" fill="rgba(63,208,255,.12)" stroke="#3fd0ff" stroke-width="7" filter="url(#gl)"
         stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - kRing)}" transform="rotate(-90 ${P.x} ${P.y})"/>
-      <circle cx="${P.x}" cy="${P.y}" r="9" fill="#fff" opacity="${kRing}"/>
+      <circle cx="${P.x}" cy="${P.y}" r="9" fill="#fff" opacity="${kRing}"/>`;
+    let h = `<svg class="abs" width="${W}" height="${H}" style="left:0;top:0;opacity:${a};overflow:visible">
+      <defs><filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      ${marker}
       <line x1="${S.x}" y1="${S.y}" x2="${S.x + (L.x - S.x) * kLine}" y2="${S.y + (L.y - S.y) * kLine}" stroke="#fff" stroke-width="5" stroke-linecap="round" filter="url(#gl)"/>
       <circle cx="${L.x}" cy="${L.y}" r="${8 * kLine}" fill="#fff"/>
     </svg>`;

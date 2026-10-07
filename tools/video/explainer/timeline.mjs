@@ -79,7 +79,8 @@ const full = {
     { scene: 'hold1', n: '02', title: '角度保持', sub: '関節は好きな角度で止まる', joints: ['j2', 'j3'] },
     { scene: 'tele1', n: '03', title: '伸縮', sub: '先端アームの長さを調整', joints: ['tele'] },
     { scene: 'mouth1', n: '04', title: '吸引口の向き', sub: '前後・左右どの向きにも', joints: ['mouth'] },
-    { scene: 'ceil1', n: '05', title: '天井付け型', sub: '水平360°・上下±30°', joints: ['j1', 'j2'] },
+    // 天井付け型の j1 は天井への取付け部で可動しないため光らせない（j2: 360°旋回部、j3: 先端のボールジョイント 上下±30°）
+    { scene: 'ceil1', n: '05', title: '天井付け型', sub: '水平360°・上下±30°', joints: ['j2', 'j3'] },
     { scene: 'cards', n: '06', title: '吸引口の形状', sub: '発生源に合わせて選べる', joints: ['mouth'], slam: false },
   ],
   overlays: [
@@ -107,7 +108,16 @@ const full = {
     { type: 'lower', scene: 'mouth1', at: 1.2, until: 4.0, text: '吸引口は、前後・左右どの向きでも保持' },
     { type: 'callout', scene: 'mouth2', at: 0.3, until: 3.0, x: 46, y: 37, label: '手元で向きを調整', dx: 330, dy: 140, ring: 55 },
     // 05 天井付け型
-    { type: 'callout', scene: 'ceil1', at: 1.0, until: 3.8, x: 53, y: 64, label: 'ボールジョイント 上下±30°', dx: -160, dy: 210, ring: 70 },
+    // 水色リングは可動部（支柱下の360°旋回部）に付け、カメラのティルトに合わせて追従させる。
+    // その下のヒンジはアームジョイント（ボールジョイントは先端側の関節）なので、白い引き出し線で名称のみ示す
+    {
+      type: 'callout', scene: 'ceil1', at: 1.0, until: 3.8, label: '360°旋回部', dx: 300, dy: 70, ring: 72,
+      path: [[0.8, 53.0, 55.7], [1.3, 52.6, 55.2], [1.8, 52.8, 54.8], [2.3, 52.7, 54.0], [2.8, 52.7, 53.5], [3.3, 53.0, 53.5], [3.8, 53.0, 52.6]],
+    },
+    {
+      type: 'callout', scene: 'ceil1', at: 1.5, until: 3.8, label: 'アームジョイント', dx: -200, dy: 170, plain: true,
+      path: [[0.8, 52.8, 67.5], [1.3, 52.5, 67.0], [1.8, 53.1, 66.4], [2.3, 53.0, 65.6], [2.8, 53.0, 64.2], [3.3, 52.3, 63.6], [3.8, 51.9, 63.0]],
+    },
     { type: 'badge', scene: 'ceil1', at: 1.5, until: 3.9, label: '水平旋回（天井付け型）', value: 360, unit: '°', pos: 'right' },
     { type: 'lower', scene: 'ceil2', at: 0.3, until: 4.2, text: '天井から吊るして、作業エリアを広く使える' },
     // 06 吸引口の形状は cards シーン側で描画
@@ -135,7 +145,7 @@ const hero = {
   overlays: [
     { type: 'chip', scene: 'h1', at: 0.6, until: 3.4, n: '01', text: '左右に旋回' },
     { type: 'chip', scene: 'h2', at: 1.0, until: 3.3, n: '02', text: '好きな角度で保持' },
-    { type: 'chip', scene: 'h3', at: 1.0, until: 3.3, n: '03', text: '先端アームを伸縮' },
+    { type: 'chip', scene: 'h3', at: 1.0, until: 3.3, n: '03', text: '先端アームを上に逃がす' },
     { type: 'chip', scene: 'h4', at: 1.0, until: 3.1, n: '04', text: '吸引口の向きも自在' },
     { type: 'chip', scene: 'h5', at: 1.0, until: 3.4, n: '05', text: '天井付けにも対応' },
     { type: 'chip', scene: 'h6', at: 1.0, until: 3.4, n: '', text: '発生源のそばで、吸う。' },
