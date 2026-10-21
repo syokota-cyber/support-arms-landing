@@ -263,7 +263,7 @@ if (contactForm) {
 
     // Honeypot check
     if (data.website) {
-      showFormResult(formResult, 'success', '送信が完了しました。3営業日以内にご回答いたします。');
+      showFormResult(formResult, 'success', '送信が完了しました。2〜4営業日以内にご回答いたします。');
       contactForm.reset();
       return;
     }
@@ -291,7 +291,7 @@ if (contactForm) {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        showFormResult(formResult, 'success', '送信が完了しました。3営業日以内にご回答いたします。');
+        showFormResult(formResult, 'success', '送信が完了しました。2〜4営業日以内にご回答いたします。');
         contactForm.reset();
 
         // Track with GA
